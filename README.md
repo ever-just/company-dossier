@@ -1,296 +1,322 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/methodology-competitive_intelligence-000?style=for-the-badge&logo=target&logoColor=white" alt="methodology">
-
 # Company Dossier
 
-### The complete playbook for building intelligence packages on private companies
+**The complete playbook for building intelligence packages on private companies**
+
+<br>
+
+<img src="https://img.shields.io/badge/methodology-competitive_intelligence-0d1117?style=for-the-badge&logo=target&logoColor=58a6ff" alt="methodology">&nbsp;
+<img src="https://img.shields.io/badge/public_sources-only-0d1117?style=for-the-badge&logo=shield&logoColor=3fb950" alt="public sources">&nbsp;
+<img src="https://img.shields.io/badge/output-600%2B_files-0d1117?style=for-the-badge&logo=files&logoColor=d29922" alt="output">
+
+<br><br>
 
 [![Updated](https://img.shields.io/badge/updated-June_2026-2ea44f?style=flat-square)]()
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
-[![Tools](https://img.shields.io/badge/tools_documented-30%2B-orange?style=flat-square)](tools.md)
-[![Agent Skills](https://img.shields.io/badge/agent_skills-20-blueviolet?style=flat-square)](skills.md)
+[![Tools](https://img.shields.io/badge/tools-30%2B-orange?style=flat-square)](tools.md)
+[![Skills](https://img.shields.io/badge/agent_skills-20-blueviolet?style=flat-square)](skills.md)
 [![LLMs.txt](https://img.shields.io/badge/llms.txt-available-green?style=flat-square)](llms.txt)
 
----
+<br>
 
-From zero knowledge about a company to a **600+ file intelligence package** in 4 days.<br>
-Public sources only. No paid subscriptions. Reproducible by humans or AI agents.
+*Go from zero knowledge about any private company to a structured, confidence-tagged*<br>
+*intelligence package — in days, not weeks. Using only public data.*
 
-[See what you get](#what-the-finished-product-contains) · [Start building](#how-to-start-a-new-dossier) · [View the pipeline](#the-7-phase-research-pipeline)
+<br>
+
+[What you get](#-what-the-finished-product-contains) · [The pipeline](#-the-research-pipeline) · [Start building](#-how-to-start)
 
 </div>
 
----
-
-## What the finished product contains
-
-When this methodology is run on a target company, you produce a structured intelligence package with **8 categories of intelligence**, containing **100+ distinct data points** across **40+ entity profiles** and **14 structured datasets**. Here is the full inventory:
+<br>
 
 ---
 
-### 🏢 Corporate Identity & Legal Standing
+<br>
 
-Everything needed to confirm who a company legally is and whether they're in good standing.
+## <img src="https://api.iconify.design/lucide/package-check.svg?color=%2358a6ff" width="24" height="24" alt="icon">&nbsp; What the finished product contains
 
-| Intelligence gathered | How it's found |
-|----------------------|---------------|
-| Legal entity name, prior names, DBA | Secretary of State filings |
-| Date of formation, state, entity type | SOS records |
-| Compliance history (terminations, reinstatements) | SOS filing timeline |
-| Registered agent and office address | SOS records |
-| Federal identifiers: DUNS, UEI, CAGE code | CLEATUS, SAM.gov |
-| NAICS/SIC industry classification | SAM.gov, BBB, industry directories |
-| Certifications (WBENC, WOSB, DBE, EDWOSB) | UMN OSD, SBA, WBENC |
-| BBB rating and complaint history | BBB profile |
-| Federal contract awards ($0 or actual) | USASpending.gov API |
-| Litigation, liens, UCC filings, sanctions | CourtListener, state SOS, OpenSanctions |
-| Property records (own vs. lease, sq footage, cost) | County assessor, Facebook Marketplace, LoopNet |
-| Physical addresses (office, warehouse, former) | Multi-source triangulation |
+A complete dossier produces **8 categories of intelligence** containing **100+ distinct data points**, **40+ entity profiles**, and **14 structured datasets** — all confidence-tagged and source-attributed.
 
----
+<br>
 
-### 👥 People & Organization
+### <img src="https://api.iconify.design/lucide/building-2.svg?color=%238b949e" width="20" height="20">&nbsp; Corporate Identity & Legal
 
-A complete map of who works there, who left, who was hired, and the organizational structure.
+| What you learn | How it's found |
+|:--|:--|
+| Legal name, prior names, formation date, entity type | Secretary of State filings |
+| Compliance history (terminations, reinstatements, renewals) | SOS filing timeline |
+| Federal IDs: DUNS, UEI, CAGE code | CLEATUS, SAM.gov |
+| Industry classification (NAICS, SIC, PSC, UNSPSC) | SAM.gov, BBB, directories |
+| Certifications (WBENC, WOSB, DBE, EDWOSB) with expiry tracking | UMN OSD, SBA, WBENC |
+| Federal contract awards (or confirmed $0) | USASpending.gov API |
+| Litigation, liens, UCC filings, sanctions screening | CourtListener, SOS, OpenSanctions |
+| Property records (own vs. lease, sq footage, lease rate) | County assessor, rental listings |
+| All physical addresses (office, warehouse, registered, former) | Multi-source triangulation |
+| Tech stack (CMS, CDN, email, analytics, ad pixels, security) | httpx + GTM container + DNS |
 
-| Intelligence gathered | How it's found |
-|----------------------|---------------|
-| Full team roster (name, title, location, status) | LinkedIn, SignalHire, RocketReach, Prospeo, ZoomInfo |
-| Individual career profiles (education, prior employers, specializations) | Aggregator cross-reference + LinkedIn |
-| Org chart with reporting relationships | Inferred from titles + hiring patterns |
-| Headcount reconciliation (why sources disagree) | Cross-referencing D&B, aggregators, named individuals |
-| Hiring signals (open roles, salary data, posting history) | Wayback captures of careers page, Indeed |
-| Departures (who left, when, where they went, significance) | LinkedIn, aggregator roster changes |
-| Recruiting methods (network vs. job board vs. agency) | Podcast transcripts, posting analysis |
-| Email addresses (SMTP verified: deliverable/not) | Pattern inference + AfterShip SMTP verification |
-| Phone numbers | RocketReach, ZoomInfo, BBB |
-| Founder concentration risk assessment | Role analysis + certification ownership mapping |
+<br>
 
----
+### <img src="https://api.iconify.design/lucide/users.svg?color=%238b949e" width="20" height="20">&nbsp; People & Organization
 
-### 📦 Products & Services
+| What you learn | How it's found |
+|:--|:--|
+| Full team roster (name, title, location, status) | LinkedIn + 5 aggregators cross-referenced |
+| Individual career profiles (education, prior employers, timeline) | Multi-source synthesis |
+| Org chart with inferred reporting relationships | Title analysis + hiring patterns |
+| Headcount reconciliation (why every source gives a different number) | D&B vs. aggregators vs. manual count |
+| Hiring velocity (open roles, salary ranges, posting history) | Wayback careers page + Indeed |
+| Departures (who left, when, where they went, talent loss impact) | Aggregator roster diffs + LinkedIn |
+| Email addresses (pattern + SMTP verified deliverable/not) | Pattern inference + SMTP RCPT TO |
+| Founder concentration risk score | Role analysis + cert ownership |
 
-What they sell, how they sell it, what it costs, and how it compares.
+<br>
 
-| Intelligence gathered | How it's found |
-|----------------------|---------------|
-| Full product catalog (every SKU with specs) | Live site crawl + Wayback product page history |
-| Product category taxonomy | Site navigation analysis |
+### <img src="https://api.iconify.design/lucide/shopping-cart.svg?color=%238b949e" width="20" height="20">&nbsp; Products, Services & Pricing
+
+| What you learn | How it's found |
+|:--|:--|
+| Full product catalog (every SKU, category, specs) | Site crawl + Wayback product pages |
 | Published pricing (where available) | E-commerce store scraping |
-| Price comparison vs. major brands | Web research on competitor list pricing |
-| Branded/private-label products (margin analysis) | Product page + manufacturing origin research |
-| Services offered (turnkey, installation, rental) | Website + job postings + case studies |
-| Rental program details | Brochure PDF extraction |
-| Business model mix (% resale vs. services vs. rental vs. e-commerce) | Triangulation from multiple signals |
-| Product launch timeline | Wayback CDX timestamp analysis |
-| Inventory levels and surplus equipment | Live store + LinkedIn posts |
+| Price comparison vs. competitors and major brands | Market research |
+| Branded/private-label products + estimated margin | Manufacturing origin research |
+| Services breakdown (turnkey, rental, maintenance, consulting) | Website + job postings + PDFs |
+| Business model mix (% resale vs. services vs. e-commerce) | Revenue signal triangulation |
+| Product launch and discontinuation timeline | Wayback CDX timestamp analysis |
+| Inventory levels and surplus equipment valuation | Live store + LinkedIn image analysis |
+
+<br>
+
+### <img src="https://api.iconify.design/lucide/factory.svg?color=%238b949e" width="20" height="20">&nbsp; Supplier Relationships
+
+| What you learn | How it's found |
+|:--|:--|
+| Complete supplier/partner line card (35+ brands) | Logo wall OCR + product pages |
+| Individual supplier profiles (tier, products, evidence, risk) | Per-entity files from multi-source synthesis |
+| OEM verification (confirmed by manufacturer vs. just claimed) | Manufacturer directory checks |
+| Relationship strength scoring (evidence-point system) | Directory=3pts, case study=2, event=1, logo=1 |
+| Supply chain concentration risk | Single-source dependency mapping |
+| Tariff exposure by product line and origin country | HTS code + country-of-origin research |
+| Partner page version history (when brands added/removed) | Wayback captures over time |
+
+<br>
+
+### <img src="https://api.iconify.design/lucide/target.svg?color=%238b949e" width="20" height="20">&nbsp; Customers & Market
+
+| What you learn | How it's found |
+|:--|:--|
+| Confirmed clients (named, with transaction evidence) | Testimonials, case studies, events |
+| Probable clients (tiered: Confirmed → Highly Likely → Probable → Inferred) | 12-source OSINT cross-referencing |
+| Customer testimonials (verbatim quotes) | Website + Wayback recovery |
+| Target markets (geography, verticals, buyer personas) | Job postings + events + associations |
+| Industry association memberships and activity level | LinkedIn + event records |
+| Revenue concentration risk assessment | Named-client-to-revenue analysis |
+| Scored prospect lists by geography and fit | ICP definition + database screening |
+
+<br>
+
+### <img src="https://api.iconify.design/lucide/swords.svg?color=%238b949e" width="20" height="20">&nbsp; Competitive Landscape
+
+| What you learn | How it's found |
+|:--|:--|
+| Full competitor screening (4,000+ companies filtered to top 10) | S&P Global + SIC/NAICS screening |
+| Individual competitor profiles (revenue, headcount, capabilities) | Multi-source entity research |
+| Product/service capability comparison matrix | Feature-by-feature scoring |
+| Shared supplier brand overlap analysis | Line card cross-referencing |
+| Geographic territory overlap | Job posting territory analysis |
+| Competitor web traffic benchmarking | SimilarWeb API on each |
+| Talent movement tracking (who hired away from whom) | Departure monitoring |
+| Competitive threat ranking (proximity × capability × momentum) | Weighted scoring model |
+
+<br>
+
+### <img src="https://api.iconify.design/lucide/trending-up.svg?color=%238b949e" width="20" height="20">&nbsp; Financials & Valuation
+
+| What you learn | How it's found |
+|:--|:--|
+| Revenue estimate with full derivation methodology | D&B + headcount model + industry benchmarks |
+| Revenue per employee benchmark | Revenue ÷ confirmed headcount |
+| 25+ financial signals (bullish and bearish) | Hiring pace, inventory, facility, certifications |
+| Surplus inventory valuation | Live store prices × quantities |
+| Estimated payroll and operating costs | Salary data + lease records |
+| EBITDA margin sensitivity analysis | Industry comps × revenue scenarios |
+| Enterprise valuation range (3 scenarios) | Multiple-based and EBITDA-based |
+| Acquisition thesis (buyer types, deal structure, price range) | Strategic analysis |
+
+<br>
+
+### <img src="https://api.iconify.design/lucide/megaphone.svg?color=%238b949e" width="20" height="20">&nbsp; Marketing, Brand & Digital
+
+| What you learn | How it's found |
+|:--|:--|
+| Social media metrics + growth trajectory | Platform APIs + historical data |
+| LinkedIn post analysis (engagement, tagged companies, content themes) | MHTML archive extraction (181 posts → 97 companies) |
+| Full video transcripts | yt-dlp auto-caption VTT extraction |
+| Website traffic (visits, bounce rate, time-on-site, traffic sources) | SimilarWeb API |
+| 250+ keyword rankings and SEO opportunities | Competitor keyword benchmarking |
+| Advertising audit (pixels installed vs. ads actually running) | GTM parse + ad transparency platforms |
+| PR timeline and media coverage gaps | Trade press + press release archives |
+| Owned events (sponsorship revenue, speakers, attendee model) | Wayback + sponsorship PDFs |
+| Brand identity system (colors, typography, voice, taglines) | Live site CSS/HTML extraction |
+| Email security assessment (SPF, DKIM, DMARC, spoofability) | DNS TXT record analysis |
+
+<br>
 
 ---
 
-### 🏭 Suppliers & Partnerships
+<br>
 
-Who they buy from, how strong each relationship is, and whether claims are verified.
+### <img src="https://api.iconify.design/lucide/database.svg?color=%2358a6ff" width="20" height="20">&nbsp; Structured Datasets (14 CSVs)
 
-| Intelligence gathered | How it's found |
-|----------------------|---------------|
-| Complete supplier line card (all claimed partners) | Website partner page + logo wall OCR |
-| Per-supplier entity profiles (tier, products, evidence, risk) | Multi-source synthesis |
-| OEM verification status (confirmed vs. claimed) | Manufacturer "Find a Partner" directory checks |
-| Relationship strength scoring (1-5 evidence points) | Scoring: directory=3, case study=2, logo=1 |
-| Supply chain concentration risk | Single-source dependency analysis |
-| Tariff exposure by product line | HTS code research + country-of-origin investigation |
-| Manufacturing origin of branded products | Founder career history + facility research |
-| Version tracking (when partners were added/removed) | Wayback captures of partner page over time |
-| Partnership event evidence (co-sponsorship, speaking) | Event materials + LinkedIn posts |
+Every dossier outputs queryable, machine-readable datasets:
 
----
+| Dataset | Typical rows | Contents |
+|:--------|:---:|:--|
+| `team_roster.csv` | 20+ | Every person with title, location, status, source |
+| `org_chart.csv` | 15+ | Reporting relationships and departments |
+| `supplier_line_card.csv` | 35+ | All suppliers with category, tier, confidence |
+| `partners.csv` | 25+ | Suppliers with OEM verification status |
+| `client_register.csv` | 35+ | Clients/prospects with confidence tier |
+| `competitors.csv` | 4,000+ | Full screening dataset with similarity scores |
+| `products.csv` | 45+ | Every SKU with price, condition, status |
+| `certifications.csv` | 10+ | Certs with expiry dates and lapse risk |
+| `events.csv` | 25+ | Events attended/hosted with ROI notes |
+| `financials.csv` | 20+ | Key metrics with source and confidence |
+| `documents.csv` | 12+ | Recovered PDFs with content summary |
+| `industry_codes.csv` | 70+ | NAICS/SIC/PSC/UNSPSC mapping |
+| `source_inventory.csv` | 20+ | Every source used and what it provided |
 
-### 🎯 Customers & Market Position
+<br>
 
-Who buys from them, how they're positioned, and where their opportunities are.
+### <img src="https://api.iconify.design/lucide/image.svg?color=%2358a6ff" width="20" height="20">&nbsp; Visual Evidence
 
-| Intelligence gathered | How it's found |
-|----------------------|---------------|
-| Confirmed clients (named, with evidence) | Testimonials, case studies, event sponsorships |
-| Probable clients (tiered confidence: Confirmed → Inferred) | 12-source cross-referencing |
-| Client relationship registry (relationship type, evidence, owner) | Synthesis from all sources |
-| Testimonials and quotes (verbatim) | Website scraping + Wayback recovery |
-| Target markets (geography, verticals, buyer types) | Job postings + event attendance + association membership |
-| Industry association memberships | LinkedIn, website, event records |
-| Customer concentration risk | Gap analysis (only 1 named client = risk) |
-| Prospect lists (scored, ranked, by geography) | ICP definition + database screening |
+| Type | Count | Examples |
+|:-----|:---:|:--|
+| Personnel photos | 30+ | Headshots, team photos, event candids |
+| Product photography | 15+ | Product shots, installation evidence |
+| Facility documentation | 50+ | Office, warehouse, floor plans |
+| Event photography | 35+ | Conferences, sponsored events, networking |
+| Brand assets | 25+ | Logos, merch, marketing materials |
+| Supplier/partner logos | 40+ | Every manufacturer from partner page |
+| PDF documents | 12+ | Datasheets, job postings, event decks |
 
----
+<br>
 
-### ⚔️ Competitive Landscape
+### <img src="https://api.iconify.design/lucide/brain.svg?color=%2358a6ff" width="20" height="20">&nbsp; Strategic Analysis Layer
 
-Who they compete with, how they compare, and what threatens them.
+The judgment layer — what the facts mean for decision-making:
 
-| Intelligence gathered | How it's found |
-|----------------------|---------------|
-| Full competitor screening (4,000+ companies filtered) | S&P Global Capital IQ SIC-based screening |
-| Top 10 nearest competitors (entity profiles) | Multi-factor similarity scoring |
-| Competitive positioning matrix (capabilities comparison) | Product/service coverage analysis |
-| Shared supplier brand overlap | Cross-referencing line cards |
-| Geographic overlap mapping | Territory analysis from job postings |
-| Competitor web traffic benchmarking | SimilarWeb API |
-| Talent movement between competitors | Departure tracking |
-| Competitive threat assessment (ranked) | Proximity × capability × market momentum |
+| Deliverable | Question it answers |
+|:--|:--|
+| Executive Brief | "What is this company in one page?" |
+| Risk Register (22+ risks) | "What could go wrong?" |
+| SWOT Analysis | "Strengths, weaknesses, opportunities, threats?" |
+| Business Model Canvas | "How do they make money?" |
+| Acquisition Thesis | "Should we buy them? At what price?" |
+| Partnership Thesis | "What kind of partnership would work?" |
+| Competitive Positioning | "How do they stack up against peers?" |
+| Intelligence Gaps | "What don't we know yet?" |
+| Market Sizing (TAM/SAM/SOM) | "How big is the opportunity?" |
+| Industry Opportunity Map | "What macro trends help them?" |
+| Industry Threat Map | "What macro trends hurt them?" |
 
----
-
-### 💰 Financials & Valuation
-
-Revenue estimation, financial signals, and M&A valuation range — all from public data.
-
-| Intelligence gathered | How it's found |
-|----------------------|---------------|
-| Revenue estimate (with derivation methodology) | D&B Hoovers + headcount modeling + industry benchmarks |
-| Revenue per employee calculation | Revenue ÷ confirmed headcount |
-| Financial signals (bullish and bearish) | Hiring pace, inventory levels, facility expansion, awards |
-| Surplus inventory valuation | Live store pricing × quantity |
-| Estimated payroll costs | Indeed salary data + headcount |
-| Warehouse/office lease costs | Property records + rental listings |
-| EBITDA margin sensitivity analysis | Industry comp data × revenue scenarios |
-| Enterprise valuation range (pessimistic to optimistic) | Multiple approaches: revenue multiple, EBITDA multiple |
-| Acquisition thesis (who should buy, why, at what price) | Strategic analysis |
-| Federal revenue opportunity (latent credentials) | WOSB pool size × capture probability |
+<br>
 
 ---
 
-### 📣 Marketing, Brand & Digital Presence
+<br>
 
-How they go to market, what's working, and where the gaps are.
+## <img src="https://api.iconify.design/lucide/workflow.svg?color=%2358a6ff" width="24" height="24">&nbsp; The Research Pipeline
 
-| Intelligence gathered | How it's found |
-|----------------------|---------------|
-| Social media metrics (followers, engagement, growth rate) | Platform data + historical tracking |
-| LinkedIn post analysis (top posts, engagement patterns, tagged companies) | MHTML archive extraction |
-| YouTube channel analysis (videos, views, indexed vs. unlisted) | yt-dlp + Google search |
-| Video transcripts (full text of all company videos) | yt-dlp auto-caption VTT |
-| Website traffic estimates (monthly visits, bounce rate, time on site) | SimilarWeb API |
-| Keyword rankings and opportunities (250+) | SimilarWeb competitor benchmarking |
-| Competitor traffic benchmarking | SimilarWeb on top 10 competitors |
-| Advertising activity (pixels installed vs. actual ads running) | GTM container parse + ad transparency platforms |
-| PR and press coverage timeline | Web search + trade press archives |
-| Owned events (details, sponsorship tiers, speakers, revenue estimate) | Wayback captures + sponsorship PDFs |
-| Tech stack (CMS, CDN, analytics, email, ad pixels) | httpx + GTM + DNS + certificate transparency |
-| Brand identity (colors, typography, voice, taglines) | Live site CSS/HTML extraction |
-| Brand origin story | Podcast transcripts + Wayback "about" pages |
-| Email infrastructure (provider, SPF, DKIM, DMARC, security gaps) | DNS TXT record analysis |
-
----
-
-### 📊 Structured Datasets Produced
-
-Every dossier produces 14 CSV datasets — queryable, sortable, machine-readable:
-
-| Dataset | Rows | What's in it |
-|---------|------|-------------|
-| `team_roster.csv` | 20+ | Every person: name, title, location, status, source, notes |
-| `org_chart.csv` | 15+ | Reporting relationships with department and start date |
-| `supplier_line_card.csv` | 35+ | All suppliers: brand, category, products, confidence |
-| `partners.csv` | 25+ | Supplier subset with OEM verification status |
-| `client_register.csv` | 35+ | All known/suspected clients with confidence tier |
-| `competitors.csv` | 4,000+ | Full screening dataset with tier, revenue, SIC, overlap score |
-| `products.csv` | 45+ | Every product: SKU, category, price, condition, stock status |
-| `certifications.csv` | 10+ | All certs: status, expiry, owner, risk if lapsed |
-| `events.csv` | 25+ | Events attended/hosted: date, location, role, ROI |
-| `financials.csv` | 20+ | Key metrics with source and confidence rating |
-| `documents.csv` | 12+ | All recovered PDFs: title, date, author, content summary |
-| `industry_codes.csv` | 70+ | NAICS, SIC, PSC, UNSPSC for company + all suppliers |
-| `source_inventory.csv` | 20+ | Every research source with type and what it provided |
-| `people.csv` | 15+ | Canonical people list (subset of full roster) |
-
----
-
-### 🖼️ Visual Evidence & Documents
-
-| Asset type | Typical count | What's captured |
-|-----------|--------------|----------------|
-| **Personnel photos** | 30+ | Headshots, team photos, event candids |
-| **Product photos** | 15+ | Product photography, installation shots |
-| **Facility photos** | 50+ | Office, warehouse, floor plans, satellite views |
-| **Event photos** | 35+ | Conferences, golf outings, sponsored events |
-| **Brand assets** | 25+ | Logos, marketing graphics, custom merchandise |
-| **Partner/supplier logos** | 40+ | Every manufacturer logo from partner page |
-| **PDF datasheets** | 4+ | Product specification sheets |
-| **Job posting PDFs** | 4+ | Archived job descriptions with salary data |
-| **Sponsorship decks** | 2-4 | Event sponsorship packages with pricing |
-| **Partner presentations** | 2+ | Slide decks from partners presented at company events |
-
----
-
-### 🧠 Strategic Analysis (Judgment Layer)
-
-Beyond facts — what it all means for decision-making:
-
-| Analysis produced | What it answers |
-|------------------|----------------|
-| **Executive brief** | "What is this company in one page?" |
-| **Key facts sheet** | Quick-reference card for meetings |
-| **SWOT analysis** | Strengths, weaknesses, opportunities, threats |
-| **Risk register** (22+ risks, scored) | "What could go wrong and how likely is it?" |
-| **Business model canvas** | How the company makes money (9 blocks) |
-| **Acquisition thesis** | "Should we buy them? At what price? What's the risk?" |
-| **Partnership thesis** | "Should we partner? What kind of partner benefits?" |
-| **Competitive threat assessment** | "Who is most dangerous to this company?" |
-| **Strategic assessment** | "Where are they headed? What's the ceiling?" |
-| **Intelligence gaps** | "What don't we know? How to find out?" |
-| **Industry positioning** | "Where do they sit in the value chain?" |
-| **Market sizing** (TAM/SAM/SOM) | "How big is their addressable market?" |
-
----
-
-### 🏗️ Industry Context (Macro Layer)
-
-The broader context that informs strategic decisions:
-
-| Dimension | What's researched |
-|-----------|------------------|
-| **Market economics** | TAM/SAM/SOM, channel economics, hyperscaler capex impact, M&A landscape |
-| **Industry history** | Evolution timeline (7 eras), channel development, manufacturer strategies |
-| **Legal & regulatory** | State licensing requirements, federal procurement rules, tariff exposure, environmental regs |
-| **Political landscape** | State incentive competition, energy/grid crisis, federal policy, community opposition |
-| **Workforce & society** | Labor shortage analysis, diversity certification premium, gender dynamics, associations |
-| **Technology trajectory** | Liquid cooling adoption, edge vs. hyperscale, modular/prefab trends, sustainability mandates |
-| **Synthesis** | Company positioning in value chain, opportunity map (15 tailwinds), threat map (15 headwinds) |
-
----
-
-## The 7-Phase Research Pipeline
-
-```
- ┌────────┐   ┌───────┐   ┌────────┐   ┌─────────┐   ┌────────┐   ┌────────────┐   ┌────────┐
- │  PLAN  │──▶│ LOCAL │──▶│ SEARCH │──▶│ WAYBACK │──▶│ SCRAPE │──▶│ SYNTHESIZE │──▶│ REPORT │
- │  5min  │   │ 5min  │   │ 15min  │   │  30min  │   │ 30min  │   │   30min    │   │ 30min  │
- └────────┘   └───────┘   └────────┘   └─────────┘   └────────┘   └────────────┘   └────────┘
+```mermaid
+graph LR
+    A[Plan<br/>5 min] --> B[Local<br/>5 min]
+    B --> C[Search<br/>15 min]
+    C --> D[Wayback<br/>30 min]
+    D --> E[Scrape<br/>30 min]
+    E --> F[Synthesize<br/>30 min]
+    F --> G[Report<br/>30 min]
+    
+    style A fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style B fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style C fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style D fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style E fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style F fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style G fill:#1f6feb,stroke:#58a6ff,color:#fff
 ```
 
-| Phase | What happens | Tools |
-|-------|-------------|-------|
+| Phase | What happens | Key tools |
+|:------|:------------|:----------|
 | **Plan** | Enumerate sources, define questions, create checklist | Sequential thinking |
-| **Local** | Parse existing data, identify gaps | grep, file analysis |
+| **Local** | Parse existing data, identify gaps | File analysis, grep |
 | **Search** | Broad → targeted → domain-specific queries | Web APIs, Google dorking |
-| **Wayback** | Recover deleted pages, discover PDFs, track changes | Wayback CDX API |
-| **Scrape** | Platform data, videos, transcripts | Playwright, yt-dlp, BeautifulSoup |
-| **Synthesize** | Cross-reference, tag confidence, resolve contradictions | Multi-agent verification |
-| **Report** | Structure output, add frontmatter, build navigation | Entity-centric architecture |
+| **Wayback** | Recover deleted pages, discover PDFs, track evolution | Wayback CDX API |
+| **Scrape** | Videos, transcripts, platform data, rendered pages | Playwright, yt-dlp, BeautifulSoup |
+| **Synthesize** | Cross-reference claims, tag confidence, resolve conflicts | Multi-agent triangulation |
+| **Report** | Structure into entity files, add frontmatter, build navigation | Architecture patterns |
 
-**~2.5 hours** for a configured agent. 4 days with deep dives and industry context.
+**~2.5 hours** for a configured agent. **4 days** including deep dives and industry context.
 
-Details: [`methodology.md`](methodology.md) → [`collection_phases.md`](collection_phases.md)
+Full details: [`methodology.md`](methodology.md) → [`collection_phases.md`](collection_phases.md)
+
+<br>
 
 ---
 
-## How to start a new dossier
+<br>
+
+## <img src="https://api.iconify.design/lucide/folder-tree.svg?color=%2358a6ff" width="24" height="24">&nbsp; Output Architecture
+
+```mermaid
+graph TD
+    R[README.md + ROUTER.md] --> META[_meta/]
+    R --> DATA[_data/ — 14 CSVs]
+    R --> ASSETS[_assets/ — photos + PDFs]
+    R --> EVIDENCE[_evidence/ — raw sources]
+    R --> S1[1_corporate/]
+    R --> S2[2_people/profiles/]
+    R --> S3[3_products/]
+    R --> S4[4_suppliers/profiles/]
+    R --> S5[5_customers/]
+    R --> S6[6_competitors/profiles/]
+    R --> S7[7_financials/]
+    R --> S8[8_marketing/]
+    R --> S9[9_brand/]
+    R --> S10[10_timeline/]
+    R --> S11[11_analysis/]
+    R --> S12[12_industry/]
+    
+    style R fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style META fill:#21262d,stroke:#30363d,color:#c9d1d9
+    style DATA fill:#21262d,stroke:#30363d,color:#c9d1d9
+    style ASSETS fill:#21262d,stroke:#30363d,color:#c9d1d9
+    style EVIDENCE fill:#21262d,stroke:#30363d,color:#c9d1d9
+```
+
+**Key design decisions:**
+- One file per entity (person, supplier, competitor) — never a mega-list
+- Max 500 lines per file — focused, scannable, agent-friendly
+- YAML frontmatter on every `.md` — enables programmatic discovery
+- `ROUTER.md` maps 60+ questions to exact file paths — 2 reads to any answer
+- Strict layer separation: facts (1-10) / judgment (11) / context (12) / data / evidence
+
+Full spec: [`architecture.md`](architecture.md)
+
+<br>
+
+---
+
+<br>
+
+## <img src="https://api.iconify.design/lucide/rocket.svg?color=%2358a6ff" width="24" height="24">&nbsp; How to start
 
 ```bash
-# 1. Clone this methodology repo
+# 1. Clone this methodology
 git clone https://github.com/ever-just/company-dossier.git
 
-# 2. Create your dossier structure
+# 2. Create dossier structure (one command)
 TARGET="COMPANY_NAME"
 mkdir -p "$TARGET DOSSIER"/{_meta,_data,_assets/photos,_evidence,1_corporate,2_people/profiles,3_products,4_suppliers/profiles,5_customers,6_competitors/profiles,7_financials,8_marketing,9_brand,10_timeline,11_analysis,12_industry}
 
@@ -301,101 +327,120 @@ mkdir -p "$TARGET DOSSIER"/{_meta,_data,_assets/photos,_evidence,1_corporate,2_p
 ```
 Read methodology.md and collection_phases.md from the company-dossier repo.
 Build a complete intelligence dossier on [COMPANY NAME] following the 7-phase
-pipeline. Write output to the dossier directory using entity-centric files
-with YAML frontmatter.
+pipeline. Write output using entity-centric files with YAML frontmatter.
 ```
 
-Full template: [`skeleton.md`](skeleton.md)
+Full starter template: [`skeleton.md`](skeleton.md)
+
+<br>
 
 ---
 
-## What's in this repo?
+<br>
 
-| File | Description |
-|------|-------------|
-| 📋 [`methodology.md`](methodology.md) | Philosophy, 7-phase pipeline, design principles |
-| 🔬 [`collection_phases.md`](collection_phases.md) | 6 collection methods with example commands |
-| 🛠️ [`tools.md`](tools.md) | 30+ tools — used and rejected with rationale |
-| 🤖 [`skills.md`](skills.md) | 20 agent skills — when and how to invoke |
-| 🧬 [`patterns.md`](patterns.md) | 10 cross-cutting methodology patterns |
-| 🏗️ [`architecture.md`](architecture.md) | Output structure, YAML schema, navigation design |
-| 📖 [`case_study.md`](case_study.md) | Day-by-day build narrative |
-| 💬 [`prompts.md`](prompts.md) | 12 key prompts with effectiveness analysis |
-| ✅ [`quality_assurance.md`](quality_assurance.md) | 3-phase audit, 56 errors caught |
-| 📐 [`skeleton.md`](skeleton.md) | One-command dossier structure creator |
-| 🏷️ [`frontmatter.md`](frontmatter.md) | YAML templates for 5 file types |
-| 💡 [`lessons_learned.md`](lessons_learned.md) | What worked and what failed |
-| 📚 [`SOURCES.md`](SOURCES.md) | All tools, repos, and APIs cited |
-| 🌐 [`ECOSYSTEM.md`](ECOSYSTEM.md) | 30+ related repos in OSINT landscape |
-| 🤖 [`llms.txt`](llms.txt) | AI agent discovery file |
+## <img src="https://api.iconify.design/lucide/file-text.svg?color=%2358a6ff" width="24" height="24">&nbsp; Documentation
 
----
+| | File | What it covers |
+|:--|:--|:--|
+| <img src="https://api.iconify.design/lucide/map.svg?color=%238b949e" width="16" height="16"> | [`methodology.md`](methodology.md) | Philosophy, 7-phase pipeline, design principles |
+| <img src="https://api.iconify.design/lucide/search.svg?color=%238b949e" width="16" height="16"> | [`collection_phases.md`](collection_phases.md) | 6 collection methods with example commands |
+| <img src="https://api.iconify.design/lucide/wrench.svg?color=%238b949e" width="16" height="16"> | [`tools.md`](tools.md) | 30+ tools — used and rejected with rationale |
+| <img src="https://api.iconify.design/lucide/bot.svg?color=%238b949e" width="16" height="16"> | [`skills.md`](skills.md) | 20 agent skills — when and how to invoke |
+| <img src="https://api.iconify.design/lucide/git-branch.svg?color=%238b949e" width="16" height="16"> | [`patterns.md`](patterns.md) | 10 cross-cutting methodology patterns |
+| <img src="https://api.iconify.design/lucide/layers.svg?color=%238b949e" width="16" height="16"> | [`architecture.md`](architecture.md) | Output structure, YAML schema, navigation design |
+| <img src="https://api.iconify.design/lucide/book-open.svg?color=%238b949e" width="16" height="16"> | [`case_study.md`](case_study.md) | Day-by-day build narrative |
+| <img src="https://api.iconify.design/lucide/message-square.svg?color=%238b949e" width="16" height="16"> | [`prompts.md`](prompts.md) | 12 key prompts with effectiveness analysis |
+| <img src="https://api.iconify.design/lucide/shield-check.svg?color=%238b949e" width="16" height="16"> | [`quality_assurance.md`](quality_assurance.md) | 3-phase audit — 56 errors caught |
+| <img src="https://api.iconify.design/lucide/copy.svg?color=%238b949e" width="16" height="16"> | [`skeleton.md`](skeleton.md) | One-command dossier structure |
+| <img src="https://api.iconify.design/lucide/tag.svg?color=%238b949e" width="16" height="16"> | [`frontmatter.md`](frontmatter.md) | YAML templates for 5 file types |
+| <img src="https://api.iconify.design/lucide/lightbulb.svg?color=%238b949e" width="16" height="16"> | [`lessons_learned.md`](lessons_learned.md) | What worked and what failed |
+| <img src="https://api.iconify.design/lucide/bookmark.svg?color=%238b949e" width="16" height="16"> | [`SOURCES.md`](SOURCES.md) | All tools, repos, APIs cited |
+| <img src="https://api.iconify.design/lucide/globe.svg?color=%238b949e" width="16" height="16"> | [`ECOSYSTEM.md`](ECOSYSTEM.md) | 30+ related repos in OSINT landscape |
 
-## How is this different from other OSINT tools?
-
-| Existing tools | This methodology |
-|---------------|-----------------|
-| Collect raw data (emails, subdomains, DNS) | Produces **structured intelligence products** |
-| Output is a terminal dump or JSON blob | Output is a **navigable 12-section dossier** |
-| Focus on technical reconnaissance | Focus on **business intelligence** (revenue, suppliers, risks) |
-| No confidence framework | Every claim tagged **Definitive → Unverified** |
-| One-shot collection | **7 phases** including verification and QA |
-| No synthesis | **Cross-references** across 3+ sources per finding |
-| No structured output architecture | **Entity-centric files** with YAML frontmatter and ROUTER.md |
-
-> **The gap in OSINT is not collection — it's synthesis.** Dozens of tools scrape data. None produce structured, confidence-tagged, cross-referenced intelligence products ready for decisions.
+<br>
 
 ---
 
-## Validated results
+<br>
+
+## <img src="https://api.iconify.design/lucide/scale.svg?color=%2358a6ff" width="24" height="24">&nbsp; How this differs from other OSINT tools
+
+| | Existing tools | This methodology |
+|:--|:--|:--|
+| **Output** | Terminal dump or JSON blob | Navigable 12-section dossier with YAML frontmatter |
+| **Focus** | Technical recon (subdomains, DNS) | Business intelligence (revenue, suppliers, risks) |
+| **Confidence** | None | 6-tier scale on every claim |
+| **Synthesis** | None — raw data only | Cross-references 3+ sources per finding |
+| **Structure** | Flat files | Entity-centric files with ROUTER.md navigation |
+| **Verification** | None | 3-phase QA audit catches 50+ errors |
+
+> *The gap in OSINT is not collection — it's synthesis.* Dozens of tools scrape data. None produce structured, confidence-tagged intelligence products ready for decisions.
+
+<br>
+
+---
+
+<br>
+
+## <img src="https://api.iconify.design/lucide/bar-chart-3.svg?color=%2358a6ff" width="24" height="24">&nbsp; Validated results
 
 Tested on a real $4.5M private company:
 
 | Metric | Result |
-|--------|--------|
-| Structured files produced | 613 |
-| Entity profiles | 40 (suppliers + competitors + people) |
+|:-------|:-------|
+| Structured files | 613 |
+| Entity profiles | 40 |
 | Datasets (CSV) | 14 |
 | Photos captured | 291 |
 | PDFs recovered | 12 |
-| Factual errors caught by QA | 56 |
-| Navigation paths validated | 110 |
+| Errors caught by QA | 56 |
+| Navigation paths | 110 |
 | Confidence coverage | 100% |
-| Time (with deep dives) | 4 days |
-| Cost | $0 |
+| Time (full depth) | 4 days |
+| Cost | **$0** |
+
+<br>
 
 ---
 
-<details>
-<summary><strong>FAQ: Can an AI agent do this autonomously?</strong></summary>
+<br>
 
-Yes, with guidance. The methodology was developed with Claude Opus 4.6 (1M context). An agent can execute all 7 phases, but some steps need human decisions (editorial judgment, portal logins that block automation). See `prompts.md` for exact prompts.
+<details>
+<summary><img src="https://api.iconify.design/lucide/help-circle.svg?color=%238b949e" width="16" height="16">&nbsp; <strong>Can an AI agent do this autonomously?</strong></summary>
+<br>
+Yes, with guidance. Developed with Claude Opus 4.6 (1M context). Agent handles all 7 phases, but some steps need human decisions (confidence judgment, portal logins). See <code>prompts.md</code> for exact prompts.
 </details>
 
 <details>
-<summary><strong>FAQ: What can't this reach?</strong></summary>
-
-Login-gated LinkedIn data, SAM.gov full records (needs API key), court records (PACER fees), paid firmographics (ZoomInfo/Apollo), internal financials of private LLCs, state court portals that block bots. Documented as "intelligence gaps" with manual closure instructions.
+<summary><img src="https://api.iconify.design/lucide/lock.svg?color=%238b949e" width="16" height="16">&nbsp; <strong>What can't this methodology access?</strong></summary>
+<br>
+Login-gated LinkedIn, SAM.gov full records (API key needed), PACER (fees), paid firmographics (ZoomInfo/Apollo), internal financials, state court portals that block bots. All documented as gaps with manual closure instructions.
 </details>
 
 <details>
-<summary><strong>FAQ: Is this legal?</strong></summary>
-
-Yes. Public sources only. No unauthorized access, no social engineering, no login bypass. See `methodology.md` for the ethical framework.
+<summary><img src="https://api.iconify.design/lucide/shield.svg?color=%238b949e" width="16" height="16">&nbsp; <strong>Is this legal?</strong></summary>
+<br>
+Yes. Public sources only. No unauthorized access, no social engineering, no login bypass. See <code>methodology.md</code> for ethical framework.
 </details>
+
+<br>
 
 ---
 
 <div align="center">
 
-### Built with
+<br>
 
-[![Claude](https://img.shields.io/badge/Claude_Opus_4.6-1M_context-blueviolet?style=for-the-badge&logo=anthropic&logoColor=white)]()
-[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)]()
-[![Wayback](https://img.shields.io/badge/Wayback_Machine-CDX_API-red?style=for-the-badge&logo=internetarchive&logoColor=white)]()
+**Built with**
 
----
+<img src="https://img.shields.io/badge/Claude_Opus_4.6-1M_context-blueviolet?style=for-the-badge&logo=anthropic&logoColor=white" alt="Claude">&nbsp;
+<img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">&nbsp;
+<img src="https://img.shields.io/badge/Wayback_Machine-CDX_API-d42029?style=for-the-badge&logo=internetarchive&logoColor=white" alt="Wayback">
+
+<br><br>
 
 *[EverJust](https://everjust.org) — making intelligence work reproducible.*
+
+<br>
 
 </div>
