@@ -65,7 +65,7 @@ A complete dossier produces **8 categories of intelligence** containing **100+ d
 | Full team roster (name, title, location, status) | LinkedIn + 5 aggregators cross-referenced |
 | Individual career profiles (education, prior employers, timeline) | Multi-source synthesis |
 | Org chart with inferred reporting relationships | Title analysis + hiring patterns |
-| Headcount reconciliation (why every source gives a different number) | D&B vs. aggregators vs. manual count |
+| Headcount reconciliation (why every source gives a different number) | D&B (manually pulled) vs. aggregators vs. manual count |
 | Hiring velocity (open roles, salary ranges, posting history) | Wayback careers page + Indeed |
 | Departures (who left, when, where they went, talent loss impact) | Aggregator roster diffs + LinkedIn |
 | Email addresses (pattern + SMTP verified deliverable/not) | Pattern inference + SMTP RCPT TO |
@@ -120,7 +120,7 @@ A complete dossier produces **8 categories of intelligence** containing **100+ d
 
 | What you learn | How it's found |
 |:--|:--|
-| Full competitor screening (4,000+ companies filtered to top 10) | S&P Global + SIC/NAICS screening |
+| Full competitor screening (4,000+ companies filtered to top 10) | S&P Global Capital IQ export (manually pulled) + SIC/NAICS filtering |
 | Individual competitor profiles (revenue, headcount, capabilities) | Multi-source entity research |
 | Product/service capability comparison matrix | Feature-by-feature scoring |
 | Shared supplier brand overlap analysis | Line card cross-referencing |
@@ -135,7 +135,7 @@ A complete dossier produces **8 categories of intelligence** containing **100+ d
 
 | What you learn | How it's found |
 |:--|:--|
-| Revenue estimate with full derivation methodology | D&B + headcount model + industry benchmarks |
+| Revenue estimate with full derivation methodology | D&B Hoovers (manually pulled) + headcount model + industry benchmarks |
 | Revenue per employee benchmark | Revenue ÷ confirmed headcount |
 | 25+ financial signals (bullish and bearish) | Hiring pace, inventory, facility, certifications |
 | Surplus inventory valuation | Live store prices × quantities |

@@ -54,8 +54,8 @@ Repositories, tools, and methodologies that directly informed or were used in bu
 | Prospeo | Company firmographics, employee count, revenue band |
 | ZoomInfo | Departure confirmations, competitor employee moves |
 | ContactOut | Dual-role verification (Tom Weiss C2/BROGAV) |
-| D&B Hoovers | Revenue ($4.51M), headcount (10), risk rating (Low), DUNS |
-| S&P Global Capital IQ | 4,797-company competitor screening dataset |
+| D&B Hoovers | Revenue ($4.51M), headcount (10), risk rating (Low), DUNS — **manually pulled by human** |
+| S&P Global Capital IQ | 4,797-company competitor screening dataset — **manually exported by human (institutional subscription)** |
 
 ---
 
