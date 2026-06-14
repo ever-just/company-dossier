@@ -1,420 +1,618 @@
-# Output Architecture
+# Output Structure Architecture
 
-This document describes the folder structure, navigation patterns, and design principles of the finished intelligence dossier.
-
----
-
-## Design Principles
-
-### 1. Entity-Centric Design
-
-Every identifiable entity (person, company, supplier, competitor) gets its own file. This enables:
-- Targeted retrieval: an LLM can return a single file that answers a question about an entity
-- Independent updates: when information changes about one supplier, only that file needs editing
-- Cross-referencing: other files link TO entity files rather than duplicating information
-
-### 2. Maximum 500 Lines Per File
-
-No file exceeds 500 lines. When content grows beyond this threshold, it must be split into sub-files or entity files. Rationale:
-- LLM context windows handle 500-line files efficiently without truncation
-- Human readers can scan a 500-line file in <5 minutes
-- Git diffs remain readable for files under 500 lines
-- Forces the author to be concise and well-structured
-
-### 3. Three-Audience Optimization
-
-The architecture serves three distinct access patterns:
-1. **M&A due diligence** — Investor can find any answer in <30 seconds via ROUTER.md
-2. **LLM retrieval (RAG)** — System can identify the correct file from a user question using frontmatter metadata
-3. **Human browsing** — Analyst can discover and explore without prior knowledge via _MOC.md files
+This document defines the folder architecture, file conventions, and design rationale for a finished company intelligence dossier. Based on the BROGAV Solutions dossier (June 2026).
 
 ---
 
-## Complete Folder Tree
+## Full Folder Tree
 
 ```
-BROGAV_Solutions_Dossier/
-├── ROUTER.md                          # 110+ question→file path mappings
-├── 00_KEY_FACTS_SHEET.md              # One-page executive summary (all key metrics)
-│
-├── 01_Company_Profile/
-│   ├── _MOC.md                        # Map of Content for this section
-│   ├── _meta.yaml                     # Section metadata for tooling
-│   ├── README.md                      # Section overview and summary
-│   ├── company_overview.md            # Legal name, DBA, address, formation
-│   ├── federal_registration.md        # SAM.gov, CAGE, UEI, NAICS codes
-│   ├── state_registration.md          # MN SOS filing, registered agent
-│   ├── certifications.md              # WBENC, EDWOSB, DBE, MBE details
-│   └── domain_and_infrastructure.md   # DNS, email, hosting, tech stack
-│
-├── 02_People_and_Organization/
-│   ├── _MOC.md
-│   ├── _meta.yaml
-│   ├── README.md
-│   ├── team_roster.csv                # Structured: name, title, start_date, LinkedIn, confidence
-│   ├── full_roster_profiles.md        # Narrative summaries of all personnel
-│   ├── hiring_and_growth.md           # Headcount trends, growth signals
-│   ├── departures_and_changes.md      # Turnover analysis, timeline of changes
-│   ├── org_chart.md                   # Reporting structure (inferred)
-│   └── leadership/                    # Individual entity files for leaders
-│       ├── celina_berglund.md
-│       ├── jessa_brixius.md
-│       ├── thomas_weiss.md
-│       └── [other_leaders].md
-│
-├── 03_Products_and_Suppliers/
-│   ├── _MOC.md
-│   ├── _meta.yaml
-│   ├── README.md
-│   ├── product_categories.md          # Furniture, flooring, walls, technology
-│   ├── branded_cabinet_line.md        # BROGAV-branded product (if any)
-│   ├── supplier_line_card.csv         # Structured: brand, category, status, confidence
-│   ├── product_asset_audit.md         # Catalog completeness assessment
-│   └── suppliers/                     # Individual entity files per supplier
-│       ├── steelcase.md
-│       ├── knoll.md
-│       ├── herman_miller.md
-│       └── [other_suppliers].md
-│
-├── 04_Market_and_Customers/
-│   ├── _MOC.md
-│   ├── _meta.yaml
-│   ├── README.md
-│   ├── target_markets.md              # Segments, verticals, geographic focus
-│   ├── identified_clients.md          # Known/inferred client relationships
-│   ├── go_to_market.md                # How they win business
-│   └── clients/                       # Individual entity files per client
-│       └── [client_name].md
-│
-├── 05_Financials/
-│   ├── _MOC.md
-│   ├── _meta.yaml
-│   ├── README.md
-│   ├── financial_signals.md           # Revenue estimates, contract data, proxies
-│   ├── valuation_considerations.md    # Multiples, comps, methodology
-│   └── revenue_model.md              # How they make money (markup, fees, recurring)
-│
-├── 06_Marketing_and_Events/
-│   ├── _MOC.md
-│   ├── _meta.yaml
-│   ├── README.md
-│   ├── social_media.md                # Platform presence, activity analysis
-│   ├── press_and_media.md             # Press releases, articles, mentions
-│   ├── events.csv                     # Structured: event, date, role, location
-│   ├── events/                        # Individual event detail files
-│   │   └── [event_name].md
-│   ├── ad_transparency.md             # Active ad spend analysis
-│   └── web_traffic.md                 # Traffic estimates and source breakdown
-│
-├── 07_Legal_and_Compliance/
-│   ├── _MOC.md
-│   ├── _meta.yaml
-│   ├── README.md
-│   ├── court_records.md               # Litigation search results
-│   ├── liens_and_judgments.md         # UCC filings, tax liens
-│   └── regulatory_compliance.md       # Industry-specific compliance
-│
-├── 08_Technology/
-│   ├── _MOC.md
-│   ├── _meta.yaml
-│   ├── README.md
-│   ├── tech_stack.md                  # CMS, CRM, analytics, tools
-│   ├── digital_maturity.md            # Assessment of digital capabilities
-│   └── tracking_and_pixels.md         # GTM container analysis
-│
-├── 09_Operations/
-│   ├── _MOC.md
-│   ├── _meta.yaml
-│   ├── README.md
-│   ├── facilities.md                  # Office/warehouse locations, own vs. lease
-│   ├── service_delivery.md            # How they fulfill orders
-│   └── logistics.md                   # Delivery, installation, supply chain
-│
-├── 10_Industry_Context/
-│   ├── _MOC.md
-│   ├── _meta.yaml
-│   ├── README.md
-│   ├── economics/                     # Market size, margins, growth
-│   ├── history/                       # Industry evolution
-│   ├── legal/                         # Regulatory landscape
-│   ├── political/                     # Government spending, tariffs
-│   ├── sociological/                  # Workplace trends, DEI
-│   └── technology/                    # Digital transformation in furniture
-│
-├── 11_Competitive_Landscape/
-│   ├── _MOC.md
-│   ├── _meta.yaml
-│   ├── README.md
-│   ├── competitive_summary.md         # Overview and positioning map
-│   ├── competitor_matrix.csv          # Structured comparison data
-│   └── competitors/                   # Individual entity files per competitor
-│       ├── ispace_inc.md
-│       ├── atmos_studio.md
-│       └── [other_competitors].md
-│
-├── 12_Timeline/
-│   ├── _MOC.md
-│   ├── _meta.yaml
-│   ├── README.md
-│   └── master_timeline.md             # Chronological event log with sources
-│
-├── _infrastructure/
-│   ├── CHANGELOG.md                   # All changes to the dossier with dates
-│   ├── CONFIDENCE_LEGEND.md           # Definitions: high/medium/low/unverified
-│   ├── SOURCE_INDEX.md                # Master list of all sources used
-│   └── METHODOLOGY.md                # How this dossier was built
-│
-├── _datasets/
-│   ├── products.csv                   # Canonical product/supplier dataset
-│   ├── people.csv                     # Canonical personnel dataset
-│   ├── competitors.csv                # Canonical competitor dataset
-│   └── events.csv                     # Canonical events dataset
-│
-├── _captures/
-│   ├── site_crawl/                    # Raw HTML from live crawl
-│   ├── wayback/                       # Archived page captures
-│   ├── documents/                     # Downloaded PDFs, presentations
-│   ├── video/                         # VTT captions, metadata JSON
-│   └── screenshots/                   # Evidence screenshots
-│
-└── _templates/
-    ├── person_profile.md              # Template for new person entities
-    ├── supplier_profile.md            # Template for new supplier entities
-    ├── competitor_profile.md          # Template for new competitor entities
-    └── event_detail.md                # Template for new event files
+BROGAV DOSSIER/
+|
+|-- README.md                          # Top-level overview and reading guide
+|-- ROUTER.md                          # Question-to-file lookup table (110+ entries)
+|-- CHANGELOG.md                       # Dossier revision history
+|
+|-- 1_corporate/                       # Legal identity, registrations, facilities
+|   |-- _MOC.md                        # Map of Content for this section
+|   |-- identity.md                    # Legal name, entity type, formation, brand
+|   |-- registrations.md               # MN SOS, D-U-N-S, UEI, CAGE, SAM.gov
+|   |-- certifications.md             # WBENC, WOSB, EDWOSB, DBE, BBB
+|   |-- facilities.md                  # Physical locations, own vs. lease
+|   |-- tech_stack.md                  # Website, email, analytics, CRM
+|   |-- legal_and_reputation.md        # Court records, liens, reviews, risk
+|   |-- contacts.md                    # Phone, email, social handles
+|   |-- phone_contacts.md             # Verified phone directory
+|   |-- industry_codes.md             # NAICS, SIC, PSC codes
+|   |-- industry_classification.md    # Sector positioning explanation
+|   `-- certifications_tracker.csv    # Structured cert data
+|
+|-- 2_people/                          # Team roster, org structure, hiring
+|   |-- _MOC.md
+|   |-- org_overview.md                # Headcount, structure, reporting lines
+|   |-- headcount_reconciliation.md    # Cross-source headcount validation
+|   |-- hiring_signals.md             # Job postings, growth indicators
+|   |-- hiring_signals_job_postings.md # Specific posting analysis
+|   |-- departures.md                  # Known departures and transitions
+|   `-- profiles/                      # One file per person
+|       |-- celina_berglund.md
+|       |-- thomas_weiss.md
+|       |-- jessa_brixius.md
+|       |-- adam_tueller.md
+|       |-- [firstname_lastname].md    # Pattern: snake_case full name
+|       `-- _unverified.md            # People with insufficient evidence
+|
+|-- 3_products/                        # Product portfolio and services
+|   |-- _MOC.md
+|   |-- portfolio_overview.md          # High-level product strategy
+|   |-- branded_cabinets.md            # Proprietary product line
+|   |-- pricing_and_channel.md         # Pricing model and distribution
+|   |-- pricing_intelligence.md        # Observed price points
+|   |-- services_turnkey.md            # Installation/integration services
+|   |-- services_rental.md             # Rental/leasing programs
+|   `-- categories/                    # One file per product category
+|       |-- white_space.md             # Racks, cabinets, enclosures
+|       |-- power_management.md        # UPS, PDU, generators
+|       |-- cooling_containment.md     # CRAC, containment, airflow
+|       `-- monitoring_safety.md       # DCIM, sensors, fire suppression
+|
+|-- 4_suppliers/                       # Manufacturer relationships
+|   |-- _MOC.md
+|   |-- oem_verification.md            # Verification results matrix
+|   |-- supplier_version_tracking.md   # Logo wall changes over time
+|   |-- supply_chain_risks.md          # Concentration, tariff, single-source
+|   `-- profiles/                      # One file per supplier
+|       |-- eaton.md
+|       |-- schneider_electric.md
+|       |-- vertiv.md
+|       |-- [supplier_name].md         # Pattern: snake_case brand name
+|       `-- _others.md                # Minor suppliers grouped
+|
+|-- 5_customers/                       # Client relationships and prospects
+|   |-- _MOC.md
+|   |-- known_clients.md              # Confirmed client list
+|   |-- client_discovery.md           # Methodology and findings
+|   |-- client_relationship_registry.md # Full registry with confidence tiers
+|   |-- target_markets.md             # Industry verticals served
+|   |-- testimonials.md               # Collected testimonials/quotes
+|   |-- industry_associations.md      # Association memberships
+|   `-- prospects/                    # Prospective clients
+|       |-- prospect_ranking.md
+|       |-- mn_priority.md
+|       `-- national_tier_a.md
+|
+|-- 6_competitors/                    # Competitive landscape
+|   |-- _MOC.md
+|   |-- competitors_list.md           # Master list with tier assignments
+|   |-- competitors_tier1_direct.md   # Detailed Tier 1 analysis
+|   |-- positioning.md                # Comparative positioning map
+|   |-- threat_assessment.md          # Competitive threat rankings
+|   `-- profiles/                     # One file per competitor
+|       |-- dvl_group.md
+|       |-- en_sync.md
+|       |-- [company_name].md
+|       `-- _others.md
+|
+|-- 7_financials/                     # Revenue, valuation, signals
+|   |-- _MOC.md
+|   |-- financial_overview.md         # Summary of financial position
+|   |-- revenue.md                    # Revenue estimates and sources
+|   |-- valuation.md                  # Valuation methodology and range
+|   `-- signals.md                    # Financial signals (hiring, capex, etc.)
+|
+|-- 8_marketing/                      # Marketing, advertising, content
+|   |-- _MOC.md
+|   |-- social_media.md               # Platform presence and activity
+|   |-- linkedin_analysis.md          # LinkedIn-specific intelligence
+|   |-- youtube_analysis.md           # Video content analysis
+|   |-- video_content.md              # Transcript analysis and themes
+|   |-- web_traffic.md                # Traffic estimates and trends
+|   |-- keyword_analysis.md           # SEO keyword positioning
+|   |-- advertising.md                # Ad transparency findings
+|   |-- press_and_media.md            # Press mentions and media coverage
+|   `-- events/                       # Event participation
+|       |-- lets_break_the_ice.md
+|       `-- lbti_sponsor_analysis.md
+|
+|-- 9_brand/                          # Brand identity and design
+|   |-- _MOC.md
+|   |-- identity.md                   # Brand positioning, voice, values
+|   |-- design_system.md              # Colors, typography, visual language
+|   |-- characters.md                 # Brand characters/mascots
+|   `-- name_origin.md               # Etymology of brand name
+|
+|-- 10_timeline/                      # Historical chronology
+|   |-- _MOC.md
+|   |-- master_chronology.md          # Complete dated event timeline
+|   |-- founding_story.md             # Origin narrative
+|   |-- milestones.md                 # Key milestone events
+|   `-- website_evolution.md          # Wayback-tracked site changes
+|
+|-- 11_analysis/                      # Strategic analysis and synthesis
+|   |-- _MOC.md
+|   |-- key_facts.md                  # One-page key facts summary
+|   |-- executive_brief.md            # 2-page executive summary
+|   |-- business_model_canvas.md      # 9-block BMC
+|   |-- strategic_assessment.md       # SWOT and strategic position
+|   |-- acquisition_thesis.md         # M&A rationale and terms
+|   |-- partnership_thesis.md         # Partnership opportunity analysis
+|   |-- risk_register.md              # Identified risks with severity
+|   |-- intelligence_gaps.md          # What we could not determine
+|   |-- inferred_insights.md          # Analytical conclusions
+|   `-- additional_intelligence_framework.md  # Future research recs
+|
+|-- 12_industry/                      # Industry macro context
+|   |-- _MOC.md
+|   |-- market_sizing.md              # TAM/SAM/SOM
+|   |-- channel_economics.md          # Margin structure, distribution
+|   |-- ma_landscape.md               # M&A activity in sector
+|   |-- macro_financial_environment.md
+|   |-- history/
+|   |   |-- seven_era_timeline.md
+|   |   `-- channel_evolution.md
+|   |-- regulation/
+|   |   |-- federal_procurement.md
+|   |   |-- state_licensing.md
+|   |   |-- environmental.md
+|   |   `-- tariff_exposure.md
+|   |-- political/
+|   |   |-- energy_grid.md
+|   |   `-- state_incentives.md
+|   |-- technology/
+|   |   |-- liquid_cooling.md
+|   |   |-- modular_prefab.md
+|   |   `-- edge_hyperscale.md
+|   |-- workforce/
+|   |   |-- shortage.md
+|   |   |-- associations.md
+|   |   `-- diversity_premium.md
+|   `-- synthesis/
+|       |-- opportunity_map.md
+|       |-- threat_map.md
+|       |-- brogav_positioning.md
+|       `-- confidence_matrix.md
+|
+|-- _data/                            # Canonical structured datasets (CSV)
+|   |-- README.md                     # Data dictionary
+|   |-- team_roster.csv
+|   |-- org_chart.csv
+|   |-- products.csv
+|   |-- supplier_line_card.csv
+|   |-- competitors.csv
+|   |-- client_register.csv
+|   |-- financials.csv
+|   |-- events.csv
+|   |-- certifications.csv
+|   |-- industry_codes.csv
+|   |-- documents.csv
+|   |-- partners.csv
+|   |-- people.csv
+|   `-- source_inventory.csv
+|
+|-- _assets/                          # Binary files (images, PDFs)
+|   |-- pdfs/
+|   |   |-- datasheets/
+|   |   |-- job_postings/
+|   |   `-- partner_decks/
+|   |-- photos/
+|   |   |-- people/
+|   |   |-- products/
+|   |   |-- facilities/
+|   |   |-- events/
+|   |   |-- installations/
+|   |   |-- logos/
+|   |   |-- brand/
+|   |   `-- misc/
+|   `-- video_thumbnails/
+|
+|-- _evidence/                        # Raw source data and scrape artifacts
+|   |-- README.md                     # Evidence handling guidelines
+|   |-- source_data/                  # Manually collected source files
+|   |-- web_scrapes/
+|   |   `-- raw_html/                 # Archived HTML snapshots
+|   `-- bulk_datasets/
+|       |-- dnb/                      # D&B export data
+|       `-- spglobal/                 # S&P Capital IQ export data
+|
+|-- _meta/                            # Dossier infrastructure files
+|   |-- frontmatter_schema.yaml       # YAML schema definitions
+|   |-- confidence_legend.md          # Confidence tier definitions
+|   |-- cross_reference_index.md      # Master cross-reference table
+|   `-- methodology.md               # How the dossier was built
+|
+`-- _archive/                         # Previous version files (pre-restructure)
+    |-- 00_KEY_FACTS_SHEET.md
+    |-- 00_EXECUTIVE_BRIEF.md
+    |-- 00_CROSS_REFERENCE_INDEX.md
+    |-- 01_Company_Profile/
+    |-- 02_People_and_Organization/
+    `-- ... (full old structure preserved)
 ```
 
 ---
 
-## Navigation Patterns
+## Section Purpose Guide
 
-### ROUTER.md
+| # | Section | Purpose | Content Type |
+|---|---------|---------|--------------|
+| 1 | `1_corporate` | Legal identity, credentialing, and infrastructure | Reference (facts, no analysis) |
+| 2 | `2_people` | Organization mapping: who works there, backgrounds, movements | Entity profiles + reference |
+| 3 | `3_products` | What the company sells, how it is categorized, pricing | Reference + light analysis |
+| 4 | `4_suppliers` | Upstream relationships with manufacturers | Entity profiles + verification |
+| 5 | `5_customers` | Downstream relationships with buyers | Entity profiles + discovery |
+| 6 | `6_competitors` | Competitive landscape mapping | Entity profiles + analysis |
+| 7 | `7_financials` | Financial position estimates for a private company | Analysis (all inferred) |
+| 8 | `8_marketing` | Go-to-market execution and market visibility | Evidence + analysis |
+| 9 | `9_brand` | Brand identity, visual system, positioning | Reference |
+| 10 | `10_timeline` | Dated chronology of the company's history | Reference |
+| 11 | `11_analysis` | All strategic conclusions and synthesis | Analysis (draws from all sections) |
+| 12 | `12_industry` | Macro industry context for interpreting findings | Analysis + reference |
 
-The root-level `ROUTER.md` file maps natural-language questions to file paths. It serves as the primary retrieval index for both humans and LLM-based RAG systems.
-
-**Format:**
-
-```markdown
-| Question | File Path | Section |
-|----------|-----------|---------|
-| What is BROGAV's revenue? | 05_Financials/financial_signals.md | Financials |
-| Who is the CEO? | 02_People_and_Organization/leadership/celina_berglund.md | People |
-| Is BROGAV WBENC certified? | 01_Company_Profile/certifications.md | Company Profile |
-| Who are BROGAV's competitors? | 11_Competitive_Landscape/competitive_summary.md | Competitors |
-| Does BROGAV have government contracts? | 05_Financials/financial_signals.md | Financials |
-| What is BROGAV's tech stack? | 08_Technology/tech_stack.md | Technology |
-```
-
-**Coverage targets:**
-- Every person by name (15+ entries)
-- Every competitor by name (10+ entries)
-- Every supplier by name (17+ entries)
-- Every certification by name
-- Every financial metric
-- Process/strategy questions ("How does BROGAV win business?")
-- Comparison questions ("How does BROGAV compare to iSpace?")
-
-**Total entries:** 110+ (covers ~90% of likely questions)
-
-### _MOC.md (Map of Content)
-
-Every section folder contains a `_MOC.md` file that provides hierarchical navigation. The MOC pattern (from Obsidian/Zettelkasten methodology) enables discovery without requiring prior knowledge of the content.
-
-**Format:**
-
-```markdown
----
-title: Products and Suppliers - Map of Content
-section: 03
-file_count: 22
-last_updated: 2026-06-14
 ---
 
-# Products and Suppliers
+## Underscore-Prefixed Infrastructure Folders
 
-## Overview
-- [README](README.md) — Section summary and key findings
+Folders prefixed with `_` are infrastructure -- they support the dossier but are not dossier content themselves.
 
-## Product Intelligence
-- [Product Categories](product_categories.md) — Furniture, flooring, walls, technology
-- [Branded Cabinet Line](branded_cabinet_line.md) — BROGAV's own-brand product
-- [Product Asset Audit](product_asset_audit.md) — Catalog completeness
+| Folder | Purpose | Who Uses It |
+|--------|---------|-------------|
+| `_data/` | Canonical CSV datasets. Single source of truth for structured data (people, products, suppliers, etc.). When a narrative file and a CSV disagree, the CSV wins. | Both humans (Excel import) and agents (programmatic parsing) |
+| `_assets/` | Binary files that cannot be stored as markdown. Organized by type (photos, PDFs, thumbnails). Referenced from narrative files via relative paths. | Humans (visual review), agents (image analysis) |
+| `_evidence/` | Raw source material preserving the evidentiary chain. Proves where findings came from. Never edited after collection -- immutable once captured. | Verification audit, legal review |
+| `_meta/` | Dossier configuration: frontmatter schema, confidence legend, cross-reference index, methodology notes. | Agents (schema validation), new contributors (onboarding) |
+| `_archive/` | Previous dossier structure preserved intact. Kept for reference during transition; deletable once the new structure is validated as complete. | Nobody during normal use (reference only) |
 
-## Supplier Relationships
-- [Supplier Line Card](supplier_line_card.csv) — Full structured dataset
-- [Steelcase](suppliers/steelcase.md) — Status: Confirmed
-- [Knoll](suppliers/knoll.md) — Status: Claimed
-- [Herman Miller](suppliers/herman_miller.md) — Status: Historical
-- ...
+Design principle: underscore prefix means "machine infrastructure." These folders appear last in alphabetical directory listings and signal to readers that they are support structures, not narrative content.
 
-## Key Findings
-- Only 2/40 supplier relationships independently confirmed
-- BROGAV carries products across 4 major categories
-- Branded cabinet line suggests manufacturing ambition
-```
+---
 
-### _meta.yaml
+## File Naming Conventions
 
-Machine-readable section metadata for automated tooling (quality checks, freshness audits, CI pipelines).
+### Narrative Files (Markdown)
 
-**Format:**
+- **Snake_case**, all lowercase: `legal_and_reputation.md`, `hiring_signals.md`
+- **Entity profiles** use the entity's full name: `celina_berglund.md`, `schneider_electric.md`
+- **Grouped minor entities** use `_others.md` (underscore prefix = catch-all)
+- **Unverified entities** use `_unverified.md`
+- **Section indexes** are always `_MOC.md` (Map of Content)
+- Maximum filename length: 40 characters (excluding extension)
 
-```yaml
-section_name: Products and Suppliers
-section_number: 3
-file_count: 22
-entity_files: 17
-last_updated: 2026-06-14
-description: Product catalog, supplier relationships, and manufacturer verification
-confidence_distribution:
-  high: 3
-  medium: 8
-  low: 6
-  unverified: 5
-```
+### Section Folders
+
+- Numeric prefix for ordering: `1_`, `2_`, `3_`, etc.
+- Lowercase with underscores: `1_corporate`, `12_industry`
+- No zero-padding (use `1_` not `01_`)
+
+### CSV Files
+
+- Stored in `_data/` (canonical) or section folders (section-specific, deprecated)
+- Named for the entity type they contain: `team_roster.csv`, `products.csv`
+- First row is always headers; no blank rows; UTF-8 encoding
+- Canonical datasets in `_data/` are the single source of truth
+
+### Binary Assets
+
+- Photos: `[subject]_[context].jpg` (e.g., `celina_berglund_headshot.png`)
+- PDFs: `[source]_[title]_[date].pdf` (e.g., `eaton_partner_deck_2024.pdf`)
+- Thumbnails: `[video_id]_thumb.jpg`
 
 ---
 
 ## YAML Frontmatter Schema
 
-Every content file (not CSVs or infrastructure files) includes YAML frontmatter. This enables programmatic quality checks, RAG indexing, and automated freshness monitoring.
+Every markdown file in the dossier uses YAML frontmatter. Five document types are defined (full schema in `_meta/frontmatter_schema.yaml`):
 
-### Required Fields
+### entity-profile
+
+For files describing a single entity (person, supplier, competitor, client, product). One entity per file.
 
 ```yaml
 ---
-title: "Human-readable title"
-section: "03_Products_and_Suppliers"
-entity_type: "supplier|person|competitor|company|event|topic"
-confidence: "high|medium|low|unverified"
-last_verified: "2026-06-14"
+title: "Celina Berglund"
+type: entity-profile
+entity_type: person                    # person | supplier | competitor | client | product
+entity_id: celina_berglund            # snake_case unique identifier
+tier: Leadership                       # Classification tier (optional)
+confidence: HIGH                       # DEFINITIVE | HIGH | MODERATE | LOW | INFERRED | UNVERIFIED
+last_updated: 2026-06-13
 sources:
-  - "https://source-url.com"
-  - "LinkedIn profile (viewed 2026-06-10)"
-  - "D&B Hoovers (accessed 2026-06-12)"
+  - "https://www.linkedin.com/in/celinaberglund/"
+  - "MN SOS filing 1234651600024"
 related_files:
-  - "../05_Financials/financial_signals.md"
-  - "./suppliers/steelcase.md"
+  - "1_corporate/identity.md"
+  - "7_financials/revenue.md"
+tags:
+  - founder
+  - ceo
+  - wbenc
 ---
 ```
 
-### Field Definitions
+### reference
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `title` | string | Display name for the file content |
-| `section` | string | Parent section folder name |
-| `entity_type` | enum | What kind of entity this file describes |
-| `confidence` | enum | Overall confidence in the file's claims (see CONFIDENCE_LEGEND.md) |
-| `last_verified` | date | When claims in this file were last checked against sources |
-| `sources` | list | All sources used to build this file's content |
-| `related_files` | list | Relative paths to files that cross-reference this one |
+For factual reference documents (registrations, contact lists, product catalogs). Not analysis -- just organized facts.
 
-### Optional Fields
+```yaml
+---
+title: "Federal Registration"
+type: reference
+domain: corporate                      # Subject area (corporate, products, suppliers, etc.)
+confidence: DEFINITIVE
+last_updated: 2026-06-13
+canonical_for: "SAM.gov, CAGE, UEI identifiers"
+related_files:
+  - "1_corporate/certifications.md"
+  - "_data/industry_codes.csv"
+tags:
+  - sam-gov
+  - federal
+---
+```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `relationship_status` | enum | For suppliers: confirmed, claimed, historical |
-| `verification_method` | string | How the relationship/claim was verified |
-| `current_role` | string | For people: their title, or "Former" |
-| `revenue_estimate` | string | For competitors: estimated revenue |
-| `last_known_update` | date | When the source data was last updated (vs. when we checked) |
+### analysis
+
+For original analysis and strategic synthesis. Conclusions drawn from evidence in other files.
+
+```yaml
+---
+title: "Acquisition Thesis"
+type: analysis
+domain: strategy                       # Subject area (strategy, competitive, financial)
+confidence: INFERRED
+last_updated: 2026-06-13
+depends_on:                            # Files whose data feeds this analysis
+  - "7_financials/revenue.md"
+  - "7_financials/valuation.md"
+  - "6_competitors/positioning.md"
+related_files:
+  - "11_analysis/risk_register.md"
+tags:
+  - acquisition
+  - m-and-a
+---
+```
+
+### evidence
+
+For raw or processed evidence preserving the evidentiary chain behind claims.
+
+```yaml
+---
+title: "LinkedIn Post Analysis"
+type: evidence
+source_platform: LinkedIn              # Where data came from
+collection_date: 2026-06-10           # When collected (immutable)
+collection_method: "Playwright scrape" # Tool or technique used
+record_count: 181                      # Number of records in this file
+confidence: MODERATE
+related_files:
+  - "2_people/profiles/celina_berglund.md"
+  - "5_customers/known_clients.md"
+tags:
+  - linkedin
+  - osint
+---
+```
+
+### moc
+
+Map of Content. Navigation file indexing all files within a section. Contains no original analysis.
+
+```yaml
+---
+title: "Corporate Identity — Map of Content"
+type: moc
+section: 1_corporate                   # Which section this indexes
+entity_count: 11                       # Number of files indexed
+last_updated: 2026-06-14
+---
+```
 
 ---
 
-## Cross-Referencing
+## The ROUTER.md Pattern
 
-### Relative Links
+### Purpose
 
-Files reference each other using relative markdown links:
+Enable both AI agents and humans to find answers in one lookup. An agent reads ROUTER.md, finds the question closest to the user's query, follows the file path, and has the answer in one additional file read. Two reads total from question to answer.
+
+### Structure
 
 ```markdown
-See [Celina Berglund's profile](../02_People_and_Organization/leadership/celina_berglund.md) 
-for details on leadership background.
+> **For AI agents:** Read this file first. Find the question closest to yours.
+> Follow the file path. You will have your answer in 1 more read.
+> **For humans:** Use Ctrl+F to search for keywords.
 
-Revenue estimate methodology is documented in 
-[Financial Signals](../05_Financials/financial_signals.md#revenue-estimation).
+# BROGAV Solutions Dossier Router
+
+## Company Basics
+
+| Question | File |
+|----------|------|
+| What is the company's legal name? | `1_corporate/identity.md` |
+| Where is BROGAV headquartered? | `1_corporate/identity.md` |
+| When was the company founded? | `1_corporate/registrations.md` |
+| What is the DUNS number? | `1_corporate/registrations.md` |
+| What certifications does BROGAV hold? | `1_corporate/registrations.md` |
+
+## People and Organization
+
+| Question | File |
+|----------|------|
+| Who is the CEO / founder? | `2_people/profiles/celina_berglund.md` |
+| How many employees does BROGAV have? | `2_people/org_overview.md` |
+| What is the full team roster? | `_data/team_roster.csv` |
+| Has anyone left the company? | `2_people/departures.md` |
 ```
 
-### related_files Frontmatter
+### Design Principles
 
-The `related_files` array in frontmatter provides machine-readable cross-references:
+- Questions are written in natural language (how a person or AI would ask)
+- Every question maps to exactly one file (no ambiguity)
+- File paths are relative to the dossier root
+- Organized by section with clear headings
+- Covers 110+ common questions across all 12 sections
+- Updated whenever new files are added to the dossier
+
+### Why It Exists
+
+LLMs with limited context windows cannot read 150+ files. The router acts as a retrieval index, enabling a 2-read pattern (router then target file) instead of scanning dozens of files. For humans, Ctrl+F on the router page is faster than navigating the folder tree.
+
+---
+
+## The _MOC.md Pattern
+
+### Purpose
+
+Section-level navigation. Every numbered section contains a `_MOC.md` that indexes its files, provides reading order guidance, and summarizes key findings.
+
+### Structure
+
+```markdown
+---
+title: "Corporate Identity — Map of Content"
+type: moc
+section: 1_corporate
+last_updated: 2026-06-14
+---
+
+# 1. Corporate Identity
+
+Who BROGAV Solutions LLC is as a legal entity, where they operate, and how they
+are credentialed. This section contains verified facts -- not analysis or judgment.
+
+[2-3 sentence factual summary with key numbers]
+
+## File Index
+
+| File | Description | Priority |
+|------|-------------|----------|
+| `identity.md` | Legal name, formation date, entity type | ESSENTIAL |
+| `registrations.md` | D-U-N-S, UEI, CAGE, SAM.gov status | HIGH |
+| `certifications.md` | WBENC, WOSB, EDWOSB, DBE, BBB | HIGH |
+| `facilities.md` | Physical locations, own vs. lease | MEDIUM |
+| `tech_stack.md` | Website, email, analytics | MEDIUM |
+| `contacts.md` | Phone, email, social handles | REFERENCE |
+
+## Reading Guide
+
+Start with `identity.md` for the one-page company snapshot. Read `certifications.md`
+next -- the diversity certifications define their competitive positioning. `registrations.md`
+matters for federal procurement context.
+```
+
+### Design Principles
+
+- Contains NO original analysis (only links, descriptions, counts)
+- Priority column guides readers with limited time (ESSENTIAL / HIGH / MEDIUM / REFERENCE)
+- Reading Guide provides context that file titles alone cannot convey
+- Entity count in frontmatter enables automated completeness checks
+- Named `_MOC.md` (not `README.md`) to distinguish from the top-level README and avoid IDE auto-rendering conflicts
+
+---
+
+## Cross-Referencing Strategy
+
+Three mechanisms work together to create a navigable knowledge graph:
+
+### 1. Relative Links in Prose
+
+Within markdown body text, reference related files using relative paths:
+
+```markdown
+See [Celina Berglund's profile](../2_people/profiles/celina_berglund.md) for background.
+Revenue estimates are documented in [financials](../7_financials/revenue.md).
+```
+
+### 2. Frontmatter `related_files`
+
+Every file's YAML frontmatter includes a `related_files` list. Paths are always relative to the dossier root (not relative to the current file):
 
 ```yaml
 related_files:
-  - "../02_People_and_Organization/leadership/celina_berglund.md"
-  - "../05_Financials/financial_signals.md"
-  - "./suppliers/steelcase.md"
+  - "1_corporate/identity.md"
+  - "7_financials/revenue.md"
+  - "_data/team_roster.csv"
 ```
 
-This enables:
-- Automated link validation (check all paths resolve)
-- Graph visualization (which files are most connected)
-- RAG context expansion (pull related files for fuller answers)
+This enables programmatic graph construction -- build a directed graph of file relationships from frontmatter alone.
 
-### Single Source of Truth Rule
+### 3. Canonical Source Index (`_meta/cross_reference_index.md`)
 
-When the same fact could live in multiple files, it lives in ONE canonical location and other files link to it:
-- A person's title lives in their profile file, not in every file that mentions them
-- Revenue lives in `financial_signals.md`, not duplicated in competitor comparisons
-- A supplier's status lives in their entity file, not in the line card AND the MOC
+Master index mapping every major claim to its source file(s):
 
-The canonical CSV datasets in `_datasets/` are the single source of truth for structured data. Narrative files reference them but do not duplicate their content.
+```markdown
+| Claim | Primary Source | Supporting Sources | Confidence |
+|-------|---------------|-------------------|------------|
+| Revenue is $4.51M | 7_financials/revenue.md | _evidence/bulk_datasets/dnb/ | INFERRED |
+| Headcount is 10 | 2_people/org_overview.md | _data/team_roster.csv | HIGH |
+| WBENC expires 5/31/2027 | 1_corporate/certifications.md | sam.gov screenshot | DEFINITIVE |
+```
 
----
+### 4. Single Source of Truth Rule
 
-## Naming Conventions
+When the same fact could live in multiple files, it lives in ONE canonical location. Other files link to it. The hierarchy:
 
-| Element | Convention | Example |
-|---------|-----------|---------|
-| Folders | `NN_Name_With_Underscores` | `03_Products_and_Suppliers` |
-| Content files | `snake_case.md` | `financial_signals.md` |
-| Entity files | `entity_name.md` | `celina_berglund.md` |
-| Datasets | `descriptive_name.csv` | `supplier_line_card.csv` |
-| Infrastructure | `UPPER_CASE.md` | `ROUTER.md`, `CHANGELOG.md` |
-| Templates | `entity_type.md` | `person_profile.md` |
-| Meta files | `_prefix` | `_MOC.md`, `_meta.yaml` |
+1. **CSV in `_data/`** -- authoritative for structured data (roster, products, suppliers)
+2. **Entity profile file** -- authoritative for facts about that entity
+3. **Section reference file** -- authoritative for domain-specific facts
+4. **Analysis file** -- synthesizes but never originates facts
+
+When a narrative file and a CSV disagree, the CSV wins.
 
 ---
 
-## Infrastructure Folders
+## Design Decisions and Rationale
 
-### _infrastructure/
+### Why entity-centric (one file per person/supplier/competitor)?
 
-Files that describe the dossier itself (meta-documentation):
-- `CHANGELOG.md` — Dated log of all additions, corrections, and structural changes
-- `CONFIDENCE_LEGEND.md` — Defines what high/medium/low/unverified mean in context
-- `SOURCE_INDEX.md` — Master list of every source cited anywhere in the dossier
-- `METHODOLOGY.md` — How the dossier was built (points to `/docs/` for full detail)
+Prevents duplication. Celina Berglund is relevant to corporate (founder), people (profile), financials (owner), marketing (speaker), and brand (creator). Without a single canonical file, her information scatters across 5+ files with inevitable contradictions. The entity file is the single source of truth; other files reference it.
 
-### _datasets/
+### Why products separated from suppliers?
 
-Canonical structured data (CSV format). These are the authoritative source for any data that appears in narrative form elsewhere:
-- `products.csv` — All products/suppliers with category, brand, status, confidence
-- `people.csv` — All identified personnel with title, tenure, source, confidence
-- `competitors.csv` — All competitors with revenue, headcount, location, overlap score
-- `events.csv` — All events with date, location, BROGAV's role, source
+The relationship is many-to-many. One supplier (Eaton) provides products across multiple categories (UPS, PDU, switchgear). One product category (power management) is sourced from multiple suppliers. Separating them enables independent product analysis, independent supplier risk assessment, and clean handling of the company's own branded products (which have no supplier).
 
-### _captures/
+### Why max 500 lines per file?
 
-Raw evidence files organized by collection method. These are never edited after capture — they serve as the immutable evidence base. Narrative files cite captures as sources.
+LLM context efficiency. A 500-line file can be read in a single tool call by most AI agents without truncation. Files exceeding this length should be split by subtopic. This also enforces specificity -- a 1000-line file usually contains two distinct topics that should be separate files.
 
-### _templates/
+### Why numbered section prefixes (1_, 2_, 3_)?
 
-Blank templates for creating new entity files. Ensures consistency when the dossier is updated with new people, suppliers, or competitors discovered after initial build.
+Forces consistent reading order in directory listings. Sections are numbered by research dependency -- later sections depend on earlier ones. You need corporate identity (1) before you can research people (2). You need people (2) before you can analyze LinkedIn activity. You need products (3) and suppliers (4) before you can identify competitors (6). Alphabetical ordering would scramble this natural flow.
 
----
+### Why `_MOC.md` instead of `README.md` for section indexes?
 
-## Architectural Decisions Log
+`README.md` has overloaded semantics: GitHub renders it automatically, IDEs display it as project documentation, and it implies "start here for the whole project." `_MOC.md` is explicitly a Map of Content -- a navigation index for one section, not a project introduction. The underscore prefix groups it visually with infrastructure files and sorts it before content files in directory listings.
 
-| Decision | Rationale | Alternative Considered |
-|----------|-----------|----------------------|
-| 12 content sections | Matches M&A data room conventions; covers all intelligence domains without overlap | 8 sections (too broad, files become too long) |
-| Entity files in subfolders | Enables independent updates and targeted retrieval | All content in section-level files (creates 2000+ line monsters) |
-| ROUTER.md at root | Fastest path from question to answer; works for humans and LLMs | Relying solely on folder structure (requires prior knowledge) |
-| _MOC.md per section | Discovery-oriented navigation for analysts who don't know what to look for | Table of contents in README (mixes summary with navigation) |
-| YAML frontmatter | Enables programmatic quality checks without parsing content | Metadata in separate sidecar files (harder to keep in sync) |
-| 500-line maximum | Prevents context window overflow and forces concise writing | No limit (leads to 2000-line files that no one reads completely) |
-| Relative links | Works regardless of where the dossier root is mounted | Absolute paths (break when repo is cloned to different location) |
-| CSV for structured data | Universal format readable by any tool; git-diffable | JSON (harder to visually scan), SQLite (requires tooling) |
-| Snake_case naming | No spaces means no quoting issues in terminals, scripts, or URLs | Title Case with spaces (breaks in CLI, requires quoting everywhere) |
+### Why a dedicated `_archive/` folder?
+
+Intelligence work is cumulative. The old structure may contain information inadvertently lost during restructuring. Keeping it allows verification audits to check completeness. Once the new structure is validated and no information gaps are found, `_archive/` can be removed. Disk space is cheap; lost intelligence is expensive.
+
+### Why structured datasets in `_data/` rather than embedded tables?
+
+CSVs are machine-readable (importable to Excel, parseable by pandas, queryable by agents). Markdown tables are visually readable but painful to maintain (alignment breaks), impossible to sort/filter, and error-prone past 20 rows. The canonical CSV is the source of truth; narrative files may contain summary tables that subset the CSV data.
+
+### Why confidence tiers on every file?
+
+Not all intelligence is equal. A Secretary of State filing is DEFINITIVE. A D&B revenue estimate is INFERRED. A single LinkedIn comment suggesting a client relationship is UNVERIFIED. Readers and downstream agents need to know how much weight to give each finding. The six tiers:
+
+| Tier | Definition | Example |
+|------|-----------|---------|
+| DEFINITIVE | Primary government/official source, independently verifiable | SOS filing, court record, SAM.gov |
+| HIGH | Multiple independent sources agree | 3 platforms show same job title |
+| MODERATE | Single reliable source, plausible and consistent | D&B profile data |
+| LOW | Single unreliable source or indirect inference | LinkedIn comment |
+| INFERRED | Analytical conclusion from indirect evidence | Revenue estimated from headcount |
+| UNVERIFIED | Claim exists but cannot be independently verified | Self-reported partnership |
+
+### Why the ROUTER.md pattern exists?
+
+The dossier grows to 100+ files. Without a router, finding "What is the DUNS number?" requires knowing the folder structure. The router eliminates this friction by mapping natural-language questions to exact file paths. It serves humans (Ctrl+F) and AI agents (pattern match, then follow path). Cost: maintaining the router as files are added. Benefit: guaranteed 2-read retrieval instead of unbounded exploration.
+
+### Why underscore prefix for infrastructure folders?
+
+Three benefits: (1) they sort to the bottom of directory listings, keeping narrative sections visually grouped at the top; (2) the prefix signals "not content" to anyone browsing the folder; (3) glob patterns can easily exclude them (`[!_]*` matches only content sections).
+
+### Why no zero-padding on section numbers?
+
+The dossier has 12 sections. Zero-padding (`01_`, `02_`) is unnecessary visual noise for a single-digit-to-low-double-digit count. If the dossier ever exceeds 99 sections, the architecture has failed for other reasons. Simpler prefixes are easier to type in path references.
