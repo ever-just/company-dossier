@@ -1,0 +1,58 @@
+# Company Dossier
+
+> A complete, reproducible methodology for building competitive intelligence dossiers on private companies using AI agents, OSINT tools, and public data sources.
+
+## What This Is
+
+This repository teaches how to build structured intelligence packages on private companies — the kind used for M&A due diligence, competitive analysis, partnership evaluation, and investment research. It was developed by building a real dossier on a $4.5M company (BROGAV Solutions) using only public sources, producing 613 structured files in 4 days.
+
+## Who Should Use This
+
+- AI agents tasked with company research
+- Analysts performing due diligence on private companies
+- Competitive intelligence teams
+- Investors researching acquisition targets
+- Anyone who needs structured, source-attributed intelligence on a company
+
+## Key Documents
+
+- [README](https://github.com/ever-just/company-dossier/blob/main/README.md): Project overview, pipeline diagram, file index
+- [Methodology](https://github.com/ever-just/company-dossier/blob/main/methodology.md): 7-phase research pipeline with design principles
+- [Collection Phases](https://github.com/ever-just/company-dossier/blob/main/collection_phases.md): 6 data collection methods with example commands
+- [Tools](https://github.com/ever-just/company-dossier/blob/main/tools.md): 30+ tools reference (used and rejected)
+- [Skills](https://github.com/ever-just/company-dossier/blob/main/skills.md): 20 agent skills catalog
+- [Architecture](https://github.com/ever-just/company-dossier/blob/main/architecture.md): Output folder structure, YAML frontmatter schema
+- [Prompts](https://github.com/ever-just/company-dossier/blob/main/prompts.md): 12 key prompts for driving research agents
+- [Case Study](https://github.com/ever-just/company-dossier/blob/main/case_study.md): Day-by-day narrative of building the BROGAV dossier
+- [Quality Assurance](https://github.com/ever-just/company-dossier/blob/main/quality_assurance.md): 3-phase audit methodology
+- [Lessons Learned](https://github.com/ever-just/company-dossier/blob/main/lessons_learned.md): What worked, what didn't
+- [Sources](https://github.com/ever-just/company-dossier/blob/main/SOURCES.md): All tools, repos, and APIs cited
+- [Ecosystem](https://github.com/ever-just/company-dossier/blob/main/ECOSYSTEM.md): 30+ related repos in OSINT landscape
+
+## Real-World Example Output
+
+The methodology produced a complete dossier at [ever-just/brogav-dossier](https://github.com/ever-just/brogav-dossier) with:
+- 613 structured files across 12 sections
+- 17 supplier entity profiles, 8 competitor profiles, 15 people profiles
+- 14 CSV datasets with schema documentation
+- YAML frontmatter on every markdown file
+- ROUTER.md with 110 question-to-file mappings
+- Confidence tags on every factual claim (Definitive/High/Moderate/Low/Inferred)
+
+## 7-Phase Pipeline
+
+1. PLAN (5 min) — Enumerate sources, create research checklist
+2. LOCAL (5 min) — Parse existing data, identify gaps
+3. SEARCH (15 min) — Broad → targeted → domain-specific web searches
+4. WAYBACK (30 min) — Historical pages, deleted content, PDF discovery
+5. SCRAPE (30 min) — Platform data, video transcripts, async extraction
+6. SYNTHESIZE (30 min) — Cross-reference, tag confidence, resolve conflicts
+7. REPORT (30 min) — Structure output, add frontmatter, create navigation
+
+## Tools Used
+
+Python, BeautifulSoup, Playwright, yt-dlp, ExifTool, Tesseract OCR, holehe, theHarvester, httpx, Wayback CDX API, USASpending API, SimilarWeb API, Tranco, Cloudflare Radar, SignalHire, RocketReach, D&B Hoovers, S&P Global Capital IQ
+
+## License
+
+MIT
