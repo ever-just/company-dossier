@@ -446,3 +446,38 @@ yt-dlp --extract-audio --audio-format mp3 \
 - **Deleted videos**: If a video appears in search results but the page 404s, check the Wayback Machine for cached metadata. The title and description alone may be valuable.
 - **Platform-specific auth**: Some content is behind platform logins (LinkedIn videos, private YouTube). Note these as "identified but not accessible" rather than attempting unauthorized access.
 - **Copyright**: Download content for analysis only. Do not redistribute or republish.
+
+---
+
+## Phase 6 Addendum: Deep Transcript Analysis
+
+### The Problem
+
+`yt-dlp --write-auto-sub` downloads transcripts, but downloading ≠ analyzing. In the BROGAV project, 7 transcripts (10,000+ words) sat in the vault for days before being exhaustively read. Surface-skimming caught obvious quotes but missed:
+
+- A title discrepancy (employee self-identified as "Director of Administration" in podcast vs. "BDM" in all aggregators)
+- Specific timeline data (pivot to refurbished "within 3-4 months" — never documented)
+- Hiring dates inferrable from "I've been here X months" statements
+- Structural business insights ("OEMs require project of significant size to become authorized")
+- Confirmation of unverified employees ("Tiffany" mentioned by name in conversation)
+
+### The Fix: Exhaustive Line-by-Line Read
+
+For every transcript over 1,000 words, read it completely and extract:
+
+1. **Revenue/pricing signals** — any mention of deal sizes, costs, timelines
+2. **Customer names** — even casual references ("we worked with...")
+3. **Employee names and roles** — cross-reference against roster
+4. **Timeline data** — "we've been doing X for Y months" → calculate dates
+5. **Competitive positioning** — how they describe their value vs. alternatives
+6. **Structural barriers** — why certain things are hard (OEM access, certifications)
+7. **Title/role discrepancies** — what people call themselves vs. what aggregators say
+8. **Personal details** — recruiting stories, founding narrative details, mentor names
+
+### Why This Matters
+
+Two 5,000-word podcast transcripts yielded **10+ intelligence findings** not captured anywhere else in the dossier — including a critical title discrepancy and precise hiring dates that corrected estimates by 6+ months. The ROI of reading 10,000 words carefully is enormous compared to the collection effort.
+
+### Tool Note: Transcript Quality
+
+`yt-dlp` auto-captions are imperfect (no punctuation, sometimes garbled names). But they're 95%+ accurate for English and more than sufficient for intelligence extraction. The key is reading them as source documents, not dismissing them as "raw data that was already processed."
