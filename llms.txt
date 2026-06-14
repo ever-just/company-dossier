@@ -31,7 +31,6 @@ This repository teaches how to build structured intelligence packages on private
 
 ## Real-World Example Output
 
-The methodology produced a complete dossier at [ever-just/brogav-dossier](https://github.com/ever-just/brogav-dossier) with:
 - 613 structured files across 12 sections
 - 17 supplier entity profiles, 8 competitor profiles, 15 people profiles
 - 14 CSV datasets with schema documentation

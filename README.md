@@ -17,8 +17,6 @@
 From zero knowledge to a **613-file structured dossier** in 4 days.<br>
 Public sources only. No paid subscriptions. Fully reproducible by humans or AI agents.
 
-[View real output](https://github.com/ever-just/brogav-dossier) · [Start building](#how-to-start-a-new-dossier) · [See the pipeline](#the-7-phase-research-pipeline)
-
 </div>
 
 ---
@@ -184,7 +182,7 @@ Full reference with install commands: [`tools.md`](tools.md)
 
 ## Validated results
 
-Built on a real company (BROGAV Solutions, $4.5M data center VAR):
+Validated on a real $4.5M private company:
 
 | Metric | Result |
 |--------|--------|
@@ -196,8 +194,6 @@ Built on a real company (BROGAV Solutions, $4.5M data center VAR):
 | Time to complete (with deep dives) | 4 days |
 | Tools/APIs used | 30+ |
 | Cost | $0 (public sources only) |
-
-**[View the full output →](https://github.com/ever-just/brogav-dossier)**
 
 ---
 
