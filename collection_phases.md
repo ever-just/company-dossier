@@ -647,3 +647,125 @@ Read line-by-line extracting: revenue signals, customer names, employee mentions
 | Podcast is audio-only with RSS | iTunes API → RSS → MP3 → Whisper |
 | Podcast is Spotify-exclusive | Manual listening or Spotify transcript (no programmatic access) |
 | Episode has a web transcript | `web_fetch` the transcript page directly |
+
+---
+
+## Phase 6 Addendum 4: Video Intelligence Pipeline (YouTube + Other Platforms)
+
+### What It Does
+
+Systematically discovers, captures metadata/captions, and extracts intelligence from video content across YouTube, Vimeo, and company websites. Video content reveals things that text sources cannot: facility size, team composition, product demonstrations, signage, and event participation. This pipeline focuses on caption/metadata extraction (cheap, fast) and only downloads actual video files when visual analysis is required.
+
+### Discovery
+
+```bash
+# List ALL videos on a YouTube channel (no download)
+yt-dlp --flat-playlist --print "%(id)s %(title)s" "https://www.youtube.com/@CHANNEL_HANDLE"
+
+# Search YouTube for company mentions
+yt-dlp --flat-playlist --print "%(id)s %(title)s" "ytsearch10:COMPANY_NAME"
+```
+
+**Other discovery sources:**
+- LinkedIn native videos (visible on company/personal pages — cannot be downloaded programmatically)
+- Vimeo (yt-dlp supports most Vimeo URLs)
+- Company website embedded videos (inspect page source for `<iframe>` or `<video>` tags)
+- Google Video search: `site:youtube.com "Company Name"` or `"Company Name" filetype:mp4`
+
+### Capture (yt-dlp)
+
+```bash
+# Download metadata + auto-captions for entire channel (no video file)
+yt-dlp --write-info-json --write-auto-sub --sub-lang en --skip-download \
+  --sleep-interval 2 "https://www.youtube.com/@CHANNEL"
+
+# Single video
+yt-dlp --write-info-json --write-auto-sub --sub-lang en --skip-download VIDEO_URL
+
+# Download actual video (if needed for image analysis)
+yt-dlp -f "bestvideo[height<=720]+bestaudio" VIDEO_URL
+```
+
+### VTT Parsing to Plain Text
+
+```python
+import re
+
+def vtt_to_text(vtt_path):
+    with open(vtt_path) as f:
+        content = f.read()
+    # Remove WEBVTT header
+    content = re.sub(r'WEBVTT.*?\n', '', content, flags=re.DOTALL)
+    # Remove timestamps
+    content = re.sub(r'\d{2}:\d{2}:\d{2}\.\d+ --> .*', '', content)
+    # Remove HTML-style tags
+    content = re.sub(r'<[^>]+>', '', content)
+    # Deduplicate consecutive lines and join
+    lines = []
+    for l in content.split('\n'):
+        l = l.strip()
+        if l and not l.isdigit() and (not lines or l != lines[-1]):
+            lines.append(l)
+    return ' '.join(lines)
+```
+
+### When Auto-Captions Don't Exist
+
+- Shorts (< 60 seconds) often have no captions
+- Unlisted/private videos can't be accessed
+- Some older videos have no auto-generated captions
+- Solution: Download audio → Whisper transcribe (same as podcast pipeline)
+
+```bash
+# Extract audio only, then transcribe
+yt-dlp -x --audio-format mp3 VIDEO_URL
+whisper audio.mp3 --model base --language en --output_format txt
+```
+
+### What We Captured (BROGAV Case Study)
+
+| Metric | Value |
+|--------|-------|
+| Total videos on channel | 45 (9 full-length, 36 Shorts) |
+| VTT caption files downloaded | 10 |
+| Transcripts parsed to plain text | 10 |
+| Substantive podcasts fully analyzed | 2 (5,000+ words each) |
+| Podcast via RSS/Whisper pipeline | 1 (6,489 words, new content) |
+| Shorts assessed | 36 (mostly <60s, no captions, some visual intel) |
+
+### Edge Cases and Gotchas
+
+1. **YouTube rate limiting** — use `--sleep-interval 2` between downloads; DNS errors after 30+ rapid requests
+2. **Channel download format** — yt-dlp names files as "Title [VIDEO_ID].ext" when downloading from channels (spaces in filenames break scripts)
+3. **Duplicate uploads** — same interview uploaded under different channel/title (caught: TNmtaU3loqg was same as IQoFDxVSRUA)
+4. **LinkedIn native videos** — CANNOT be downloaded programmatically; LinkedIn CDN URLs are authenticated and expire. Must use "Save as Web Complete" manually.
+5. **Shorts vs. full videos** — Shorts URL format is youtube.com/shorts/ID but yt-dlp handles both transparently
+6. **Unlisted videos** — only accessible if you have the direct URL (not in channel listing); search engines may have indexed them
+7. **Auto-caption quality** — no punctuation, sometimes garbled names (Celina → Selena), but 95%+ word accuracy for English
+8. **info.json contains metadata gold** — title, upload_date, duration, description, tags, view_count, like_count, channel_name. Always capture with --write-info-json.
+9. **VTT has timestamps** — useful for finding specific moments; the plain-text conversion loses this. Keep VTT files as source, transcript.txt as working copy.
+10. **macOS Chromium issues** — Playwright with bundled Chromium fails on arm64 macOS for some downloads. Use `channel="chrome"` to use system Chrome instead.
+
+### Video vs. Podcast Decision Tree
+
+```
+Content is on YouTube?
+├── YES → yt-dlp --write-auto-sub (free captions)
+│   ├── Has captions? → Parse VTT to text → Analyze
+│   └── No captions? → yt-dlp -x → Whisper → Analyze
+└── NO →
+    ├── Audio podcast → iTunes API → RSS → MP3 → Whisper
+    ├── LinkedIn video → Manual "Save as Web Complete" (cannot automate)
+    └── Vimeo/other → yt-dlp usually supports (check yt-dlp docs)
+```
+
+### Intelligence Value by Content Type
+
+| Content type | What you learn |
+|---|---|
+| Product demo videos | Exact product features, pricing mentions, competitive positioning |
+| Founder interviews | Strategy, growth plans, pain points, origin story, personality |
+| Facility/warehouse tours | Scale of operations, equipment, team size, location details |
+| Event booth footage | Which events they attend, who visits their booth, partnerships |
+| Shorts (product clips) | Current inventory, branded products, seasonal offerings |
+| Customer testimonial videos | Named clients, use cases, satisfaction signals |
