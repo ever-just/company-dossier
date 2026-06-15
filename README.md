@@ -356,6 +356,7 @@ Full starter template: [`skeleton.md`](skeleton.md)
 | <img src="https://api.iconify.design/lucide/lightbulb.svg?color=%238b949e" width="16" height="16"> | [`lessons_learned.md`](lessons_learned.md) | What worked and what failed |
 | <img src="https://api.iconify.design/lucide/bookmark.svg?color=%238b949e" width="16" height="16"> | [`SOURCES.md`](SOURCES.md) | All tools, repos, APIs cited |
 | <img src="https://api.iconify.design/lucide/globe.svg?color=%238b949e" width="16" height="16"> | [`ECOSYSTEM.md`](ECOSYSTEM.md) | 30+ related repos in OSINT landscape |
+| 🎥 | [`visual_intelligence.md`](visual_intelligence.md) | Video frame extraction, ffmpeg keyframes, AI vision analysis pipeline |
 
 <br>
 

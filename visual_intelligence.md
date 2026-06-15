@@ -187,6 +187,34 @@ From the existing PHOTO_INTELLIGENCE analysis (46 images already processed):
 
 ---
 
+## Validated Results (BROGAV Case Study)
+
+The visual intelligence pipeline was validated by downloading and analyzing the "CEO Data Center Day in the Life" video from the BROGAV YouTube channel:
+
+**Process:**
+1. Downloaded video: `yt-dlp -f "bestvideo[height<=720]+bestaudio/best[height<=720]" --merge-output-format mp4 VIDEO_URL` (5.6MB)
+2. Extracted 25 frames: `ffmpeg -i video.mp4 -vf "fps=1/5" frames/frame_%03d.jpg`
+3. Read each frame using Claude's multimodal vision (Read tool on JPG files)
+4. Documented findings with frame-by-frame evidence
+
+**Visual findings (7 new, not in ANY text source):**
+
+| # | Finding | Evidence Frame | Intel Category |
+|---|---------|---------------|----------------|
+| 1 | Daily work is HOME-BASED, not commercial office | Frame 1-2: residential walls, carpet, kids' artwork, dual monitors | Facilities |
+| 2 | Husband/partner exists (unnamed) | Frame 22: man reading to two boys in bed | People |
+| 3 | MacBook Pro + Microsoft 365 confirmed | Frame 23: silver laptop, M365 app launcher visible | Tech stack |
+| 4 | CapCut used for video editing | Frame 25: CapCut logo (consumer-grade) | Marketing tools |
+| 5 | No company vehicle fleet | Frame 9: personal Dodge SUV, no branding | Operations |
+| 6 | BROGAV-branded hard hat (field PPE) | Frame 3-4: white hard hat, teal logo, tagline visible | Brand |
+| 7 | Customer DC is mid-market (~8 cabinets, mini-split) | Frame 14-15: small server room, not hyperscale | Customer segment |
+
+**Key insight:** A 2-minute YouTube vlog yielded 7 intelligence findings that NO text source (transcripts, websites, aggregators, filings) could have revealed. Visual analysis is not optional — it's a distinct intelligence layer.
+
+**Time cost:** 5 min download + 1 min frame extraction + 10 min visual review = ~16 minutes for 7 findings.
+
+---
+
 ## Integration with Dossier
 
 Visual findings should update:
