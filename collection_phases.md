@@ -481,3 +481,74 @@ Two 5,000-word podcast transcripts yielded **10+ intelligence findings** not cap
 ### Tool Note: Transcript Quality
 
 `yt-dlp` auto-captions are imperfect (no punctuation, sometimes garbled names). But they're 95%+ accurate for English and more than sufficient for intelligence extraction. The key is reading them as source documents, not dismissing them as "raw data that was already processed."
+
+---
+
+## Phase 6 Addendum 2: Podcast Discovery and Transcription
+
+### The Challenge
+
+Podcast episodes are harder to capture than YouTube videos because:
+1. **No universal platform** — episodes live on Apple, Spotify, BuzzSprout, Libsyn, Podbean, etc.
+2. **No auto-captions** — unlike YouTube, podcasts don't generate VTT files
+3. **Guest appearances are hard to find** — you must search each platform separately
+4. **Cross-posting confusion** — the same interview may appear on YouTube AND a podcast feed under different titles/hosts
+
+### Discovery Method
+
+```bash
+# 1. Search YouTube (many podcasts cross-post video versions)
+yt-dlp --flat-playlist --print "%(id)s %(title)s" \
+  "ytsearch10:COMPANY_NAME founder interview podcast"
+
+# 2. Search Apple Podcasts
+# Web search: "COMPANY_NAME" site:podcasts.apple.com
+
+# 3. Search Spotify  
+# Web search: "COMPANY_NAME" site:open.spotify.com
+
+# 4. Search podcast aggregators
+# Web search: "FOUNDER_NAME" podcast interview episode
+
+# 5. Check known podcast hosts (libsyn, buzzsprout, podbean)
+# Web search: "COMPANY_NAME" site:libsyn.com OR site:buzzsprout.com
+```
+
+### Download Method
+
+```bash
+# If the episode is on YouTube (best case — has auto-captions):
+yt-dlp --write-info-json --write-auto-sub --sub-lang en --skip-download VIDEO_URL
+
+# If audio-only (no YouTube version):
+# Option A: Download audio + transcribe with Whisper
+yt-dlp -x --audio-format mp3 PODCAST_URL
+whisper audio.mp3 --model medium --language en --output_format txt
+
+# Option B: Check if the podcast website has a transcript
+# Many podcast hosts now auto-generate transcripts (Apple, Spotify 2024+)
+
+# Option C: Use podcast-specific tools
+# - podscript.io (free tier, auto-transcription)
+# - otter.ai (free tier, upload audio)
+```
+
+### What We Learned (BROGAV Case)
+
+- The "Inside Data Centre" podcast (Andy Davis, DataX Connect) exists on audio platforms but NOT on YouTube with captions. Would need Whisper to transcribe.
+- The "Hudson Interxchange" podcast was referenced in the dossier but no episode featuring BROGAV was ever confirmed to exist. Possibly a false lead from aggregator data.
+- StrategITcom cross-posts to YouTube under a different channel name (Carrie Goetz), making it discoverable via YouTube search even though it's technically a podcast.
+- **Key insight:** Always search YouTube FIRST for podcast episodes. Many podcast hosts upload video versions that have auto-captions — saving you the transcription step entirely.
+
+### Tools for Audio-Only Transcription
+
+| Tool | How | Quality | Cost |
+|------|-----|---------|------|
+| OpenAI Whisper (local) | `whisper audio.mp3 --model medium` | High (medium model) | Free (GPU recommended) |
+| Whisper.cpp (local, faster) | C++ port, runs on CPU | High | Free |
+| AssemblyAI | API upload | Very high | Free tier (5 hrs/mo) |
+| Deepgram | API upload | Very high | Free tier |
+| Apple Podcasts (2024+) | Built-in transcripts on platform | Medium | Free (view only) |
+| Spotify | Shows transcript in app | Medium | Free (view only, no export) |
+
+**Recommendation:** For company dossier work, always check if YouTube has the episode first (free captions). If audio-only, use Whisper locally or AssemblyAI's free tier.
