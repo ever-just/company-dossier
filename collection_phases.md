@@ -552,3 +552,98 @@ whisper audio.mp3 --model medium --language en --output_format txt
 | Spotify | Shows transcript in app | Medium | Free (view only, no export) |
 
 **Recommendation:** For company dossier work, always check if YouTube has the episode first (free captions). If audio-only, use Whisper locally or AssemblyAI's free tier.
+
+---
+
+## Phase 6 Addendum 3: Full Podcast Capture Pipeline (Validated June 2026)
+
+### The Complete Process (Proven Working)
+
+This process was validated by successfully capturing and transcribing the "Inside Data Centre" podcast (Andy Davis, Jul 2023, 34 minutes, 6,489 words) — a previously uncapturable audio-only episode.
+
+#### Step 1: Find the Podcast's Apple ID
+
+```bash
+# Search Apple Podcasts for the show
+# Web search: "PODCAST_NAME" site:podcasts.apple.com
+# Extract the numeric ID from the URL (e.g., id1525551829)
+```
+
+#### Step 2: Get RSS Feed URL via iTunes Lookup API
+
+```bash
+# Free, no auth required
+curl -s "https://itunes.apple.com/lookup?id=PODCAST_ID&entity=podcast" | \
+  python3 -c "import json,sys; d=json.load(sys.stdin); print(d['results'][0]['feedUrl'])"
+```
+
+#### Step 3: Parse RSS Feed to Find Episode MP3
+
+```python
+import re, urllib.request
+
+rss = urllib.request.urlopen("RSS_FEED_URL").read().decode()
+items = re.findall(r'<item>(.*?)</item>', rss, re.DOTALL)
+
+for item in items:
+    title = re.search(r'<title>(.*?)</title>', item)
+    if 'TARGET_NAME' in title.group(1).lower():
+        mp3 = re.search(r'<enclosure[^>]+url="([^"]+)"', item)
+        print(f"MP3: {mp3.group(1)}")
+```
+
+#### Step 4: Download MP3
+
+```bash
+# Some hosts (BuzzSprout) need User-Agent and ?download=true
+curl -L -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" \
+  -o episode.mp3 "MP3_URL?download=true"
+```
+
+#### Step 5: Transcribe with OpenAI Whisper
+
+```bash
+# Install (one-time)
+pip3 install openai-whisper
+
+# Transcribe (base model: fast, good enough for intelligence extraction)
+python3 -c "
+import whisper
+model = whisper.load_model('base')  # 'medium' for better proper nouns
+result = model.transcribe('episode.mp3', language='en')
+open('transcript.txt', 'w').write(result['text'])
+print(f'{len(result[\"text\"].split())} words')
+"
+```
+
+#### Step 6: Analyze Transcript
+
+Read line-by-line extracting: revenue signals, customer names, employee mentions, product/supplier references, timeline data, competitive positioning, personal background, future plans.
+
+### Performance Benchmarks
+
+| Metric | Result |
+|--------|--------|
+| Episode length | 34 minutes |
+| MP3 file size | 24 MB |
+| Download time | 2 seconds |
+| Whisper model | base (139MB) |
+| Transcription time | 93 seconds (Apple Silicon CPU) |
+| Output | 6,489 words |
+| Proper noun accuracy | ~85% (base) / ~95% (medium) |
+
+### Known Issues
+
+- **BuzzSprout Cloudflare protection**: Direct `.mp3` URLs may return HTML. Add `?download=true` and a browser User-Agent header.
+- **Whisper proper nouns**: Base model renders "BROGAV" as "ProGraph", "Celina" as "Salina". Use `medium` model for better name accuracy (takes 3-5x longer).
+- **Libsyn 404s**: Some Libsyn feeds return 404 for direct episode URLs. Use the RSS feed approach instead.
+- **Spotify exclusives**: Cannot be downloaded — no RSS feed exposed. Only option is to listen and manually note-take, or use Spotify's in-app transcript feature (no export).
+
+### When to Use Each Approach
+
+| Situation | Best method |
+|-----------|------------|
+| Podcast is on YouTube | `yt-dlp --write-auto-sub` (free captions, no Whisper needed) |
+| Podcast is audio-only with RSS | iTunes API → RSS → MP3 → Whisper |
+| Podcast is Spotify-exclusive | Manual listening or Spotify transcript (no programmatic access) |
+| Episode has a web transcript | `web_fetch` the transcript page directly |

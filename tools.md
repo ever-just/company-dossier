@@ -338,6 +338,50 @@ yt-dlp --write-auto-sub --sub-lang en --skip-download \
 
 ---
 
+### OpenAI Whisper (Speech-to-Text)
+
+**What it does:** Transcribes audio files to text locally. Supports 99 languages. Multiple model sizes (tiny→large) trade speed for accuracy.
+
+**How we used it:** Transcribed a 34-minute podcast episode (Inside Data Centre, Andy Davis interviewing Celina Berglund) that was only available as audio on BuzzSprout. Produced 6,489 words in 93 seconds.
+
+**Installation:**
+```bash
+pip3 install openai-whisper
+# Requires ffmpeg: brew install ffmpeg
+```
+
+**Example:**
+```bash
+python3 -c "
+import whisper
+model = whisper.load_model('base')
+result = model.transcribe('podcast.mp3', language='en')
+open('transcript.txt', 'w').write(result['text'])
+"
+```
+
+**Model sizes:**
+| Model | Size | Speed (34min audio) | Proper noun accuracy |
+|-------|------|--------------------|--------------------|
+| tiny | 39MB | ~30s | ~70% |
+| base | 139MB | ~90s | ~85% |
+| small | 461MB | ~3min | ~90% |
+| medium | 1.5GB | ~8min | ~95% |
+| large | 2.9GB | ~20min | ~98% |
+
+**Gotchas:**
+- Requires `ffmpeg` installed (audio format conversion)
+- CPU-only is fine for base/small models; large models benefit from GPU
+- Proper nouns (company names, people) are the weakest point — always verify names against known data
+- FP16 warning on CPU is harmless (auto-falls back to FP32)
+
+**Alternatives considered:**
+- AssemblyAI (API, free 5hr/mo tier) — higher accuracy but requires upload
+- Deepgram (API) — fastest but paid
+- whisper.cpp (C++ port) — faster on CPU but harder to install
+
+---
+
 ### AfterShip email-verifier (Go)
 
 **What it does:** Verifies email addresses via SMTP RCPT TO checks without actually sending mail. Confirms whether a mailbox exists on the target mail server.
