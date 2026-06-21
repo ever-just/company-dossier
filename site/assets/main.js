@@ -1,16 +1,30 @@
 (function () {
+  // Clickjacking mitigation (GitHub Pages can't send frame-ancestors/X-Frame-Options).
+  try { if (window.top !== window.self) { window.top.location = window.self.location.href; } } catch (e) { /* framed cross-origin */ }
+
+  // Register the service worker (PWA / offline shell).
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').catch(function () { /* non-fatal */ });
+    });
+  }
+
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // mobile nav
+  // mobile nav — toggle a class on the <nav>, CSS handles the dropdown
   var toggle = document.querySelector('[data-navtoggle]');
-  var links = document.querySelector('.nav-links');
-  if (toggle && links) {
-    toggle.addEventListener('click', function () {
-      var open = links.getAttribute('data-open') === '1';
-      links.setAttribute('data-open', open ? '0' : '1');
-      links.style.display = open ? '' : 'flex';
-      toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
-    });
+  var nav = document.querySelector('.nav');
+  if (toggle && nav) {
+    var setOpen = function (open) {
+      nav.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+    toggle.addEventListener('click', function () { setOpen(!nav.classList.contains('open')); });
+    // close when a link is tapped or on Escape / resize to desktop
+    nav.querySelectorAll('.nav-links a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+    window.addEventListener('resize', function () { if (window.innerWidth > 820) setOpen(false); });
   }
 
   if (reduce) {
