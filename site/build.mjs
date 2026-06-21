@@ -92,6 +92,8 @@ ${group('/blog/')}
 - Canonical site: ${SITE.origin}
 `;
 }
+
+function robotsTxt() {
   return `User-agent: *
 Allow: /
 
