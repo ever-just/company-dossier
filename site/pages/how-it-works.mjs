@@ -84,7 +84,7 @@ const body = `
   <div class="narrow">
     <div class="prose">
       <h2>Where you can run it</h2>
-      <p>The pipeline is the same wherever you start it. Open the <a href="/web-app/">web app</a> at <a href="${SITE.webapp}" target="_blank" rel="noopener">everjust.app</a>, install the <a href="/vscode-extension/">VS Code extension</a>, run the <a href="/cli/">npm CLI</a> (<code>company-dossier</code>), or use it through the <a href="/chatgpt/">ChatGPT app</a> or as a <a href="/claude/">Claude app and skill</a>. It's free, and it uses public sources only.</p>
+      <p>The pipeline is the same wherever you start it. Open the <a href="/web-app/">web app</a> at <a href="${SITE.webapp}" target="_blank" rel="noopener">companydossier.lol/generate</a>, install the <a href="/vscode-extension/">VS Code extension</a>, run the <a href="/cli/">npm CLI</a> (<code>company-dossier</code>), or use it through the <a href="/chatgpt/">ChatGPT app</a> or as a <a href="/claude/">Claude app and skill</a>. It's free, and it uses public sources only.</p>
       <p>Want to see the output before you run it? <a href="/sample/">Open the sample dossier</a>, or read <a href="/what-is-a-company-dossier/">what a company dossier is</a> for the bigger picture.</p>
     </div>
   </div>

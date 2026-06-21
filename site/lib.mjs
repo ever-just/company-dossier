@@ -1,12 +1,12 @@
 // Shared site library: layout, SEO head, header, footer, icon defs, helpers.
 import { LOGO_SYMBOL } from './brand.mjs';
+import { AI_ICON_DEFS, AI_ICON } from './ai-icons.mjs';
 
 export const SITE = {
   origin: 'https://companydossier.lol',
   name: 'Company Dossier',
-  tagline: 'an everjust field tool',
-  twitter: '@everjust',
-  webapp: 'https://everjust.app',
+  tagline: 'a field intelligence tool',
+  webapp: '/generate/',
   repo: 'https://github.com/ever-just/company-dossier',
   repoVscode: 'https://github.com/ever-just/company-dossier-vscode',
   ogImage: 'https://companydossier.lol/og.png',
@@ -35,6 +35,7 @@ export const DEFS = `
       <feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
     ${LOGO_SYMBOL}
+    ${AI_ICON_DEFS}
     <symbol id="i-folder" viewBox="0 0 64 64"><path d="M8 18 h14 a4 4 0 0 1 3 1.6 l2.4 3.4 H54 a3 3 0 0 1 3 3 V50 a3 3 0 0 1 -3 3 H10 a3 3 0 0 1 -3 -3 V21 a3 3 0 0 1 1-3z"/><path d="M8 28 H56"/></symbol>
     <symbol id="i-building" viewBox="0 0 64 64"><path d="M14 54 V16 a2 2 0 0 1 2-2 h20 a2 2 0 0 1 2 2 V54"/><path d="M38 54 V26 h10 a2 2 0 0 1 2 2 V54"/><path d="M9 54 H55"/><path d="M20 22h4M28 22h4M20 30h4M28 30h4M20 38h4M28 38h4M43 32h3M43 40h3"/></symbol>
     <symbol id="i-org" viewBox="0 0 64 64"><rect x="25" y="9" width="14" height="9" rx="2"/><rect x="9" y="44" width="14" height="9" rx="2"/><rect x="25" y="44" width="14" height="9" rx="2"/><rect x="41" y="44" width="14" height="9" rx="2"/><path d="M32 18 V31 M16 44 V31 H48 V44 M32 31 V44"/></symbol>
@@ -81,11 +82,11 @@ function header(active) {
   const links = NAV.map(n =>
     `<a href="${n.href}"${active === n.href ? ' aria-current="page"' : ''}>${n.label}</a>`).join('\n      ');
   return `<header>
-  <div class="strip">confidential&nbsp;//&nbsp;case file&nbsp;//&nbsp;everjust field intelligence&nbsp;//&nbsp;do not redistribute</div>
+  <div class="strip">confidential&nbsp;//&nbsp;case file&nbsp;//&nbsp;field intelligence&nbsp;//&nbsp;do not redistribute</div>
   <nav class="nav">
     <a class="brand" href="/" aria-label="Company Dossier home">
       ${icon('i-logo', 'ic rough-s')}
-      <span><b>Company Dossier</b><small>an everjust field tool</small></span>
+      <span><b>Company Dossier</b><small>a field intelligence tool</small></span>
     </a>
     <div class="nav-links" id="primary-nav">
       ${links}
@@ -107,7 +108,7 @@ function footer() {
       <div class="foot-col" style="max-width:300px">
         <a class="brand" href="/" style="margin-bottom:10px">
           ${icon('i-logo', 'ic rough-s')}
-          <span><b style="font-size:1.1rem">Company Dossier</b><small>an everjust field tool</small></span>
+          <span><b style="font-size:1.1rem">Company Dossier</b><small>a field intelligence tool</small></span>
         </a>
         <p style="font-family:var(--f-type);font-size:.86rem;color:var(--smudge);margin:8px 0 0">A complete, sourced file on any company — from the public record, in one place.</p>
         <div class="repo">
@@ -144,10 +145,10 @@ function footer() {
         <h4>Compare</h4>
         <a href="/compare/">All comparisons</a>
         <a href="/sitemap/">Sitemap</a>
-        <a href="${SITE.webapp}" target="_blank" rel="noopener">everjust.app ↗</a>
+        <a href="/generate/">Generate a dossier</a>
       </div>
     </div>
-    <div class="foot-fine">Public information only · Built by EVERJUST · A dossier is a starting map — always verify before you act. · <a href="/sitemap.xml" style="border-bottom:1px solid var(--faint);text-decoration:none">sitemap.xml</a> · <a href="/llms.txt" style="border-bottom:1px solid var(--faint);text-decoration:none">llms.txt</a></div>
+    <div class="foot-fine">Public information only · A dossier is a starting map — always verify before you act. · <a href="/sitemap.xml" style="border-bottom:1px solid var(--faint);text-decoration:none">sitemap.xml</a> · <a href="/llms.txt" style="border-bottom:1px solid var(--faint);text-decoration:none">llms.txt</a></div>
   </div>
 </footer>`;
 }
@@ -249,8 +250,8 @@ export const AI_MODELS = [
 export function aiLauncher({ heading = 'Use Company Dossier in your favorite AI', sub = 'Pick a model — it opens with a ready-to-run dossier prompt. No key, no install.', compact = false } = {}) {
   const btns = AI_MODELS.map(m =>
     `<button class="ai-btn" type="button" data-ai-go data-ai-name="${m.name}" data-ai-url="${m.url}" data-ai-copyfirst="${m.copyfirst ? '1' : '0'}">
+      <svg class="ai-btn-ic" aria-hidden="true"><use href="#${AI_ICON[m.name]}"/></svg>
       <span class="ai-btn-name">${m.name}</span>
-      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg>
     </button>`).join('\n      ');
   return `<div class="ai-launch sk${compact ? ' compact' : ''}" data-ai-launcher>
     ${compact ? '' : `<div class="ai-launch-head"><span class="tab">zero setup</span><h3 class="draft">${heading}</h3><p>${sub}</p></div>`}
