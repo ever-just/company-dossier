@@ -45,6 +45,9 @@ body{
 }
 img,svg{max-width:100%}
 a{color:inherit}
+/* never let long unbroken strings (URLs, code, IDs) force horizontal scroll */
+p,li,h1,h2,h3,h4,dd,dt,figcaption,blockquote,.lede{overflow-wrap:anywhere}
+code,.term,kbd{overflow-wrap:anywhere;word-break:break-word}
 
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
 .narrow{max-width:780px;margin:0 auto;padding:0 22px}
@@ -94,12 +97,13 @@ h1,h2,h3{margin:0;font-weight:400;line-height:1.04}
   color:var(--ink);border-radius:14px 11px 16px 10px/10px 16px 11px 14px;
   box-shadow:var(--bs) var(--bs) 0 var(--ink);
   transition:transform .12s ease, box-shadow .12s ease;line-height:1;
+  min-height:44px;justify-content:center;
 }
 .btn:hover{transform:translate(-2px,-2px);--bs:7px}
 .btn:active{transform:translate(2px,2px);--bs:1px}
 .btn.solid{background:var(--ink);color:var(--paper)}
 .btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.btn.small{padding:9px 16px;font-size:.96rem;--bs:3px}
+.btn.small{padding:9px 16px;font-size:.96rem;--bs:3px;min-height:44px}
 
 /* ---------- ink illustration styling ----------
    currentColor everywhere so force-dark / theming can't hide art */
@@ -133,16 +137,16 @@ header{position:sticky;top:0;z-index:50}
   display:flex;align-items:center;justify-content:space-between;
   gap:18px;padding:11px 22px;
 }
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);min-height:44px}
 .brand .ic{width:38px;height:38px}
 .brand b{font-family:var(--f-draft);font-size:1.16rem;letter-spacing:.01em;line-height:1}
 .brand small{display:block;font-family:var(--f-type);font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:var(--smudge)}
 .nav-links{display:flex;gap:22px;align-items:center}
 .nav-links a{font-family:var(--f-draft);text-decoration:none;font-size:1rem;border-bottom:2px solid transparent;padding-bottom:2px}
 .nav-links a:hover,.nav-links a[aria-current]{border-bottom-color:var(--ink)}
-.nav .btn{padding:9px 16px;font-size:.96rem;--bs:3px}
+.nav .btn{padding:9px 16px;font-size:.96rem;--bs:3px;min-height:44px}
 .nav-actions{display:flex;align-items:center;gap:12px}
-.nav-toggle{display:none;width:44px;height:44px;padding:0;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:2.5px solid var(--ink);background:var(--paper-2);border-radius:10px 9px 12px 8px/8px 12px 9px 10px}
+.nav-toggle{display:none;width:44px;height:44px;min-width:44px;flex:0 0 auto;padding:0;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:2.5px solid var(--ink);background:var(--paper-2);border-radius:10px 9px 12px 8px/8px 12px 9px 10px}
 .nav-toggle span{display:block;width:22px;height:2.6px;background:var(--ink);border-radius:2px;transition:transform .2s ease, opacity .2s ease}
 .nav.open .nav-toggle span:nth-child(1){transform:translateY(7.6px) rotate(45deg)}
 .nav.open .nav-toggle span:nth-child(2){opacity:0}
@@ -205,6 +209,7 @@ h1.hero-h{font-family:var(--f-marker);font-size:clamp(2.5rem,6.4vw,4.5rem);line-
 /* ---------- tables (comparison pages) ---------- */
 .tbl-wrap{overflow-x:auto;border:2.5px solid var(--ink);border-radius:14px 11px 16px 10px/10px 16px 11px 14px;background:var(--paper-2)}
 table.cmp{border-collapse:collapse;width:100%;font-size:.95rem;min-width:520px}
+table.cmp td,table.cmp th{overflow-wrap:anywhere}
 table.cmp th,table.cmp td{text-align:left;padding:13px 16px;border-bottom:2px dashed var(--faint);vertical-align:top}
 table.cmp thead th{font-family:var(--f-draft);font-size:1.05rem;border-bottom:2.5px solid var(--ink);background:var(--paper-3)}
 table.cmp tbody tr:last-child td{border-bottom:none}
@@ -323,9 +328,9 @@ table.cmp .col-us{background:rgba(21,19,15,.04)}
 footer{border-top:2.5px solid var(--ink);padding:40px 0 48px;background:var(--paper-3)}
 .foot-grid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:36px;align-items:flex-start}
 .foot-col h4{font-family:var(--f-type);text-transform:uppercase;letter-spacing:.16em;font-size:.72rem;color:var(--smudge);margin:0 0 12px}
-.foot-col a{display:block;font-family:var(--f-draft);text-decoration:none;font-size:1rem;margin-bottom:7px;border-bottom:2px solid transparent;width:fit-content}
+.foot-col a{display:flex;align-items:center;min-height:44px;font-family:var(--f-draft);text-decoration:none;font-size:1rem;border-bottom:2px solid transparent;width:fit-content}
 .foot-col a:hover{border-bottom-color:var(--ink)}
-.repo a{font-family:var(--f-type);font-size:.82rem;display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:2px solid var(--ink);border-radius:9px 8px 11px 7px/7px 11px 8px 9px;padding:7px 12px;margin:6px 8px 0 0}
+.repo a{font-family:var(--f-type);font-size:.82rem;display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:2px solid var(--ink);border-radius:9px 8px 11px 7px/7px 11px 8px 9px;padding:7px 12px;margin:6px 8px 0 0;min-height:44px}
 .repo a:hover{background:var(--ink);color:var(--paper)}
 .repo a:hover svg{stroke:var(--paper)}
 .repo svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.4}
@@ -382,6 +387,12 @@ a:focus-visible,.btn:focus-visible,button:focus-visible{outline:3px solid var(--
   .ai-launch-foot .btn{width:100%;justify-content:center}
   .tally .t{border-right:none}
   .tally .t:nth-child(odd){border-right:2.5px dashed var(--ink)}
+}
+@media (max-width:600px){
+  /* let 3-col comparison tables reflow to fit instead of forcing a
+     keyboard-trap scroll region (axe: scrollable-region-focusable) */
+  table.cmp{min-width:0;font-size:.88rem}
+  table.cmp th,table.cmp td{padding:11px 10px}
 }
 @media (max-width:380px){
   .tally-grid{grid-template-columns:1fr}

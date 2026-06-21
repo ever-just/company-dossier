@@ -222,7 +222,7 @@ const indexBody = `
   <div class="wrap">
     <span class="tab fill">compare</span>
     <h1>Company Dossier vs the alternatives.</h1>
-    <p class="lede">There are a lot of company-research tools — paid contact databases, funding terminals, enrichment APIs and news trackers. Here's an honest map of where Company Dossier fits: a free, public-source, fully-sourced first-pass intelligence file. Not a contact database, not a substitute for paid datasets — a fast way to read any company's whole story.</p>
+    <p class="lede">Most company-research tools sell you one slice — contacts, funding, or enrichment — for a price. Company Dossier is the free first pass: a fully-sourced intelligence file that reads any company's whole story from the public record. Here's an honest map of where it fits, and where the paid tools still win.</p>
   </div>
 </section>
 
