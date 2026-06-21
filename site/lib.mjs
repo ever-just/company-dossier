@@ -12,6 +12,9 @@ export const SITE = {
   ogImage: 'https://companydossier.lol/og.png',
 };
 
+// IndexNow key (public, not secret) — must match the hosted key file + the ping payload.
+export const INDEXNOW_KEY = '8b1c4f7a9d2e4063b5a8c0e1f3d6a92b';
+
 export const NAV = [
   { href: '/what-is-a-company-dossier/', label: 'What it is' },
   { href: '/how-it-works/', label: 'How it works' },
@@ -197,6 +200,7 @@ export function page(opts) {
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
+<link rel="alternate" type="application/rss+xml" title="Company Dossier — Blog" href="/feed.xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Architects+Daughter&family=Caveat:wght@500;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />

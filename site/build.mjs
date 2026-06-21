@@ -3,7 +3,7 @@ import { readdir, mkdir, writeFile, rm, cp, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { page, SITE } from './lib.mjs';
+import { page, SITE, INDEXNOW_KEY } from './lib.mjs';
 import { faviconSvg } from './brand.mjs';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
@@ -94,25 +94,53 @@ ${group('/blog/')}
 `;
 }
 
+function rssXml(pages) {
+  const posts = pages
+    .filter(p => p.path.startsWith('/blog/') && p.path !== '/blog/' && p.noindex !== true)
+    .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const now = new Date().toUTCString();
+  const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const items = posts.map(p => {
+    const link = SITE.origin + p.path;
+    const pub = p.date ? new Date(p.date).toUTCString() : now;
+    return `    <item>
+      <title>${esc((p.title || '').replace(/ — .*/, ''))}</title>
+      <link>${link}</link>
+      <guid isPermaLink="true">${link}</guid>
+      <pubDate>${pub}</pubDate>
+      <description>${esc(p.description)}</description>
+    </item>`;
+  }).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Company Dossier — Blog</title>
+    <link>${SITE.origin}/blog/</link>
+    <atom:link href="${SITE.origin}/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Guides on company research, OSINT, competitive intelligence and due diligence.</description>
+    <language>en</language>
+    <lastBuildDate>${now}</lastBuildDate>
+${items}
+  </channel>
+</rss>`;
+}
+
 function robotsTxt() {
-  return `User-agent: *
+  // Welcome-mat: a free tool that wants to be cited lets every search/retrieval bot in.
+  const allow = [
+    'GPTBot', 'OAI-SearchBot', 'ChatGPT-User',           // OpenAI
+    'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'Claude-Web', 'anthropic-ai', // Anthropic
+    'PerplexityBot', 'Perplexity-User',                  // Perplexity
+    'Google-Extended',                                    // Google (Gemini/Vertex)
+    'Applebot', 'Applebot-Extended',                      // Apple
+    'Amazonbot', 'CCBot', 'Bytespider', 'Meta-ExternalAgent', 'cohere-ai', // others
+  ];
+  const blocks = allow.map(ua => `User-agent: ${ua}\nAllow: /`).join('\n');
+  return `# companydossier.lol — public, free, meant to be cited.
+User-agent: *
 Allow: /
 
-# AI crawlers welcome — this site is meant to be cited.
-User-agent: GPTBot
-Allow: /
-User-agent: OAI-SearchBot
-Allow: /
-User-agent: ChatGPT-User
-Allow: /
-User-agent: ClaudeBot
-Allow: /
-User-agent: Claude-Web
-Allow: /
-User-agent: PerplexityBot
-Allow: /
-User-agent: Google-Extended
-Allow: /
+${blocks}
 
 Sitemap: ${SITE.origin}/sitemap.xml
 `;
@@ -218,6 +246,10 @@ async function main() {
   // PWA: manifest + service worker
   await writeFile(join(OUT, 'site.webmanifest'), webmanifest(), 'utf8');
   await writeFile(join(OUT, 'sw.js'), serviceWorker(), 'utf8');
+
+  // RSS feed (blog) + IndexNow key file
+  await writeFile(join(OUT, 'feed.xml'), rssXml(pages), 'utf8');
+  await writeFile(join(OUT, `${INDEXNOW_KEY}.txt`), INDEXNOW_KEY, 'utf8');
 
   // security.txt (RFC 9116)
   const secDir = join(OUT, '.well-known');

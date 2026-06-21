@@ -224,6 +224,11 @@ export default {
   description: 'Company Dossier compiles a complete, sourced profile of any business — people, hiring, money, locations, tech, news and risk — from public signals into one file. Free. Web app, VS Code extension, CLI, and AI apps.',
   jsonld: [
     {
+      '@context': 'https://schema.org', '@type': 'WebSite', name: 'Company Dossier', url: 'https://companydossier.lol',
+      description: 'Open a complete, sourced file on any company — from the public record.',
+      inLanguage: 'en',
+    },
+    {
       '@context': 'https://schema.org', '@type': 'Organization', name: 'Company Dossier', url: 'https://companydossier.lol',
       brand: { '@type': 'Brand', name: 'Company Dossier' },
       sameAs: [SITE.repo, SITE.repoVscode],
