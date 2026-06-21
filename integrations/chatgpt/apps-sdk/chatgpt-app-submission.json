@@ -1,0 +1,68 @@
+{
+  "_provenance": "Hand-compiled from the OpenAI Apps SDK submission docs (developers.openai.com/apps-sdk/deploy/submission, /app-submission-guidelines, /guides/optimize-metadata) and the Company Dossier setup. This is NOT the output of an official OpenAI skill/plugin — none exists. The real submission is a web form at https://platform.openai.com/apps-manage; copy these values into it.",
+  "_prerequisites": [
+    "Complete identity verification (individual or business) in the OpenAI Platform Dashboard.",
+    "Ensure your org/API key has the `api.apps.write` permission."
+  ],
+  "app": {
+    "name": "Company Dossier",
+    "short_description": "Sourced intelligence dossiers on any company, straight from the public record.",
+    "long_description": "Company Dossier compiles a complete, source-attributed intelligence file on any company or domain — entirely from public data. One request returns nine sections: overview & identity, people & org chart, hiring radar, money trail, locations, tech fingerprint, news & timeline, relationship web, and risk flags. Every claim is tied to a public source and tagged High/Medium/Low confidence. Built for due diligence, vendor vetting, sales prep, and competitive research. No accounts, no private data — public sources only.",
+    "category": "Research",
+    "developer_name": "EverJust",
+    "support_email": "company@everjust.co",
+    "privacy_policy_url": "https://companydossier.lol/privacy/",
+    "terms_of_service_url": "https://companydossier.lol/terms/",
+    "logo": { "file": "site/assets/brand/gpt-profile.png", "dimensions": "1024x1024", "format": "png" },
+    "country_availability": "all"
+  },
+  "mcp_server": {
+    "url": "https://mcp.companydossier.lol/mcp",
+    "transport": "streamable_http",
+    "health_url": "https://mcp.companydossier.lol/health",
+    "auth": {
+      "current": "bearer",
+      "required_for_public_listing": "none (no-auth) or oauth2.1",
+      "action_needed": "Switch the endpoint to no-auth + rate-limited before submitting; a shared bearer token is not an accepted public-listing auth model."
+    },
+    "tools": [
+      {
+        "name": "build_dossier",
+        "description": "Use this when the user asks for research, a background check, due diligence, a profile, or a 'dossier' on a specific company or domain. Returns a nine-section, source-cited report (overview, people, hiring, funding, locations, tech stack, news, relationships, risk flags) compiled from public sources, each claim confidence-tagged. Do not use for general web search, for private individuals who are not company representatives, or for non-business entities.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "target": { "type": "string", "description": "Company name or domain, e.g. 'Acme Robotics' or 'acme.com'." },
+            "sections": { "type": "string", "description": "Optional comma-separated subset of: overview, people, hiring, money, locations, tech, news, relationships, risk. Omit for all nine." }
+          },
+          "required": ["target"]
+        },
+        "annotations": { "readOnlyHint": true, "destructiveHint": false, "openWorldHint": true }
+      }
+    ]
+  },
+  "test_prompts": [
+    { "prompt": "Build a dossier on stripe.com", "type": "direct", "expected": "Calls build_dossier with target 'stripe.com'; returns the nine sourced sections." },
+    { "prompt": "Do due-diligence research on Acme Robotics", "type": "indirect", "expected": "Calls build_dossier with target 'Acme Robotics'; returns the sourced file." },
+    { "prompt": "What's the weather today?", "type": "negative", "expected": "Does NOT call build_dossier." }
+  ],
+  "screenshots": {
+    "_todo": "Capture in ChatGPT after connecting the server in Settings > Connectors > Developer mode, then run 'Build a dossier on stripe.com' and screenshot the result.",
+    "count": "3-5",
+    "dimensions": "as specified by the dashboard at upload (commonly ~1280x800)",
+    "format": "png"
+  },
+  "submission": {
+    "dashboard_url": "https://platform.openai.com/apps-manage",
+    "steps": [
+      "Add MCP server details (URL above; OAuth creds only if using OAuth).",
+      "Complete required fields: app name, logo, descriptions, company info, privacy policy URL, MCP & tool info, screenshots, test prompts + expected responses, localization, country availability.",
+      "Check all confirmation boxes acknowledging the App Submission Guidelines.",
+      "Click 'Submit for review' — you'll receive an email with a Case ID."
+    ]
+  },
+  "_known_risks": [
+    "POLICY: Apps SDK guidelines prohibit apps that scrape external websites / act as unofficial connectors. This app crawls public company sites — a genuine rejection risk for the Apps SDK directory. The GPT Store (Custom GPT using ChatGPT's own browsing) is lower-risk.",
+    "AUTH: endpoint currently bearer-gated; must be no-auth or OAuth for a public listing."
+  ]
+}
