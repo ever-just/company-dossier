@@ -5,16 +5,28 @@ const GROUPS = [
     ['/', 'Home', 'The whole pitch on one page.'],
     ['/what-is-a-company-dossier/', 'What is a company dossier', 'Definition, contents and how it differs.'],
     ['/how-it-works/', 'How it works', 'The public-source research pipeline.'],
+    ['/features/', 'Features', 'What the file gives you, section by section.'],
     ['/sample/', 'Sample dossier', 'A page from a finished file.'],
     ['/glossary/', 'Glossary', 'The vocabulary of company research.'],
+    ['/faq/', 'FAQ', 'Common questions, answered plainly.'],
   ]],
-  ['Get it', [
-    ['/get/', 'Get it', 'Every way to open a dossier.'],
-    ['/web-app/', 'Web app', 'Run it in the browser at companydossier.lol/generate.'],
+  ['Generate & run it', [
+    ['/get/', 'Get it', 'Every way to open a dossier, in one place.'],
+    ['/generate/', 'Generate in your browser', 'Free, no key — built live and exportable.'],
+    ['/use-in-ai/', 'Use in your AI', 'Open the dossier prompt in ChatGPT, Claude, Perplexity, Gemini or Grok.'],
+    ['/web-app/', 'Web app', 'How the in-browser generator works.'],
     ['/vscode-extension/', 'VS Code extension', 'Generate dossiers inside your editor.'],
-    ['/cli/', 'CLI & npm', 'The company-dossier command line tool.'],
+    ['/cli/', 'CLI & npm', 'The company-dossier command-line tool & library.'],
     ['/chatgpt/', 'ChatGPT app', 'Use it from inside ChatGPT.'],
     ['/claude/', 'Claude app & skill', 'Use it as a Claude app and skill.'],
+    ['/mcp/', 'MCP server & API', 'Wire build_dossier into any AI agent.'],
+  ]],
+  ['Docs & learn', [
+    ['/docs/', 'Documentation', 'The full guide & developer reference hub.'],
+    ['/blog/', 'Blog', 'Notes on company research and the method.'],
+    ['/knowledge/index.md', 'Knowledge (OKF)', 'Open Knowledge Format docs for agents.'],
+    ['/brand/', 'Brand kit', 'Logo, colors and usage.'],
+    ['/about/', 'About', 'Who makes Company Dossier, and why.'],
   ]],
   ['Use cases', [
     ['/use-cases/', 'All use cases', 'Who opens files, and why.'],
@@ -26,8 +38,13 @@ const GROUPS = [
     ['/use-cases/due-diligence/', 'Due diligence', 'The fast brief before the deep dive.'],
     ['/use-cases/procurement/', 'Procurement', 'Vet a vendor before you sign.'],
   ]],
-  ['Compare', [
+  ['Compare & pricing', [
     ['/compare/', 'All comparisons', 'How Company Dossier stacks up.'],
+    ['/pricing/', 'Pricing', 'What it costs (and what is free).'],
+  ]],
+  ['Legal', [
+    ['/privacy/', 'Privacy Policy', 'What data is processed, and how.'],
+    ['/terms/', 'Terms of Service', 'The terms of use.'],
   ]],
 ];
 
