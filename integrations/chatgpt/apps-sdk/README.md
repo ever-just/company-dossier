@@ -6,11 +6,33 @@ built-in tools, whereas the App connects to our own **MCP server** and calls the
 `build_dossier` tool, giving deterministic, sourced output from the same engine
 behind `npx company-dossier` and the Claude connector.
 
+> **LIVE.** The MCP server is deployed and serving:
+> - Endpoint: `https://mcp.companydossier.lol/mcp` (Streamable HTTP)
+> - Health: `https://mcp.companydossier.lol/health` → `{"status":"ok"}`
+> - Auth: **bearer token** (`Authorization: Bearer <token>`) — the token is held out of
+>   the repo; configure it in the ChatGPT connector. Unauthenticated calls get `401`.
+> - Tool: `build_dossier` (verified discoverable via `tools/list`).
+> - Hosting: EC2 (`t3.micro`, us-east-1) behind Caddy (auto-TLS via Let's Encrypt).
+>
 > Status note: OpenAI's Apps SDK and its submission/review process are evolving.
 > Field names, manifest shape, and console URLs below reflect current public
 > guidance; where we are not certain of an exact field, it is marked
 > `# VERIFY`. Confirm against the live Apps SDK docs at
 > https://developers.openai.com/apps-sdk before submitting.
+
+## Connect it in ChatGPT (developer mode) — works today
+
+1. ChatGPT → **Settings → Connectors** (or **Apps & Connectors**) → enable
+   **Developer mode** if shown.
+2. **Add / Create** a connector pointing at the MCP server:
+   - **URL:** `https://mcp.companydossier.lol/mcp`
+   - **Transport:** Streamable HTTP (MCP)
+   - **Auth / Custom header:** `Authorization` = `Bearer <token>` (use the token from
+     the operator — it is not stored in this repo).
+3. ChatGPT discovers the `build_dossier` tool. Try: *"Build a dossier on stripe.com."*
+4. To list it in the Apps directory, finish the manifest (`manifest.example.json`) and
+   submit per the flow below. For a public listing serving arbitrary users, move auth
+   from a single shared bearer to **OAuth 2.1** (or add metering) — see `auth` in the manifest.
 
 ## Architecture
 
