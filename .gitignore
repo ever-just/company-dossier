@@ -12,3 +12,6 @@ node_modules/
 
 # Generated site output (built in CI by .github/workflows/pages.yml)
 docs/
+
+# Package build output (regenerated on publish)
+dist/
