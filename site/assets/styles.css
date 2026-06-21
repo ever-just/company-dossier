@@ -299,12 +299,15 @@ table.cmp .col-us{background:rgba(21,19,15,.04)}
 .ai-input-label{display:block;font-family:var(--f-type);font-size:.74rem;text-transform:uppercase;letter-spacing:.14em;color:var(--smudge);margin-bottom:6px}
 .ai-launch input[type=text]{width:100%;font-family:var(--f-type);font-size:1rem;padding:13px 14px;border:2.5px solid var(--ink);border-radius:10px 9px 12px 8px/8px 12px 9px 10px;background:var(--paper);color:var(--ink)}
 .ai-launch input[type=text]:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
-.ai-models{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
-.ai-btn{display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;font-family:var(--f-draft);font-size:1.05rem;padding:12px 14px;min-height:50px;width:100%;border:2.5px solid var(--ink);background:var(--paper-2);color:var(--ink);border-radius:13px 10px 15px 9px/9px 15px 10px 13px;box-shadow:3px 3px 0 var(--ink);transition:transform .12s ease, box-shadow .12s ease}
+.ai-models{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.ai-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;flex:1 1 0;min-width:88px;max-width:132px;cursor:pointer;font-family:var(--f-draft);font-size:.84rem;padding:14px 8px 11px;border:2.5px solid var(--ink);background:var(--paper-2);color:var(--ink);border-radius:13px 10px 15px 9px/9px 15px 10px 13px;box-shadow:3px 3px 0 var(--ink);transition:transform .12s ease, box-shadow .12s ease}
 .ai-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
 .ai-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-.ai-btn-ic{width:22px;height:22px;flex:0 0 auto;color:var(--ink)}
+.ai-btn-ic{width:34px;height:34px;flex:0 0 auto}
+/* color brand icons keep their own fills — don't tint */
+.ai-btn-ic-color{color:initial}
 .ai-btn-name{line-height:1}
+@media (max-width:560px){.ai-btn{min-width:0;flex:1 1 28%;font-size:.78rem}.ai-btn-ic{width:28px;height:28px}}
 .ai-launch-foot{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
 .ai-status{font-family:var(--f-type);font-size:.84rem;color:var(--smudge)}
 .ai-note{font-family:var(--f-type);font-size:.78rem;color:var(--smudge);margin:12px 0 0;line-height:1.5}

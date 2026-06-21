@@ -27,7 +27,7 @@ const body = `
         <li><strong>Gemini &amp; Grok</strong> — we copy the prompt to your clipboard and open the app; just paste.</li>
       </ul>
       <h2>Want a deeper, automated build?</h2>
-      <p>For a structured file with no copy-paste, use the <a href="/generate/">in-browser generator</a> (bring your Claude key), the <a href="/cli/">npm CLI</a> (<code>npx company-dossier &lt;company&gt;</code>), the <a href="/vscode-extension/">VS Code extension</a>, or wire the <a href="/claude/">Claude</a> / <a href="/chatgpt/">ChatGPT</a> apps via the built-in MCP server (tool <code>build_dossier</code>).</p>
+      <p>For a structured file with no copy-paste, use the <a href="/generate/">in-browser generator</a> (bring your Claude key), the <a href="/cli/">npm CLI</a> (<code>npx company-dossier &lt;company&gt;</code>), the <a href="/vscode-extension/">VS Code extension</a>, the <a href="/mcp/">MCP server / API</a> (connect any agent to <code>build_dossier</code>), or wire the <a href="/claude/">Claude</a> / <a href="/chatgpt/">ChatGPT</a> apps via the built-in MCP server (tool <code>build_dossier</code>).</p>
     </div>
   </div>
 </section>

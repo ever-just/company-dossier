@@ -10,6 +10,8 @@
 - npm package (CLI + library + MCP `build_dossier`): https://www.npmjs.com/package/company-dossier — `npx company-dossier <company>`
 - VS Code extension: https://github.com/ever-just/company-dossier-vscode
 - Agents (MCP): run `company-dossier-mcp` (stdio) or `company-dossier-mcp-http` (HTTP); tool `build_dossier({target, sections?})`
+- Hosted MCP server (live): https://mcp.companydossier.lol/mcp — transport: MCP Streamable HTTP; auth: `Authorization: Bearer <token>` (token from operator); health: https://mcp.companydossier.lol/health → `{"status":"ok"}`; tool `build_dossier({target, sections?})` → sourced nine-section dossier (markdown + JSON), no API keys required
+- MCP server docs & connect snippets (ChatGPT / Claude / generic MCP client / curl): https://companydossier.lol/mcp/
 
 ## The methodology (this repo)
 - Overview: https://github.com/ever-just/company-dossier/blob/main/methodology/OVERVIEW.md

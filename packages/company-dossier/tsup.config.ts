@@ -7,6 +7,7 @@ export default defineConfig({
     mcp: 'src/mcp.ts',
     'mcp-http': 'src/mcp-http.ts',
     'mcp-server': 'src/mcp-server.ts',
+    web: 'src/web.ts',
   },
   format: ['esm'],
   target: 'node18',
