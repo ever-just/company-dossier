@@ -20,8 +20,8 @@ export const NAV = [
   { href: '/what-is-a-company-dossier/', label: 'What it is' },
   { href: '/how-it-works/', label: 'How it works' },
   { href: '/features/', label: 'Features' },
-  { href: '/sample/', label: 'Sample' },
   { href: '/use-cases/', label: 'Use cases' },
+  { href: '/docs/', label: 'Docs' },
   { href: '/compare/', label: 'Compare' },
   { href: '/get/', label: 'Get it' },
 ];
@@ -142,6 +142,7 @@ function footer() {
       </div>
       <div class="foot-col">
         <h4>Learn</h4>
+        <a href="/docs/">Documentation</a>
         <a href="/blog/">Blog</a>
         <a href="/use-cases/">Use cases</a>
         <a href="/glossary/">Glossary</a>
