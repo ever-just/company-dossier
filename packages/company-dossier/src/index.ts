@@ -14,6 +14,12 @@ export {
   type ProgressCallback,
 } from './core.js';
 
+export {
+  generateSite,
+  type GenerateSiteOptions,
+  type GenerateSiteResult,
+} from './generators/site.js';
+
 export { collectDns, type DnsData } from './collectors/dns.js';
 export { collectWebsite, type WebsiteData, type PageData } from './collectors/website.js';
 export { collectWayback, type WaybackData } from './collectors/wayback.js';

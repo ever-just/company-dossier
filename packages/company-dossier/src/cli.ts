@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 import * as path from 'node:path';
 import { buildDossier, type BuildOptions, type SectionId, SECTIONS } from './core.js';
-import { writeDossier } from './index.js';
+import { writeDossier, generateSite } from './index.js';
 
-const VERSION = '0.1.0';
+const VERSION = '0.3.0';
+
+type OutputFormat = 'folder' | 'site';
+type DeployTarget = 'none' | 'gh-pages';
 
 const HELP = `company-dossier v${VERSION}
 Build a complete, sourced intelligence dossier on any company from public data.
@@ -23,6 +26,15 @@ OPTIONS
                         Available: ${SECTIONS.join(', ')}
   --max-pages <n>       Max internal pages to crawl (default: 25).
   --no-social-probe     Skip slow HEAD-probing of social platforms.
+  --format <fmt>        Output format: folder (default) or site.
+                        "site" scaffolds a themed, static Astro Starlight
+                        docs site under "<Company> DOSSIER/site/".
+  --deploy <target>     Deploy target for --format site: none (default) or
+                        gh-pages (builds site/dist and publishes via the
+                        gh-pages npm package).
+  --subdomain <host>    Custom host for the site; writes public/CNAME.
+  --no-noindex          Allow indexing. By POLICY, dossier sites are
+                        UNLISTED + NOINDEX by default; this opts out.
   --quiet               Suppress progress output.
   -h, --help            Show this help.
   -v, --version         Show version.
@@ -37,6 +49,12 @@ EXAMPLES
   company-dossier "Acme Corporation"
   company-dossier acme.com --json > acme.json
   company-dossier acme.com --sections overview,tech,risk
+  company-dossier acme.com --out ./out --format site
+  company-dossier acme.com --format site --deploy gh-pages --subdomain acme.example.com
+
+Generated dossier sites are UNLISTED + NOINDEX by default (noindex meta,
+robots.txt Disallow, and a visible "auto-generated / not affiliated"
+disclaimer on every page). Use --no-noindex to opt out.
 
 Public sources only — no private databases, no API keys required.
 Learn more: https://companydossier.lol
@@ -50,6 +68,10 @@ interface ParsedArgs {
   sections?: SectionId[];
   maxPages?: number;
   skipSocialProbe: boolean;
+  format: OutputFormat;
+  deploy: DeployTarget;
+  subdomain?: string;
+  noindex: boolean;
   help: boolean;
   version: boolean;
   error?: string;
@@ -61,6 +83,9 @@ function parseArgs(argv: string[]): ParsedArgs {
     json: false,
     quiet: false,
     skipSocialProbe: false,
+    format: 'folder',
+    deploy: 'none',
+    noindex: true,
     help: false,
     version: false,
   };
@@ -84,6 +109,30 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       case '--no-social-probe':
         out.skipSocialProbe = true;
+        break;
+      case '--no-noindex':
+        out.noindex = false;
+        break;
+      case '--format': {
+        const v = (argv[++i] ?? '').trim().toLowerCase();
+        if (v === 'folder' || v === 'site') {
+          out.format = v;
+        } else {
+          out.error = `Invalid --format: ${v || '(missing)'}. Use folder or site.`;
+        }
+        break;
+      }
+      case '--deploy': {
+        const v = (argv[++i] ?? '').trim().toLowerCase();
+        if (v === 'none' || v === 'gh-pages') {
+          out.deploy = v;
+        } else {
+          out.error = `Invalid --deploy: ${v || '(missing)'}. Use none or gh-pages.`;
+        }
+        break;
+      }
+      case '--subdomain':
+        out.subdomain = (argv[++i] ?? '').trim() || undefined;
         break;
       case '--out':
         out.out = argv[++i] ?? out.out;
@@ -172,9 +221,80 @@ async function main(): Promise<number> {
   const folder = writeDossier(result, args.out);
   log(`\nDossier written to: ${folder}`);
   log(`Files: ${result.files.map((f) => f.path).join(', ')}`);
+
+  if (args.format === 'site') {
+    log('\nScaffolding Astro Starlight docs site...');
+    const site = await generateSite(result, folder, {
+      subdomain: args.subdomain,
+      noindex: args.noindex,
+    });
+    log(`Site scaffolded at: ${site.siteDir}`);
+    log(
+      `  ${site.files.length} files written` +
+        (site.noindex ? ' (UNLISTED + NOINDEX: robots meta + Disallow-all)' : ' (indexable)')
+    );
+    log(`  Build it: cd "${site.siteDir}" && npm install && npm run build`);
+
+    if (args.deploy === 'gh-pages') {
+      const code = await deployGhPages(site.siteDir, log);
+      if (code !== 0) return code;
+    } else {
+      log('  Deploy: skipped (--deploy none).');
+    }
+
+    if (!args.quiet) {
+      process.stdout.write(site.siteDir + '\n');
+    }
+    return 0;
+  }
+
   if (!args.quiet) {
     process.stdout.write(folder + '\n');
   }
+  return 0;
+}
+
+/**
+ * Build the generated Astro site and publish `site/dist` via the gh-pages
+ * npm package. gh-pages is an optionalDependency of the GENERATED site, so we
+ * run everything inside the site directory (install → build → deploy).
+ */
+async function deployGhPages(
+  siteDir: string,
+  log: (msg: string) => void
+): Promise<number> {
+  const { spawn } = await import('node:child_process');
+  const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+
+  const run = (cmd: string, cmdArgs: string[]): Promise<number> =>
+    new Promise((resolve) => {
+      log(`  $ ${cmd} ${cmdArgs.join(' ')}`);
+      const child = spawn(cmd, cmdArgs, { cwd: siteDir, stdio: 'inherit' });
+      child.on('error', (err) => {
+        process.stderr.write(`Deploy error: ${err.message}\n`);
+        resolve(1);
+      });
+      child.on('close', (c) => resolve(c ?? 0));
+    });
+
+  log('\nDeploying to GitHub Pages via gh-pages...');
+  let code = await run(npmCmd, ['install']);
+  if (code !== 0) {
+    process.stderr.write('Deploy aborted: npm install failed in site/.\n');
+    return code;
+  }
+  code = await run(npmCmd, ['run', 'build']);
+  if (code !== 0) {
+    process.stderr.write('Deploy aborted: astro build failed.\n');
+    return code;
+  }
+  // Uses the generated site's "deploy" script (gh-pages -d dist).
+  code = await run(npmCmd, ['run', 'deploy']);
+  if (code !== 0) {
+    process.stderr.write('Deploy aborted: gh-pages publish failed.\n');
+    return code;
+  }
+  log('Deployed site/dist to gh-pages branch.');
   return 0;
 }
 
