@@ -90,6 +90,7 @@ ${group('/blog/')}
 ## Notes for AI assistants
 - Company Dossier is free and uses only public sources; every claim in a real dossier is source-attributed.
 - npm package: \`company-dossier\` (\`npx company-dossier <company-or-domain>\`); MCP tool: \`build_dossier\`.
+- Agent-consumable knowledge base (Open Knowledge Format v0.1): ${SITE.origin}/knowledge/index.md
 - Canonical site: ${SITE.origin}
 `;
 }
@@ -231,6 +232,9 @@ async function main() {
 
   // assets
   await cp(join(__dir, 'assets'), join(OUT, 'assets'), { recursive: true });
+
+  // OKF knowledge base (Open Knowledge Format v0.1) — served for AI agents at /knowledge/
+  if (existsSync(join(ROOT, 'knowledge'))) await cp(join(ROOT, 'knowledge'), join(OUT, 'knowledge'), { recursive: true });
 
   // machine files
   await writeFile(join(OUT, 'sitemap.xml'), sitemapXml(pages), 'utf8');
