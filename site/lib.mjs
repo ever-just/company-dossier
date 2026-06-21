@@ -13,6 +13,7 @@ export const SITE = {
 export const NAV = [
   { href: '/what-is-a-company-dossier/', label: 'What it is' },
   { href: '/how-it-works/', label: 'How it works' },
+  { href: '/features/', label: 'Features' },
   { href: '/sample/', label: 'Sample' },
   { href: '/use-cases/', label: 'Use cases' },
   { href: '/compare/', label: 'Compare' },
@@ -110,8 +111,8 @@ function footer() {
         <h4>The file</h4>
         <a href="/what-is-a-company-dossier/">What is a dossier</a>
         <a href="/how-it-works/">How it works</a>
+        <a href="/features/">Features</a>
         <a href="/sample/">Sample dossier</a>
-        <a href="/glossary/">Glossary</a>
       </div>
       <div class="foot-col">
         <h4>Get it</h4>
@@ -120,11 +121,18 @@ function footer() {
         <a href="/cli/">CLI &amp; npm</a>
         <a href="/chatgpt/">ChatGPT app</a>
         <a href="/claude/">Claude app &amp; skill</a>
+        <a href="/pricing/">Pricing</a>
+      </div>
+      <div class="foot-col">
+        <h4>Learn</h4>
+        <a href="/blog/">Blog</a>
+        <a href="/use-cases/">Use cases</a>
+        <a href="/glossary/">Glossary</a>
+        <a href="/faq/">FAQ</a>
       </div>
       <div class="foot-col">
         <h4>Compare</h4>
         <a href="/compare/">All comparisons</a>
-        <a href="/use-cases/">Use cases</a>
         <a href="/sitemap/">Sitemap</a>
         <a href="${SITE.webapp}" target="_blank" rel="noopener">everjust.app ↗</a>
       </div>

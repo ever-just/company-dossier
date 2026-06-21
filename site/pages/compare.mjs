@@ -199,7 +199,17 @@ const masterTable = `<div class="tbl-wrap reveal">
   </table>
 </div>`;
 
-const linkCards = COMPETITORS.map((c, i) => {
+// extra comparison pages (defined in compare-extra.mjs) — linked here so the hub is complete
+const EXTRA_COMPETITORS = [
+  { slug: 'cognism-alternative', name: 'Cognism', blurb: 'GDPR-focused B2B contact data and sales intelligence' },
+  { slug: 'lusha-alternative', name: 'Lusha', blurb: 'contact and prospecting data with a freemium model' },
+  { slug: 'cb-insights-alternative', name: 'CB Insights', blurb: 'market and startup intelligence with analyst research' },
+  { slug: 'rocketreach-alternative', name: 'RocketReach', blurb: 'contact lookup and email finding for individuals' },
+  { slug: 'seamless-ai-alternative', name: 'Seamless.AI', blurb: 'real-time search for sales leads and contacts' },
+  { slug: 'linkedin-sales-navigator-alternative', name: 'LinkedIn Sales Navigator', blurb: 'LinkedIn-native sales prospecting and lead search' },
+];
+
+const linkCards = [...COMPETITORS, ...EXTRA_COMPETITORS].map((c, i) => {
   const v = ['', ' v2', ' v3'][i % 3];
   return `<a class="linkcard sk${v} reveal" href="/compare/${c.slug}/">
     <h3>${c.name} alternative</h3>
