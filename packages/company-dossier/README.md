@@ -99,6 +99,47 @@ Tool input:
 { "target": "acme.com", "sections": ["overview", "tech", "risk"] }
 ```
 
+## Remote MCP server
+
+In addition to the stdio server, `company-dossier` ships a **remote (HTTP) MCP
+server** over the MCP Streamable HTTP transport, exposing the same single tool,
+`build_dossier`. This is what you deploy so hosted assistants (ChatGPT Apps SDK,
+Claude connectors) can reach it over the network.
+
+Run it locally:
+
+```bash
+npx company-dossier-mcp-http
+# listening on http://0.0.0.0:8787  (override with PORT=...)
+```
+
+Endpoints: `POST/GET/DELETE /mcp` for the MCP session and `GET /health`
+(returns `{"status":"ok"}`). It listens on `process.env.PORT || 8787`.
+
+### Hosted endpoint
+
+Deploy it (see [`deploy/README.md`](deploy/README.md) for one-command steps to
+Render, Fly.io, or any Docker host) and point a subdomain at it. The hosted MCP
+endpoint is then:
+
+```
+https://mcp.companydossier.lol/mcp
+```
+
+**Claude connectors / Claude Desktop (custom connector):** add a remote MCP
+server with URL `https://mcp.companydossier.lol/mcp`. The `build_dossier` tool
+becomes available.
+
+**ChatGPT (Apps SDK / connectors):** add an MCP server pointing at
+`https://mcp.companydossier.lol/mcp`; ChatGPT discovers and calls the
+`build_dossier` tool.
+
+Tool input (same as the stdio server):
+
+```json
+{ "target": "acme.com", "sections": ["overview", "tech", "risk"] }
+```
+
 ## Output
 
 - A `<Company> DOSSIER/` folder with `README.md`, nine numbered markdown

@@ -1,0 +1,19 @@
+# Render blueprint for the company-dossier remote MCP server.
+# Deploy: push to GitHub, then in Render -> "New" -> "Blueprint" and select this repo.
+# Render builds the Dockerfile in this directory and runs the HTTP MCP server.
+services:
+  - type: web
+    name: company-dossier-mcp
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    rootDir: packages/company-dossier
+    plan: free
+    region: oregon
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8787
+      - key: NODE_ENV
+        value: production

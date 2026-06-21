@@ -5,3 +5,10 @@ node_modules
 *.log
 .DS_Store
 /tmp
+
+# Deploy/repo-only files (the "files" allowlist already limits the package to
+# dist + README.md, so these are never published — listed here for clarity).
+Dockerfile
+render.yaml
+fly.toml
+deploy
