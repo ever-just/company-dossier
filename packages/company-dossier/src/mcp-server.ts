@@ -19,9 +19,17 @@ export function registerTools(server: McpServer): void {
     {
       title: 'Build Company Dossier',
       description:
-        'Compile a complete, sourced intelligence dossier on a company from PUBLIC data ' +
-        '(website crawl, DNS, Wayback Machine, tech fingerprint, USASpending, social). ' +
-        'Returns markdown for nine sections plus structured JSON. No API keys required.',
+        "Use this when the user asks for research, a background check, due diligence, a profile, " +
+        "or a 'dossier' on a specific company or domain. Returns a nine-section, source-cited report " +
+        '(overview, people, hiring, funding, locations, tech stack, news, relationships, risk flags) ' +
+        'compiled from public sources, each claim confidence-tagged. No API keys required. ' +
+        'Do not use for general web search, for private individuals who are not company representatives, ' +
+        'or for non-business entities.',
+      annotations: {
+        readOnlyHint: true,
+        openWorldHint: true,
+        destructiveHint: false,
+      },
       inputSchema: {
         target: z
           .string()
