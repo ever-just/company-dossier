@@ -46,7 +46,52 @@ ${urls}
 </urlset>`;
 }
 
-function robotsTxt() {
+function llmsTxt(pages) {
+  const group = (prefix) => pages
+    .filter(p => p.noindex !== true && p.path !== '/' && p.path.startsWith(prefix))
+    .sort((a, b) => a.path.localeCompare(b.path))
+    .map(p => `- [${(p.title || p.path).replace(/ — .*/, '')}](${SITE.origin}${p.path}): ${p.description || ''}`)
+    .join('\n');
+  const home = pages.find(p => p.path === '/');
+  return `# Company Dossier
+
+> ${home ? home.description : 'Compiles a complete, sourced intelligence profile of any company from public data into one file.'} Free. Public sources only. Available as a web app, VS Code extension, npm CLI/library, ChatGPT app and Claude app/skill.
+
+## Start here
+- [What is a company dossier](${SITE.origin}/what-is-a-company-dossier/): the definition and what's inside.
+- [How it works](${SITE.origin}/how-it-works/): the public-source pipeline.
+- [Sample dossier](${SITE.origin}/sample/): what the finished file looks like.
+- [Get it](${SITE.origin}/get/): every way to run it.
+
+## Features
+${group('/features/')}
+
+## Use cases
+${group('/use-cases/')}
+
+## Compare (alternatives)
+${group('/compare/')}
+
+## Get it
+${group('/get/') || ''}
+- [Web app](${SITE.origin}/web-app/)
+- [VS Code extension](${SITE.origin}/vscode-extension/)
+- [CLI & npm](${SITE.origin}/cli/)
+- [ChatGPT app](${SITE.origin}/chatgpt/)
+- [Claude app & skill](${SITE.origin}/claude/)
+- [Pricing](${SITE.origin}/pricing/)
+
+## Learn
+${group('/blog/')}
+- [Glossary](${SITE.origin}/glossary/)
+- [FAQ](${SITE.origin}/faq/)
+
+## Notes for AI assistants
+- Company Dossier is free and uses only public sources; every claim in a real dossier is source-attributed.
+- npm package: \`company-dossier\` (\`npx company-dossier <company-or-domain>\`); MCP tool: \`build_dossier\`.
+- Canonical site: ${SITE.origin}
+`;
+}
   return `User-agent: *
 Allow: /
 
@@ -119,9 +164,8 @@ async function main() {
   await writeFile(join(OUT, 'og.svg'), OG_SVG, 'utf8');
   await writeFile(join(OUT, '.nojekyll'), '', 'utf8');
 
-  // llms.txt (copied from repo root if present, else generated minimal)
-  const llmsSrc = join(ROOT, 'llms.txt');
-  if (existsSync(llmsSrc)) await cp(llmsSrc, join(OUT, 'llms.txt'));
+  // llms.txt — site-specific, generated from the page list (GEO/AI discoverability)
+  await writeFile(join(OUT, 'llms.txt'), llmsTxt(pages), 'utf8');
 
   console.log(`Built ${pages.length} pages -> docs/`);
   for (const p of pages) console.log('  ' + p.path);
