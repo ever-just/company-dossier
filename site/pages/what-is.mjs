@@ -21,7 +21,7 @@ const body = `
   <div class="wrap">
     <span class="tab">section — the definition</span>
     <h1>What is a company dossier?</h1>
-    <p class="lede">A company dossier is a single, sourced file that gathers everything the public record knows about a business — its people, hiring, money, locations, tech, news and risk — and lays it out so you can read the whole company in minutes instead of weeks of open tabs.</p>
+    <p class="lede">A company dossier lets you read an entire business in minutes — not weeks of open tabs. It's a single, sourced file of everything the public record knows: people, hiring, money, locations, tech, news and risk, laid out in order.</p>
   </div>
 </section>
 

@@ -95,12 +95,12 @@ const body = `
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <div class="eyebrow">a complete file on any company —</div>
+        <div class="eyebrow">know any company in minutes —</div>
         <h1 class="hero-h">Open a file on<br>any company.</h1>
-        <p class="lede">Company Dossier gathers the public record on a business — its people, hiring, money, locations, tech and headlines — and assembles it into one comprehensive, sourced dossier you can read in minutes.</p>
+        <p class="lede">Read any company in minutes. Company Dossier pulls the entire public record — people, hiring, money, locations, tech and headlines — into one sourced file, so you walk into every meeting already knowing the room.</p>
         <div class="cta-row">
           <a class="btn solid" href="/get/">Open a dossier <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
-          <a class="btn" href="/sample/">See a sample file</a>
+          <a class="btn" href="/sample/">Read a real dossier</a>
         </div>
         <div class="pubnote">
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4-3 7-8 9-5-2-8-5-8-9V7z"/></svg>
@@ -212,7 +212,7 @@ const body = `
   </div>
 </section>
 
-${ctaFinal('Open your first file.', 'pick a company. read the whole story in minutes.')}
+${ctaFinal('Open your first file.', 'name a company — get the whole story, sourced, in minutes.')}
 `;
 
 export default {
@@ -221,7 +221,7 @@ export default {
   changefreq: 'weekly',
   active: '/',
   title: 'Company Dossier — open a complete, sourced file on any company',
-  description: 'Company Dossier compiles a complete, sourced profile of any business — people, hiring, money, locations, tech, news and risk — from public signals into one file. Free. Web app, VS Code extension, CLI, and AI apps.',
+  description: 'Know any company in minutes. Company Dossier turns the public record — people, money, hiring, tech, news and risk — into one sourced file you can trust. Free. Web, VS Code, CLI and AI apps.',
   jsonld: [
     {
       '@context': 'https://schema.org', '@type': 'WebSite', name: 'Company Dossier', url: 'https://companydossier.lol',

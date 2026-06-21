@@ -6,14 +6,24 @@ import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
 import { createServer } from './mcp-server.js';
 
 const PORT = Number(process.env.PORT) || 8787;
+const HOST = process.env.HOST || '0.0.0.0';
+// Optional bearer token. When set, every /mcp request must send Authorization: Bearer <token>.
+const AUTH_TOKEN = process.env.COMPANY_DOSSIER_MCP_TOKEN || '';
+// Optional CORS allowlist (comma-separated origins). When empty, origins are reflected (dev).
+const ALLOWED_ORIGINS = (process.env.COMPANY_DOSSIER_MCP_ALLOWED_ORIGINS || '')
+  .split(',').map((s) => s.trim()).filter(Boolean);
 
 /** Active sessions, keyed by the Mcp-Session-Id header. */
 const transports = new Map<string, StreamableHTTPServerTransport>();
 
-/** Apply permissive CORS headers suitable for browser-based MCP clients. */
+/** CORS — restricted to an allowlist when one is configured, else reflect (dev default). */
 function applyCors(req: IncomingMessage, res: ServerResponse): void {
   const origin = req.headers.origin;
-  res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  if (ALLOWED_ORIGINS.length) {
+    if (origin && ALLOWED_ORIGINS.includes(origin)) res.setHeader('Access-Control-Allow-Origin', origin);
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  }
   res.setHeader('Vary', 'Origin');
   res.setHeader(
     'Access-Control-Allow-Methods',
@@ -131,6 +141,14 @@ const httpServer = createHttpServer((req, res) => {
       }
 
       if (pathname === '/mcp') {
+        // Bearer auth (when a token is configured).
+        if (AUTH_TOKEN) {
+          const auth = req.headers.authorization || '';
+          if (auth !== `Bearer ${AUTH_TOKEN}`) {
+            sendJson(res, 401, { jsonrpc: '2.0', error: { code: -32001, message: 'Unauthorized' }, id: null });
+            return;
+          }
+        }
         if (req.method === 'POST') {
           await handleMcpPost(req, res);
           return;
@@ -162,10 +180,11 @@ const httpServer = createHttpServer((req, res) => {
   })();
 });
 
-httpServer.listen(PORT, () => {
+httpServer.listen(PORT, HOST, () => {
   process.stdout.write(
-    `company-dossier remote MCP server listening on http://0.0.0.0:${PORT}\n` +
-      `  MCP endpoint:  POST/GET/DELETE /mcp\n` +
+    `company-dossier remote MCP server listening on http://${HOST}:${PORT}\n` +
+      `  MCP endpoint:  POST/GET/DELETE /mcp${AUTH_TOKEN ? ' (bearer auth required)' : ' (no auth — set COMPANY_DOSSIER_MCP_TOKEN)'}\n` +
+      `  CORS:          ${ALLOWED_ORIGINS.length ? ALLOWED_ORIGINS.join(', ') : 'reflect (set COMPANY_DOSSIER_MCP_ALLOWED_ORIGINS to restrict)'}\n` +
       `  Health check:  GET /health\n`
   );
 });

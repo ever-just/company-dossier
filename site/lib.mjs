@@ -125,6 +125,7 @@ function footer() {
         <a href="/how-it-works/">How it works</a>
         <a href="/features/">Features</a>
         <a href="/sample/">Sample dossier</a>
+        <a href="/about/">About</a>
       </div>
       <div class="foot-col">
         <h4>Get it</h4>
@@ -144,6 +145,7 @@ function footer() {
         <a href="/glossary/">Glossary</a>
         <a href="/faq/">FAQ</a>
         <a href="/knowledge/index.md">Knowledge (OKF)</a>
+        <a href="/brand/">Brand kit</a>
       </div>
       <div class="foot-col">
         <h4>Compare</h4>
@@ -232,7 +234,7 @@ export function ctaFinal(heading, sub) {
       <p class="hand" style="font-size:1.5rem;color:var(--smudge);margin-top:10px">${sub}</p>
       <div class="cta-row">
         <a class="btn solid" href="/get/">Open a dossier ${arrowSvg()}</a>
-        <a class="btn" href="/sample/">See a sample file</a>
+        <a class="btn" href="/sample/">Read a real dossier</a>
       </div>
     </div>
   </div>
