@@ -41,8 +41,15 @@ Knowledge Format (OKF)" is an *enterprise data-catalog* spec and is **not** rele
 - **Speed:** PageSpeed Insights (field LCP/INP/CLS — Lighthouse can't measure INP).
 - **AI citations:** manual prompts in ChatGPT/Perplexity/Google AI + check cited sources; server-log analysis of `*-User`/`*-SearchBot` user-agents (GitHub Pages doesn't expose logs — use a tracker); optional tools (Otterly, Peec, Ahrefs Brand Radar, Semrush AI toolkit).
 
+## 🧠 Open Knowledge Format (OKF) — implemented as agent knowledge (not an SEO signal)
+OKF (Google Cloud, June 2026) is a vendor-neutral spec: a **directory of markdown files with YAML
+frontmatter** (`type`/`title`/`description`/`resource`/`tags`/`timestamp`, `index.md` per dir) so AI
+agents can consume curated knowledge without translation. It is **not** a web-ranking signal — but
+since our dossier output is already markdown+frontmatter, we ship a real OKF knowledge base at
+[`/knowledge/`](https://companydossier.lol/knowledge/index.md) (source in `knowledge/`) describing the
+product, concepts, and methodology for agent consumption. Linked from `llms.txt` and the footer.
+
 ## ❌ Ignore (researched, not applicable here)
-- **Open Knowledge Format (OKF)** — enterprise data-catalog/agent-grounding spec, not web SEO.
 - **Data Commons** — for large public statistical datasets, not a tool's marketing site.
 - **NLWeb / A2A** — need a running backend; not possible on static GitHub Pages.
 - **"Special AI markup required for AI Overviews"** — Google states none is needed; normal indexing = eligibility.

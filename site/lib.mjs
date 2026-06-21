@@ -143,6 +143,7 @@ function footer() {
         <a href="/use-cases/">Use cases</a>
         <a href="/glossary/">Glossary</a>
         <a href="/faq/">FAQ</a>
+        <a href="/knowledge/index.md">Knowledge (OKF)</a>
       </div>
       <div class="foot-col">
         <h4>Compare</h4>
