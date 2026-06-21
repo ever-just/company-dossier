@@ -70,7 +70,7 @@ const body = `
       <p>The ethics follow the same line. Company Dossier is about businesses and the public record, not about surveilling individuals. Because everything is sourced, the file is transparent about what it knows and where it learned it, which is exactly what an honest brief should be. And because a dossier is a <em>map</em>, not a verdict, the responsible way to use one is to verify before you act on anything that matters.</p>
 
       <h2 id="get">How to get a company dossier</h2>
-      <p>Company Dossier is <strong>free</strong> and runs wherever you work. You can open the <a href="/web-app/">web app</a> at <a href="${SITE.webapp}" target="_blank" rel="noopener">everjust.app</a>, install the <a href="/vscode-extension/">VS Code extension</a>, run the <a href="/cli/">npm CLI</a> (<code>company-dossier</code>), or use it inside the <a href="/chatgpt/">ChatGPT app</a> or as a <a href="/claude/">Claude app and skill</a>. Type a company name or paste a domain, and the file assembles itself.</p>
+      <p>Company Dossier is <strong>free</strong> and runs wherever you work. You can open the <a href="/web-app/">web app</a> at <a href="${SITE.webapp}" target="_blank" rel="noopener">companydossier.lol/generate</a>, install the <a href="/vscode-extension/">VS Code extension</a>, run the <a href="/cli/">npm CLI</a> (<code>company-dossier</code>), or use it inside the <a href="/chatgpt/">ChatGPT app</a> or as a <a href="/claude/">Claude app and skill</a>. Type a company name or paste a domain, and the file assembles itself.</p>
       <p>If you'd rather look before you run, <a href="/sample/">read the sample dossier</a> first, or walk through <a href="/how-it-works/">how it works</a> to see exactly how the file comes together.</p>
     </div>
   </div>
@@ -100,8 +100,8 @@ export default {
       '@context': 'https://schema.org', '@type': 'Article',
       headline: 'What is a company dossier? Meaning, contents and how it differs',
       description: 'A definition of a company dossier — what it contains, how it differs from a company profile, credit report and due-diligence report, who uses one, how it is built from public data, and how to get one.',
-      author: { '@type': 'Organization', name: 'EVERJUST' },
-      publisher: { '@type': 'Organization', name: 'EVERJUST', url: 'https://everjust.org' },
+      author: { '@type': 'Organization', name: 'Company Dossier' },
+      publisher: { '@type': 'Organization', name: 'Company Dossier', url: 'https://companydossier.lol' },
       mainEntityOfPage: SITE.origin + '/what-is-a-company-dossier/',
       image: SITE.ogImage,
     },

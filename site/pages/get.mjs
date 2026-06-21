@@ -116,7 +116,7 @@ export default {
   active: '/get/',
   breadcrumbs: [{ href: '/get/', label: 'Get it' }],
   title: 'Get Company Dossier — web app, VS Code extension, CLI & AI apps',
-  description: 'Four ways to open a company dossier: the everjust.app web app, the VS Code extension, the company-dossier npm CLI, and AI apps for ChatGPT and Claude. Free, public sources only, same nine-section profile every time.',
+  description: 'Four ways to open a company dossier: the companydossier.lol/generate web app, the VS Code extension, the company-dossier npm CLI, and AI apps for ChatGPT and Claude. Free, public sources only, same nine-section profile every time.',
   jsonld: [
     {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',

@@ -10,7 +10,7 @@ const GROUPS = [
   ]],
   ['Get it', [
     ['/get/', 'Get it', 'Every way to open a dossier.'],
-    ['/web-app/', 'Web app', 'Run it in the browser at everjust.app.'],
+    ['/web-app/', 'Web app', 'Run it in the browser at companydossier.lol/generate.'],
     ['/vscode-extension/', 'VS Code extension', 'Generate dossiers inside your editor.'],
     ['/cli/', 'CLI & npm', 'The company-dossier command line tool.'],
     ['/chatgpt/', 'ChatGPT app', 'Use it from inside ChatGPT.'],

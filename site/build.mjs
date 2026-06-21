@@ -173,7 +173,7 @@ const OG_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630
   <rect width="1200" height="630" fill="url(#dots)"/>
   <rect x="40" y="40" width="1120" height="550" rx="22" fill="none" stroke="#15130f" stroke-width="6"/>
   <rect x="40" y="40" width="1120" height="64" rx="22" fill="#15130f"/>
-  <text x="70" y="82" font-family="'Courier New',monospace" font-size="26" letter-spacing="8" fill="#f5f1e6">CONFIDENTIAL // CASE FILE // EVERJUST FIELD INTELLIGENCE</text>
+  <text x="70" y="82" font-family="'Courier New',monospace" font-size="26" letter-spacing="8" fill="#f5f1e6">CONFIDENTIAL // CASE FILE // FIELD INTELLIGENCE</text>
   <g fill="none" stroke="#15130f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
     <path d="M92 250 h150 a8 8 0 0 1 6 3 l14 20 H470 a12 12 0 0 1 12 12 v210 a12 12 0 0 1 -12 12 H100 a12 12 0 0 1 -12 -12 V262 a12 12 0 0 1 16 -12z"/>
     <circle cx="360" cy="430" r="70"/>
@@ -224,7 +224,7 @@ async function main() {
   await mkdir(secDir, { recursive: true });
   const oneYear = new Date(Date.now() + 365 * 864e5).toISOString().slice(0, 10);
   await writeFile(join(secDir, 'security.txt'),
-    `Contact: mailto:security@everjust.co\nExpires: ${oneYear}T00:00:00.000Z\nPreferred-Languages: en\nCanonical: ${SITE.origin}/.well-known/security.txt\nPolicy: ${SITE.origin}/security/\n`, 'utf8');
+    `Contact: https://github.com/ever-just/company-dossier/security/advisories/new\nExpires: ${oneYear}T00:00:00.000Z\nPreferred-Languages: en\nCanonical: ${SITE.origin}/.well-known/security.txt\nPolicy: ${SITE.origin}/security/\n`, 'utf8');
 
   // icons dir (PNGs are rasterized in CI by render-og.mjs; ensure dir exists)
   await mkdir(join(OUT, 'icons'), { recursive: true });
