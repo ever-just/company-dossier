@@ -1,4 +1,4 @@
-import { SITE, icon, SECTIONS, FAQ, ctaFinal } from '../lib.mjs';
+import { SITE, icon, SECTIONS, FAQ, ctaFinal, aiLauncher } from '../lib.mjs';
 
 const sectionCards = SECTIONS.map((s, i) => {
   const v = ['', ' v2', ' v3'][i % 3];
@@ -198,6 +198,17 @@ const body = `
   <div class="wrap">
     <div class="head center reveal"><span class="tab">the fine print</span><h2 class="marker">Questions, answered</h2></div>
     <div class="faq">${faqHtml}</div>
+  </div>
+</section>
+
+<section class="sec" id="use-in-ai">
+  <div class="wrap narrow">
+    <div class="head center reveal" style="margin-bottom:24px">
+      <span class="tab fill">section 06 — your ai, your file</span>
+      <h2 class="marker">Run it in the AI you already use</h2>
+      <p style="margin-left:auto;margin-right:auto">No key, no install — fire the dossier brief straight into ChatGPT, Claude, Perplexity, Gemini or Grok. <a href="/use-in-ai/" style="text-decoration:none;border-bottom:2px solid var(--ink)">More ways to use it →</a></p>
+    </div>
+    <div class="reveal">${aiLauncher()}</div>
   </div>
 </section>
 

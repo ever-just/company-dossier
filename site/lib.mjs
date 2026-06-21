@@ -125,6 +125,7 @@ function footer() {
       <div class="foot-col">
         <h4>Get it</h4>
         <a href="/generate/">Generate in browser</a>
+        <a href="/use-in-ai/">Use in your AI</a>
         <a href="/web-app/">Web app</a>
         <a href="/vscode-extension/">VS Code extension</a>
         <a href="/cli/">CLI &amp; npm</a>
@@ -230,6 +231,42 @@ export function ctaFinal(heading, sub) {
     </div>
   </div>
 </section>`;
+}
+
+// "Send to your AI" launcher — opens a top model with a ready-to-run dossier prompt.
+// URL templates use {Q} for the encoded prompt; copyfirst=true models get the prompt
+// copied to clipboard (no reliable prefill param) before opening the bare app.
+// Verified June 2026: ChatGPT/Perplexity/Grok pre-fill via URL; Claude's web ?q= was
+// removed (Oct 2025) and Gemini has no param, so those copy the prompt then open the app.
+export const AI_MODELS = [
+  { name: 'ChatGPT', url: 'https://chatgpt.com/?q={Q}', copyfirst: false },
+  { name: 'Claude', url: 'https://claude.ai/new', copyfirst: true },
+  { name: 'Perplexity', url: 'https://www.perplexity.ai/search/new?q={Q}', copyfirst: false },
+  { name: 'Gemini', url: 'https://gemini.google.com/app', copyfirst: true },
+  { name: 'Grok', url: 'https://x.com/i/grok?text={Q}', copyfirst: false },
+];
+
+export function aiLauncher({ heading = 'Use Company Dossier in your favorite AI', sub = 'Pick a model — it opens with a ready-to-run dossier prompt. No key, no install.', compact = false } = {}) {
+  const btns = AI_MODELS.map(m =>
+    `<button class="ai-btn" type="button" data-ai-go data-ai-name="${m.name}" data-ai-url="${m.url}" data-ai-copyfirst="${m.copyfirst ? '1' : '0'}">
+      <span class="ai-btn-name">${m.name}</span>
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </button>`).join('\n      ');
+  return `<div class="ai-launch sk${compact ? ' compact' : ''}" data-ai-launcher>
+    ${compact ? '' : `<div class="ai-launch-head"><span class="tab">zero setup</span><h3 class="draft">${heading}</h3><p>${sub}</p></div>`}
+    <label class="ai-input-wrap">
+      <span class="ai-input-label">Company name or domain</span>
+      <input type="text" data-ai-input placeholder="e.g. Stripe or stripe.com" autocomplete="organization" spellcheck="false" />
+    </label>
+    <div class="ai-models">
+      ${btns}
+    </div>
+    <div class="ai-launch-foot">
+      <button class="btn small" type="button" data-ai-copy>Copy the prompt</button>
+      <span class="ai-status" data-ai-status role="status" aria-live="polite"></span>
+    </div>
+    <p class="ai-note">Opens your chosen AI in a new tab with a dossier prompt that cites the Company Dossier method (<code>companydossier.lol/llms.txt</code>). For some models the prompt is copied — just paste it in.</p>
+  </div>`;
 }
 
 export const SECTIONS = [

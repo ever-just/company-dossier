@@ -1,4 +1,4 @@
-import { SITE, icon, SECTIONS, ctaFinal } from '../lib.mjs';
+import { SITE, icon, SECTIONS, ctaFinal, aiLauncher } from '../lib.mjs';
 
 const arrow = `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg>`;
 
@@ -20,6 +20,12 @@ const body = `
     <h1>Open a file on any company, right here.</h1>
     <p class="lede">Type a name or domain, paste your Anthropic API key, and this page assembles a complete, sourced dossier — the same nine sections you get everywhere else — entirely in your browser. Nothing is sent to us. There is no us to send it to: this is a static page, your key talks straight to Anthropic and never leaves the tab.</p>
     <div class="pubnote" style="font-family:var(--f-type);font-size:.82rem;color:var(--smudge);margin-top:16px">Public sources only · your keys stay on this device · bring your own API key.</div>
+  </div>
+</section>
+
+<section class="sec tight" style="padding-top:8px">
+  <div class="wrap narrow">
+    ${aiLauncher({ heading: 'No API key? Send it to your own AI.', sub: 'One click opens ChatGPT, Claude, Perplexity, Gemini or Grok with a ready-to-run dossier prompt — they do the work in their own tab.' })}
   </div>
 </section>
 
