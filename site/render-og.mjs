@@ -27,6 +27,7 @@ try {
     ['icons/favicon-32.png', faviconSvg(), 32, 'transparent'],
     ['icons/favicon-180.png', faviconSvg(), 180, 'transparent'],
     ['icons/apple-touch-icon.png', appIconSvg(180), 180, '#f5f1e6'],
+    ['apple-touch-icon.png', appIconSvg(180), 180, '#f5f1e6'],
     ['icons/icon-192.png', appIconSvg(192), 192, 'transparent'],
     ['icons/icon-512.png', appIconSvg(512), 512, 'transparent'],
     ['icons/icon-512-maskable.png', appIconSvg(512, { maskable: true }), 512, '#f5f1e6'],
