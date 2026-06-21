@@ -155,6 +155,7 @@ function footer() {
       </div>
     </div>
     <div class="foot-fine">Public information only · A dossier is a starting map — always verify before you act. · <a href="/sitemap.xml" style="border-bottom:1px solid var(--faint);text-decoration:none">sitemap.xml</a> · <a href="/llms.txt" style="border-bottom:1px solid var(--faint);text-decoration:none">llms.txt</a></div>
+    <div class="foot-fine">Operated by EverJust · <a href="/privacy/" style="border-bottom:1px solid var(--faint);text-decoration:none">Privacy Policy</a> · <a href="/terms/" style="border-bottom:1px solid var(--faint);text-decoration:none">Terms of Service</a> · <a href="mailto:company@everjust.co" style="border-bottom:1px solid var(--faint);text-decoration:none">company@everjust.co</a></div>
   </div>
 </footer>`;
 }
