@@ -1,0 +1,11 @@
+{
+  "name": "companydossier-infrastructure",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Deploy tooling for per-company dossier subdomains (S3 + CloudFront). Not published.",
+  "bin": { "deploy-dossier": "deploy-dossier.mjs" },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0"
+  }
+}

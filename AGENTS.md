@@ -25,6 +25,10 @@ Risk flags.
 - `site/` — zero-dependency static generator for companydossier.lol. `node site/build.mjs` → `docs/`.
   Pages live in `site/pages/*.mjs`; shared layout in `site/lib.mjs`; brand/icons in `site/brand.mjs`.
 - `integrations/` — Claude Agent Skill (`claude-skill/`) and ChatGPT GPT + Apps-SDK/MCP config (`chatgpt/`).
+- `knowledge/` — Open Knowledge Format (OKF) base: markdown + frontmatter describing the product,
+  concepts, and methodology for agent consumption (`index.md` per directory).
+- `reports/` — dated audit artifacts (security, mobile/accessibility, copy). Snapshots, not living docs.
+- `growth/` — discoverability and off-site distribution playbooks.
 
 ## Conventions
 - **Public sources only.** No auth bypass, no private-data harvesting, no deception.
