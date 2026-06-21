@@ -1,0 +1,14 @@
+{
+  "name": "companydossier-site-build",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Build tooling for the companydossier.lol static site (not published).",
+  "scripts": {
+    "build": "node build.mjs",
+    "og": "node render-og.mjs"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2"
+  }
+}

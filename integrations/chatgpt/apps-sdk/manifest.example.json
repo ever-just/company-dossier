@@ -1,0 +1,49 @@
+{
+  "_comment": "EXAMPLE Apps-SDK / MCP connector manifest for the Company Dossier ChatGPT App. Placeholder values are marked REPLACE_ME or noted with _comment fields. The Apps SDK manifest schema is evolving — verify exact field names against https://developers.openai.com/apps-sdk before submitting. Do not ship this file unedited.",
+
+  "schema_version": "REPLACE_ME_verify_current_apps_sdk_schema_version",
+
+  "name": "Company Dossier",
+  "description": "Build a complete, sourced intelligence dossier on any company or domain from public data: overview, people, hiring, funding, locations, tech stack, news, relationships, and risk flags — every claim cited and confidence-tagged.",
+  "category": "REPLACE_ME_verify_category_e.g._productivity_or_research",
+
+  "logo_url": "https://companydossier.lol/icon.png",
+  "legal_info": {
+    "privacy_policy_url": "https://companydossier.lol/privacy",
+    "terms_of_service_url": "https://companydossier.lol/terms"
+  },
+  "contact_email": "company@everjust.co",
+
+  "mcp_server": {
+    "_comment": "Remote MCP server exposing the build_dossier tool. URL is a placeholder — replace with the deployed endpoint.",
+    "transport": "streamable_http",
+    "url": "https://mcp.companydossier.lol",
+    "tools": [
+      {
+        "name": "build_dossier",
+        "description": "Build a nine-section, sourced public-data dossier on a company. Input a company name or domain; returns overview & identity, people & org chart, hiring radar, money trail, locations, tech fingerprint, news & timeline, relationship web, and risk flags — each claim attributed to a public source and tagged High/Medium/Low confidence.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "target": {
+              "type": "string",
+              "description": "Company name or domain, e.g. 'Acme Robotics' or 'acme.com'."
+            }
+          },
+          "required": ["target"]
+        }
+      }
+    ]
+  },
+
+  "auth": {
+    "_comment": "Company Dossier uses public data only and needs no per-user credentials, so the default is no-auth. To meter usage or add accounts, switch type to 'oauth' and fill the block below (verify exact field names against the Apps SDK docs).",
+    "type": "none",
+    "oauth": {
+      "_comment": "Only used when auth.type is 'oauth'. REPLACE_ME values.",
+      "authorization_url": "REPLACE_ME_https://auth.companydossier.lol/authorize",
+      "token_url": "REPLACE_ME_https://auth.companydossier.lol/token",
+      "scopes": ["REPLACE_ME_dossier.read"]
+    }
+  }
+}
