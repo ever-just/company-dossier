@@ -73,7 +73,7 @@ export interface DossierResult {
   files: DossierFile[];
 }
 
-const GENERATOR = 'company-dossier v0.1.0';
+const GENERATOR = 'company-dossier v0.3.0';
 const HOMEPAGE = 'https://companydossier.lol';
 const GAP = '_Gap: no public data found — requires manual research._';
 
