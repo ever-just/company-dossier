@@ -1,4 +1,6 @@
 // Shared site library: layout, SEO head, header, footer, icon defs, helpers.
+import { LOGO_SYMBOL } from './brand.mjs';
+
 export const SITE = {
   origin: 'https://companydossier.lol',
   name: 'Company Dossier',
@@ -32,6 +34,7 @@ export const DEFS = `
       <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="2" seed="4" result="n"/>
       <feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
+    ${LOGO_SYMBOL}
     <symbol id="i-folder" viewBox="0 0 64 64"><path d="M8 18 h14 a4 4 0 0 1 3 1.6 l2.4 3.4 H54 a3 3 0 0 1 3 3 V50 a3 3 0 0 1 -3 3 H10 a3 3 0 0 1 -3 -3 V21 a3 3 0 0 1 1-3z"/><path d="M8 28 H56"/></symbol>
     <symbol id="i-building" viewBox="0 0 64 64"><path d="M14 54 V16 a2 2 0 0 1 2-2 h20 a2 2 0 0 1 2 2 V54"/><path d="M38 54 V26 h10 a2 2 0 0 1 2 2 V54"/><path d="M9 54 H55"/><path d="M20 22h4M28 22h4M20 30h4M28 30h4M20 38h4M28 38h4M43 32h3M43 40h3"/></symbol>
     <symbol id="i-org" viewBox="0 0 64 64"><rect x="25" y="9" width="14" height="9" rx="2"/><rect x="9" y="44" width="14" height="9" rx="2"/><rect x="25" y="44" width="14" height="9" rx="2"/><rect x="41" y="44" width="14" height="9" rx="2"/><path d="M32 18 V31 M16 44 V31 H48 V44 M32 31 V44"/></symbol>
@@ -81,13 +84,18 @@ function header(active) {
   <div class="strip">confidential&nbsp;//&nbsp;case file&nbsp;//&nbsp;everjust field intelligence&nbsp;//&nbsp;do not redistribute</div>
   <nav class="nav">
     <a class="brand" href="/" aria-label="Company Dossier home">
-      ${icon('i-folder', 'ic rough-s')}
+      ${icon('i-logo', 'ic rough-s')}
       <span><b>Company Dossier</b><small>an everjust field tool</small></span>
     </a>
-    <div class="nav-links">
+    <div class="nav-links" id="primary-nav">
       ${links}
     </div>
-    <a class="btn solid small" href="/get/">Open a dossier ${arrowSvg()}</a>
+    <div class="nav-actions">
+      <a class="btn solid small" href="/generate/">Generate ${arrowSvg()}</a>
+      <button class="nav-toggle" type="button" data-navtoggle aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
 </header>`;
 }
@@ -98,7 +106,7 @@ function footer() {
     <div class="foot-grid">
       <div class="foot-col" style="max-width:300px">
         <a class="brand" href="/" style="margin-bottom:10px">
-          ${icon('i-folder', 'ic rough-s')}
+          ${icon('i-logo', 'ic rough-s')}
           <span><b style="font-size:1.1rem">Company Dossier</b><small>an everjust field tool</small></span>
         </a>
         <p style="font-family:var(--f-type);font-size:.86rem;color:var(--smudge);margin:8px 0 0">A complete, sourced file on any company — from the public record, in one place.</p>
@@ -116,6 +124,7 @@ function footer() {
       </div>
       <div class="foot-col">
         <h4>Get it</h4>
+        <a href="/generate/">Generate in browser</a>
         <a href="/web-app/">Web app</a>
         <a href="/vscode-extension/">VS Code extension</a>
         <a href="/cli/">CLI &amp; npm</a>
@@ -164,8 +173,11 @@ export function page(opts) {
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
+<meta name="referrer" content="no-referrer" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; connect-src 'self' https://api.anthropic.com https://api.github.com; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests" />
+<meta name="theme-color" content="#f5f1e6" />
 <title>${title}</title>
 <meta name="description" content="${desc}" />
 <link rel="canonical" href="${url}" />
@@ -180,10 +192,14 @@ export function page(opts) {
 <meta name="twitter:description" content="${desc}" />
 <meta name="twitter:image" content="${SITE.ogImage}" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Architects+Daughter&family=Caveat:wght@500;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/assets/styles.css" />
+${opts.head || ''}
 ${ld}
 </head>
 <body>
@@ -193,6 +209,7 @@ ${crumbs(opts.breadcrumbs)}
 ${opts.body}
 ${footer()}
 <script src="/assets/main.js" defer></script>
+${opts.bodyEnd || ''}
 </body>
 </html>`;
 }

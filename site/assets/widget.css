@@ -1,0 +1,297 @@
+/* ============================================================
+   Company Dossier — in-browser generator widget
+   Everything is scoped under .cdw / .cdw-* so it can never clash
+   with the shared design system. Uses the site CSS variables
+   (--ink, --paper, --paper-2, --smudge, --flag, --f-*) for theme
+   uniformity. Mobile-first, responsive, prefers-reduced-motion aware.
+   ============================================================ */
+
+.cdw{position:relative}
+
+/* ---------- the form card ---------- */
+.cdw-card{
+  padding:26px 22px 24px;
+  position:relative;
+  margin-top:8px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.cdw-field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.cdw-field label{
+  font-family:var(--f-type);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:.72rem;
+  color:var(--smudge);
+}
+.cdw-or{
+  font-family:var(--f-hand);
+  text-transform:none;
+  letter-spacing:0;
+  font-size:1rem;
+  color:var(--smudge-2);
+  font-weight:400;
+  padding:0 2px;
+}
+
+/* inputs — full width, ≥44px tap targets */
+.cdw input[type="text"],
+.cdw input[type="password"],
+.cdw select{
+  width:100%;
+  min-height:46px;
+  font-family:var(--f-type);
+  font-size:1rem;
+  color:var(--ink);
+  background:var(--paper);
+  border:2.5px solid var(--ink);
+  border-radius:11px 9px 13px 8px/8px 13px 9px 11px;
+  padding:11px 14px;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.cdw select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2315130f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+  background-size:20px;
+  padding-right:42px;
+  cursor:pointer;
+}
+.cdw input::placeholder{color:var(--smudge-2);opacity:.8}
+.cdw input:focus-visible,
+.cdw select:focus-visible{
+  outline:3px solid var(--ink);
+  outline-offset:2px;
+}
+
+.cdw-row2{display:grid;grid-template-columns:1fr;gap:18px}
+
+/* ---------- remember + warning ---------- */
+.cdw-remember{display:flex;flex-direction:column;gap:8px}
+.cdw-check{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--f-draft);
+  font-size:1rem;
+  cursor:pointer;
+  min-height:24px;
+}
+.cdw-check input{
+  width:20px;height:20px;flex:0 0 auto;
+  accent-color:var(--ink);cursor:pointer;
+}
+.cdw-link{
+  align-self:flex-start;
+  background:none;border:none;padding:4px 0;cursor:pointer;
+  font-family:var(--f-type);font-size:.82rem;color:var(--flag);
+  border-bottom:1.5px solid var(--flag);
+  min-height:32px;
+}
+.cdw-remember-warn{
+  margin:0;
+  font-family:var(--f-type);
+  font-size:.8rem;
+  color:var(--flag);
+  background:rgba(122,31,18,.06);
+  border:2px dashed var(--flag);
+  border-radius:9px 7px 11px 7px/7px 11px 7px 9px;
+  padding:9px 12px;
+  line-height:1.5;
+}
+
+/* ---------- privacy callout ---------- */
+.cdw-privacy{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  background:var(--paper-3);
+  border:2.5px solid var(--ink);
+  border-radius:13px 9px 15px 9px/9px 15px 9px 13px;
+  padding:15px 16px;
+  font-family:var(--f-type);
+  font-size:.86rem;
+  line-height:1.55;
+  color:var(--ink);
+}
+.cdw-privacy b{font-family:var(--f-draft);font-weight:400;font-size:1.05rem;display:inline}
+.cdw-privacy code{
+  font-family:var(--f-type);background:var(--paper-2);
+  border:1.5px solid var(--faint);border-radius:5px;padding:0 5px;font-size:.92em;
+}
+.cdw-shield{width:42px;height:42px;flex:0 0 auto;color:var(--ink)}
+
+/* ---------- actions + status ---------- */
+.cdw-actions{display:flex;flex-wrap:wrap;gap:12px}
+.cdw-actions .btn{width:100%;justify-content:center}
+
+.cdw-status{
+  margin:0;
+  font-family:var(--f-type);
+  font-size:.9rem;
+  color:var(--smudge);
+  border-left:4px solid var(--ink);
+  background:var(--paper-2);
+  padding:10px 14px;
+  border-radius:0 8px 8px 0;
+  line-height:1.5;
+}
+.cdw-status.cdw-err{color:var(--flag);border-left-color:var(--flag);background:rgba(122,31,18,.05)}
+.cdw-status.cdw-busy{border-left-color:var(--ink)}
+.cdw-status .cdw-spin{
+  display:inline-block;width:14px;height:14px;margin-right:8px;
+  border:2.5px solid var(--smudge);border-top-color:transparent;border-radius:50%;
+  vertical-align:-2px;
+  animation:cdw-spin .8s linear infinite;
+}
+@keyframes cdw-spin{to{transform:rotate(360deg)}}
+
+/* ---------- results panel (the file) ---------- */
+.cdw-results{margin-top:26px}
+
+.cdw-empty,.cdw-dossier{
+  border:2.5px solid var(--ink);
+  background:var(--paper-2);
+  border-radius:18px 12px 20px 12px/12px 20px 12px 18px;
+  padding:24px 22px 26px;
+  position:relative;
+}
+.cdw-empty{opacity:.92}
+
+.cdw-file-head{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:14px;
+  border-bottom:2.5px dashed var(--ink);
+  padding-bottom:16px;margin-bottom:18px;
+}
+.cdw-conf{
+  font-family:var(--f-type);font-weight:700;text-transform:uppercase;
+  letter-spacing:.2em;font-size:.64rem;color:var(--smudge);
+}
+.cdw-file-title{font-family:var(--f-marker);font-size:1.7rem;line-height:1.05;margin:6px 0 0}
+.cdw-file-meta{font-family:var(--f-type);font-size:.78rem;color:var(--smudge);margin-top:7px;line-height:1.5}
+.cdw-folder{width:54px;height:54px;flex:0 0 auto;color:var(--ink);opacity:.7}
+
+/* empty-state outline list */
+.cdw-outline{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.cdw-outline li{
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--f-draft);font-size:1.05rem;color:var(--smudge);
+}
+.cdw-sec-ic{width:26px;height:26px;flex:0 0 auto;color:var(--smudge-2)}
+.cdw-n{
+  font-family:var(--f-type);font-weight:700;font-size:.72rem;color:var(--smudge);
+  border:1.5px solid var(--smudge);border-radius:50%;
+  width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+}
+
+/* ---------- rendered dossier ---------- */
+.cdw-dossier .cdw-section{
+  border:2px solid var(--ink);
+  border-radius:11px 9px 13px 8px/8px 13px 9px 11px;
+  background:var(--paper);
+  margin-top:14px;
+  overflow:hidden;
+}
+.cdw-dossier .cdw-section[open]{background:var(--paper-2)}
+.cdw-dossier summary{
+  list-style:none;cursor:pointer;
+  display:flex;align-items:center;gap:10px;
+  padding:13px 15px;min-height:46px;
+  font-family:var(--f-draft);font-size:1.18rem;
+  user-select:none;
+}
+.cdw-dossier summary::-webkit-details-marker{display:none}
+.cdw-dossier summary::after{
+  content:"+";margin-left:auto;font-family:var(--f-type);font-weight:700;
+  font-size:1.3rem;color:var(--smudge);line-height:1;
+}
+.cdw-dossier .cdw-section[open] summary::after{content:"–"}
+.cdw-dossier summary .cdw-n{font-size:.74rem;width:26px;height:26px}
+
+.cdw-section-body{
+  padding:4px 18px 18px;
+  font-family:var(--f-type);
+  font-size:.94rem;
+  line-height:1.65;
+  overflow-wrap:break-word;
+  word-break:break-word;
+}
+.cdw-section-body h1,
+.cdw-section-body h2,
+.cdw-section-body h3,
+.cdw-section-body h4{font-family:var(--f-draft);line-height:1.2;margin:18px 0 8px}
+.cdw-section-body h1{font-size:1.4rem}
+.cdw-section-body h2{font-size:1.25rem}
+.cdw-section-body h3{font-size:1.12rem}
+.cdw-section-body h4{font-size:1rem}
+.cdw-section-body p{margin:0 0 12px}
+.cdw-section-body ul,
+.cdw-section-body ol{margin:0 0 12px;padding-left:22px}
+.cdw-section-body li{margin-bottom:6px}
+.cdw-section-body a{text-decoration:none;border-bottom:2px solid var(--faint);overflow-wrap:anywhere}
+.cdw-section-body a:hover{border-bottom-color:var(--ink)}
+.cdw-section-body strong{font-weight:700}
+.cdw-section-body em{font-style:italic}
+.cdw-section-body code{
+  font-family:var(--f-type);background:var(--paper-3);
+  border:1.5px solid var(--faint);border-radius:5px;padding:0 5px;font-size:.92em;
+}
+.cdw-section-body pre{
+  background:var(--ink);color:var(--paper);
+  border-radius:8px;padding:12px 14px;overflow-x:auto;font-size:.84rem;line-height:1.6;margin:0 0 12px;
+}
+.cdw-section-body pre code{background:none;border:none;padding:0;color:inherit}
+.cdw-section-body hr{border:none;border-top:2px dashed var(--faint);margin:16px 0}
+.cdw-gap{
+  display:inline-block;font-family:var(--f-type);font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--flag);
+  border:1.5px solid var(--flag);border-radius:5px;padding:0 5px;
+}
+
+/* ---------- export bar ---------- */
+.cdw-export{margin-top:22px;padding:18px 20px 20px}
+.cdw-export-label{
+  font-family:var(--f-type);font-weight:700;text-transform:uppercase;
+  letter-spacing:.16em;font-size:.72rem;color:var(--smudge);margin-bottom:12px;
+}
+.cdw-export-row{display:flex;flex-direction:column;gap:10px}
+.cdw-export-row .btn{width:100%;justify-content:center}
+.cdw-export-note{
+  margin:14px 0 0;font-family:var(--f-type);font-size:.86rem;line-height:1.55;
+  border-left:4px solid var(--ink);background:var(--paper-2);padding:10px 14px;border-radius:0 8px 8px 0;
+  overflow-wrap:anywhere;
+}
+.cdw-export-note.cdw-err{color:var(--flag);border-left-color:var(--flag);background:rgba(122,31,18,.05)}
+.cdw-export-note a{text-decoration:none;border-bottom:2px solid var(--ink);font-weight:700}
+
+/* ---------- inline github mini-form ---------- */
+.cdw-gh-form{
+  margin:14px 0 0;display:flex;flex-direction:column;gap:12px;
+  border:2px dashed var(--ink);border-radius:11px 8px 13px 8px/8px 13px 8px 11px;
+  padding:15px 16px;background:var(--paper-3);
+}
+.cdw-gh-form .cdw-field label{font-size:.7rem}
+.cdw-gh-form .cdw-actions{margin-top:2px}
+
+/* ---------- cross-link cards spacing ---------- */
+.cdw-ways .card p code{
+  font-family:var(--f-type);font-size:.82em;background:var(--paper-3);
+  border:1px solid var(--faint);border-radius:4px;padding:0 4px;
+}
+
+/* ---------- responsive: widen on larger screens ---------- */
+@media (min-width:620px){
+  .cdw-row2{grid-template-columns:1.4fr 1fr}
+  .cdw-actions .btn{width:auto}
+  .cdw-export-row{flex-direction:row;flex-wrap:wrap}
+  .cdw-export-row .btn{width:auto}
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  .cdw-spin{animation:none;border-top-color:var(--smudge)}
+}

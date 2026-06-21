@@ -4,6 +4,7 @@ import { existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { page, SITE } from './lib.mjs';
+import { faviconSvg } from './brand.mjs';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dir, '..');
@@ -117,7 +118,52 @@ Sitemap: ${SITE.origin}/sitemap.xml
 `;
 }
 
-const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="10" fill="#f5f1e6"/><g fill="none" stroke="#15130f" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 22 h16 a4 4 0 0 1 3 1.6 l2.4 3.4 H54 a3 3 0 0 1 3 3 V50 a3 3 0 0 1 -3 3 H10 a3 3 0 0 1 -3 -3 V25 a3 3 0 0 1 3 -3z"/><path d="M8 32 H56"/></g></svg>`;
+const FAVICON = faviconSvg();
+
+function webmanifest() {
+  return JSON.stringify({
+    name: 'Company Dossier',
+    short_name: 'Dossier',
+    description: 'Open a complete, sourced file on any company — from the public record.',
+    start_url: '/?utm_source=pwa',
+    scope: '/',
+    display: 'standalone',
+    orientation: 'portrait-primary',
+    background_color: '#f5f1e6',
+    theme_color: '#f5f1e6',
+    categories: ['business', 'productivity', 'utilities'],
+    icons: [
+      { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+      { src: '/icons/icon-512-maskable.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+    ],
+  }, null, 2);
+}
+
+// Minimal, tasteful service worker: precache the shell, cache-first for static
+// assets, network-first for navigations with offline fallback. Versioned cache.
+function serviceWorker() {
+  return `const VERSION = 'cd-v1';
+const SHELL = ['/', '/assets/styles.css', '/assets/main.js', '/favicon.svg', '/offline/'];
+self.addEventListener('install', (e) => {
+  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
+});
+self.addEventListener('activate', (e) => {
+  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== VERSION).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
+});
+self.addEventListener('fetch', (e) => {
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  if (url.origin !== location.origin) return; // never touch API calls (Anthropic/GitHub)
+  if (req.mode === 'navigate') {
+    e.respondWith(fetch(req).then((res) => { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); return res; }).catch(() => caches.match(req).then((r) => r || caches.match('/offline/'))));
+    return;
+  }
+  e.respondWith(caches.match(req).then((cached) => cached || fetch(req).then((res) => { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); return res; }).catch(() => cached)));
+});
+`;
+}
 
 const OG_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
@@ -168,6 +214,20 @@ async function main() {
 
   // llms.txt — site-specific, generated from the page list (GEO/AI discoverability)
   await writeFile(join(OUT, 'llms.txt'), llmsTxt(pages), 'utf8');
+
+  // PWA: manifest + service worker
+  await writeFile(join(OUT, 'site.webmanifest'), webmanifest(), 'utf8');
+  await writeFile(join(OUT, 'sw.js'), serviceWorker(), 'utf8');
+
+  // security.txt (RFC 9116)
+  const secDir = join(OUT, '.well-known');
+  await mkdir(secDir, { recursive: true });
+  const oneYear = new Date(Date.now() + 365 * 864e5).toISOString().slice(0, 10);
+  await writeFile(join(secDir, 'security.txt'),
+    `Contact: mailto:security@everjust.co\nExpires: ${oneYear}T00:00:00.000Z\nPreferred-Languages: en\nCanonical: ${SITE.origin}/.well-known/security.txt\nPolicy: ${SITE.origin}/security/\n`, 'utf8');
+
+  // icons dir (PNGs are rasterized in CI by render-og.mjs; ensure dir exists)
+  await mkdir(join(OUT, 'icons'), { recursive: true });
 
   console.log(`Built ${pages.length} pages -> docs/`);
   for (const p of pages) console.log('  ' + p.path);
