@@ -69,7 +69,7 @@ export function registerTools(server: McpServer): void {
         .filter((f) => f.path.endsWith('.md'))
         .map((f) => f.content)
         .join('\n\n---\n\n');
-      const meta = result.meta as Record<string, unknown>;
+      const meta = result.meta as unknown as Record<string, unknown>;
       const rawSources = Array.isArray(meta.sources) ? (meta.sources as Record<string, unknown>[]) : [];
       const structuredContent = {
         company: String(meta.companyName ?? target),
