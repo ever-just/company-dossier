@@ -65,16 +65,15 @@
         var isApp = !/^https?:/i.test(tpl);
         var useFill = hasFill && enc.length <= (isApp ? 5000 : 1800);
         var url = useFill ? tpl.replace('{Q}', enc) : (hasFill ? tpl.replace(/\?.*$/, '') : tpl);
-        if (/^https?:/i.test(url)) {
-          window.open(url, '_blank', 'noopener');
-        } else {
-          // custom scheme (claude-cli://, codex://) — hand to the OS via a transient anchor click
-          var a = document.createElement('a');
-          a.href = url;
-          (document.body || document.documentElement).appendChild(a);
-          a.click();
-          a.remove();
-        }
+        // Navigate via a real anchor click — reliable on mobile Safari, where window.open
+        // is popup-blocked (especially right after a clipboard write). http(s) opens a new
+        // tab; custom schemes (claude-cli://, codex://) are handed to the OS in place.
+        var a = document.createElement('a');
+        a.href = url;
+        if (/^https?:/i.test(url)) { a.target = '_blank'; a.rel = 'noopener'; }
+        (document.body || document.documentElement).appendChild(a);
+        a.click();
+        a.remove();
         var msg;
         if (isApp) msg = 'Opening ' + name + ' on your computer — prompt filled; press Enter. (Also copied.) If nothing opened, it isn\'t installed — ' + pasteHint() + ' the copied prompt.';
         else if (copyfirst || !useFill) msg = 'Opening ' + name + ' — prompt copied, ' + pasteHint() + ' to run it.';
