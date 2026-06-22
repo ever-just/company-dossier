@@ -1,6 +1,6 @@
 {
   "name": "company-dossier",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Build a complete, sourced intelligence dossier on any company from public data — CLI, library and MCP server.",
   "license": "MIT",
   "author": "EVERJUST",

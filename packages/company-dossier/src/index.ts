@@ -21,6 +21,7 @@ export {
 } from './generators/site.js';
 
 export { collectDns, type DnsData } from './collectors/dns.js';
+export { collectRdap, type RdapData } from './collectors/rdap.js';
 export { collectWebsite, type WebsiteData, type PageData } from './collectors/website.js';
 export { collectWayback, type WaybackData } from './collectors/wayback.js';
 export { extractTechStack, type TechStackData } from './collectors/techstack.js';
