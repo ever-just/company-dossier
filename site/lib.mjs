@@ -284,7 +284,13 @@ export function aiLauncher({ heading = 'Use Company Dossier in your favorite AI'
       <textarea class="ai-promptbox-text" data-ai-prompt rows="6" readonly aria-label="The dossier prompt"></textarea>
     </div>
     <p class="ai-note">Opens your chosen AI in a new tab. <b>Perplexity</b> &amp; <b>Grok</b> run it automatically; <b>ChatGPT</b> fills the prompt (press Enter); <b>Claude</b> &amp; <b>Gemini</b> open with the prompt copied — just paste. The full prompt is always copied to your clipboard as a backup, and shown above after you click.</p>
-    <p class="ai-note ai-note-dev">Developers: <a href="https://claude.ai/code?repositories=ever-just/company-dossier&amp;prompt=${devPrompt}" target="_blank" rel="noopener">open the repo in Claude Code →</a></p>
+    ${compact ? '' : `<div class="ai-dev">
+      <span class="ai-dev-label">On your computer:</span>
+      <button class="ai-dev-btn" type="button" data-ai-go data-ai-name="Claude Code" data-ai-url="claude-cli://open?q={Q}" data-ai-copyfirst="0" data-ai-autorun="0" title="Open the local Claude Code CLI with the prompt prefilled">Claude&nbsp;Code</button>
+      <button class="ai-dev-btn" type="button" data-ai-go data-ai-name="Codex" data-ai-url="codex://new?prompt={Q}" data-ai-copyfirst="0" data-ai-autorun="0" title="Open the local Codex app with the prompt prefilled">Codex</button>
+      <a class="ai-dev-link" href="https://claude.ai/code?repositories=ever-just/company-dossier&amp;prompt=${devPrompt}" target="_blank" rel="noopener">repo in Claude&nbsp;Code (web) →</a>
+    </div>
+    <p class="ai-note ai-note-sub">Claude&nbsp;Code &amp; Codex open the agent installed on your machine with the prompt ready — press Enter to run. (Requires them installed; the prompt is copied as a backup.)</p>`}
   </div>`;
 }
 
