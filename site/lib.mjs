@@ -10,6 +10,7 @@ export const SITE = {
   webapp: '/generate/',
   repo: 'https://github.com/ever-just/company-dossier',
   repoVscode: 'https://github.com/ever-just/company-dossier-vscode',
+  marketplace: 'https://marketplace.visualstudio.com/items?itemName=EVERJUSTs.company-dossier',
   ogImage: 'https://companydossier.lol/og.png',
 };
 
@@ -284,6 +285,7 @@ export function aiLauncher({ heading = 'Use Company Dossier in your favorite AI'
       <textarea class="ai-promptbox-text" data-ai-prompt rows="6" readonly aria-label="The dossier prompt"></textarea>
     </div>
     <p class="ai-note">Opens your chosen AI in a new tab. <b>Perplexity</b> &amp; <b>Grok</b> run it automatically; <b>ChatGPT</b> fills the prompt (press Enter); <b>Claude</b> &amp; <b>Gemini</b> open with the prompt copied — just paste. The full prompt is always copied to your clipboard as a backup, and shown above after you click.</p>
+    <p class="ai-note ai-note-mode"><b>This hands a prompt to your own AI</b> — the chat does the research in your account, and quality depends on that tool. Want a <b>structured, sourced dossier returned automatically</b> for an app, agent or script? That's the <a href="/mcp/">MCP server &amp; API →</a> (the same engine behind the free <a href="/generate/">in-browser generator</a>).</p>
     ${compact ? '' : `<div class="ai-dev">
       <span class="ai-dev-label">On your computer:</span>
       <button class="ai-dev-btn" type="button" data-ai-go data-ai-name="Claude Code" data-ai-url="claude-cli://open?q={Q}" data-ai-copyfirst="0" data-ai-autorun="0" title="Open the local Claude Code CLI with the prompt prefilled">Claude&nbsp;Code</button>
