@@ -315,6 +315,8 @@ table.cmp .col-us{background:rgba(21,19,15,.04)}
 .ai-note b{color:var(--ink)}
 .ai-note-mode{border-left:3px solid var(--ink);padding-left:12px;margin-top:10px}
 .ai-note-mode a{color:var(--ink);border-bottom:2px solid var(--faint);text-decoration:none}
+.video-frame{max-width:920px;margin:0 auto;padding:10px;background:var(--paper-2);border:2.5px solid var(--ink);border-radius:18px 12px 20px 10px/10px 20px 12px 18px;box-shadow:var(--shadow)}
+.promo-video{display:block;width:100%;aspect-ratio:16/9;border-radius:10px;background:var(--ink);outline:none}
 .ai-dev{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1.5px dashed var(--faint)}
 .ai-dev-label{font-family:var(--f-draft);font-size:.82rem;color:var(--smudge)}
 .ai-dev-btn{font-family:var(--f-type);font-size:.8rem;color:var(--ink);background:var(--paper-2);border:2px solid var(--ink);border-radius:9px 6px 10px 5px/5px 10px 6px 9px;padding:5px 11px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);transition:transform .1s,box-shadow .1s}

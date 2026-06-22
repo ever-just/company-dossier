@@ -116,6 +116,21 @@ const body = `
   </div>
 </section>
 
+<section class="sec tight" id="see-it" style="padding-top:6px">
+  <div class="wrap narrow">
+    <div class="head center reveal" style="margin-bottom:18px">
+      <span class="tab">in under a minute</span>
+      <h2 class="marker">See it open a file</h2>
+      <p style="margin-left:auto;margin-right:auto">One input → the public record gets pulled → a complete, sourced dossier — and everywhere you can run it.</p>
+    </div>
+    <div class="video-frame sk reveal">
+      <video class="promo-video" autoplay muted loop playsinline controls preload="metadata" poster="/assets/promo-poster.jpg" aria-label="Company Dossier — how it works, in under a minute">
+        <source src="https://video.companydossier.lol/companydossier-promo-v3.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+</section>
+
 <section class="sec tight" id="use-in-ai" style="padding-top:6px">
   <div class="wrap narrow">
     <div class="head center reveal" style="margin-bottom:16px">

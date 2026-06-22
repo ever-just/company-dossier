@@ -189,7 +189,7 @@ export function page(opts) {
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; connect-src 'self' https://api.anthropic.com https://api.github.com; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; media-src 'self' https://video.companydossier.lol; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; connect-src 'self' https://api.anthropic.com https://api.github.com; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests" />
 <meta name="theme-color" content="#f5f1e6" />
 <title>${title}</title>
 <meta name="description" content="${desc}" />
