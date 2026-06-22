@@ -1,4 +1,5 @@
 import { collectDns, type DnsData } from './collectors/dns.js';
+import { collectRdap, type RdapData } from './collectors/rdap.js';
 import { collectWebsite, type WebsiteData } from './collectors/website.js';
 import { collectWayback, type WaybackData } from './collectors/wayback.js';
 import { extractTechStack, type TechStackData } from './collectors/techstack.js';
@@ -58,6 +59,7 @@ export interface DossierData {
   website?: WebsiteData;
   wayback?: WaybackData;
   dns?: DnsData;
+  rdap?: RdapData;
   tech?: TechStackData;
   search?: SearchData;
 }
@@ -73,7 +75,7 @@ export interface DossierResult {
   files: DossierFile[];
 }
 
-const GENERATOR = 'company-dossier v0.3.0';
+const GENERATOR = 'company-dossier v0.3.4';
 const HOMEPAGE = 'https://companydossier.lol';
 const GAP = '_Gap: no public data found — requires manual research._';
 
@@ -111,6 +113,7 @@ function sourceLine(label: string): string {
 
 function renderOverview(meta: DossierMeta, d: DossierData): string {
   const w = d.website;
+  const rd = d.rdap;
   const schema =
     w?.schemaOrg && typeof w.schemaOrg === 'object'
       ? JSON.stringify(w.schemaOrg, null, 2)
@@ -131,6 +134,28 @@ function renderOverview(meta: DossierMeta, d: DossierData): string {
 ## Description
 
 ${desc ? desc : GAP}${desc ? sourceLine(`${meta.websiteUrl} meta description`) : ''}
+
+## Domain registration & ownership
+
+${
+  rd && !rd.error
+    ? `| Field | Value |
+|-------|-------|
+| Registrar | ${rd.registrar || 'N/A'} |
+| Registrant org | ${rd.registrantOrg || 'Not disclosed (privacy/GDPR redaction)'} |
+| Registrant country | ${rd.registrantCountry || 'N/A'} |
+| Created | ${rd.createdDate ? rd.createdDate.slice(0, 10) : 'N/A'} |
+| Last updated | ${rd.updatedDate ? rd.updatedDate.slice(0, 10) : 'N/A'} |
+| Expires | ${rd.expiresDate ? rd.expiresDate.slice(0, 10) : 'N/A'} |
+| DNSSEC | ${rd.dnssec === undefined ? 'N/A' : rd.dnssec ? 'signed' : 'unsigned'} |
+| Status | ${rd.statuses.length ? rd.statuses.join(', ') : 'N/A'} |
+| Nameservers | ${rd.nameservers.length ? rd.nameservers.join(', ') : 'N/A'} |` +
+      sourceLine('RDAP (rdap.org bootstrap)') +
+      '\n\n_Registrant identity is frequently redacted under privacy/GDPR; the registrar, dates and status come directly from the registry._'
+    : rd && rd.error
+      ? `_RDAP registration lookup unavailable: ${rd.error}._`
+      : GAP
+}
 
 ## Schema.org (JSON-LD)
 
@@ -584,6 +609,30 @@ export async function buildDossier(
           name: 'DNS recon',
           status: data.dns.error ? 'failed' : 'ok',
           note: data.dns.error || `${data.dns.mxRecords.length} MX, provider ${data.dns.emailProvider}`,
+        });
+      })()
+    );
+  }
+
+  if (domain) {
+    tasks.push(
+      (async () => {
+        progress('Collecting domain registration (RDAP)...');
+        data.rdap = await collectRdap(domain);
+        const r = data.rdap;
+        const note = r.error
+          ? r.error
+          : [
+              r.registrar && `registrar ${r.registrar}`,
+              r.registrantOrg && `registrant ${r.registrantOrg}`,
+              r.createdDate && `created ${r.createdDate.slice(0, 10)}`,
+            ]
+              .filter(Boolean)
+              .join(', ') || 'registrant not disclosed';
+        sources.push({
+          name: 'Domain registration (RDAP)',
+          status: r.error ? 'failed' : 'ok',
+          note,
         });
       })()
     );
