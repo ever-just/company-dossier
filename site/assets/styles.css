@@ -313,8 +313,14 @@ table.cmp .col-us{background:rgba(21,19,15,.04)}
 .ai-note{font-family:var(--f-type);font-size:.78rem;color:var(--smudge);margin:12px 0 0;line-height:1.5}
 .ai-note code{background:var(--paper-3);border:1.5px solid var(--faint);border-radius:4px;padding:0 5px;font-size:.92em}
 .ai-note b{color:var(--ink)}
-.ai-note-dev{margin-top:6px}
-.ai-note-dev a{color:var(--ink);border-bottom:2px solid var(--faint);text-decoration:none}
+.ai-dev{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1.5px dashed var(--faint)}
+.ai-dev-label{font-family:var(--f-draft);font-size:.82rem;color:var(--smudge)}
+.ai-dev-btn{font-family:var(--f-type);font-size:.8rem;color:var(--ink);background:var(--paper-2);border:2px solid var(--ink);border-radius:9px 6px 10px 5px/5px 10px 6px 9px;padding:5px 11px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.ai-dev-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.ai-dev-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.ai-dev-link{font-family:var(--f-type);font-size:.8rem;color:var(--ink);border-bottom:2px solid var(--faint);text-decoration:none}
+.ai-note-sub{font-family:var(--f-type);font-size:.74rem;color:var(--smudge);margin:8px 0 0;line-height:1.5}
+@media (prefers-reduced-motion:reduce){.ai-dev-btn{transition:none}}
 .ai-promptbox{margin-top:14px;border:2px dashed var(--ink);border-radius:10px;background:var(--paper);padding:10px 12px}
 .ai-promptbox-head{font-family:var(--f-draft);font-size:.84rem;color:var(--ink);margin-bottom:6px}
 .ai-promptbox-head span{color:var(--smudge);font-family:var(--f-type);font-size:.92em}

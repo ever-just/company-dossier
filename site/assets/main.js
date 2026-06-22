@@ -61,11 +61,23 @@
         // Prefill only if the encoded prompt fits safely in a URL; else open the bare app.
         var enc = encodeURIComponent(prompt);
         var hasFill = tpl.indexOf('{Q}') >= 0;
-        var useFill = hasFill && enc.length <= 1800;
+        // claude-cli q cap is 5000; web URLs we keep <= 1800 to be safe.
+        var isApp = !/^https?:/i.test(tpl);
+        var useFill = hasFill && enc.length <= (isApp ? 5000 : 1800);
         var url = useFill ? tpl.replace('{Q}', enc) : (hasFill ? tpl.replace(/\?.*$/, '') : tpl);
-        window.open(url, '_blank', 'noopener');
+        if (/^https?:/i.test(url)) {
+          window.open(url, '_blank', 'noopener');
+        } else {
+          // custom scheme (claude-cli://, codex://) — hand to the OS via a transient anchor click
+          var a = document.createElement('a');
+          a.href = url;
+          (document.body || document.documentElement).appendChild(a);
+          a.click();
+          a.remove();
+        }
         var msg;
-        if (copyfirst || !useFill) msg = 'Opening ' + name + ' — prompt copied, ' + pasteHint() + ' to run it.';
+        if (isApp) msg = 'Opening ' + name + ' on your computer — prompt filled; press Enter. (Also copied.) If nothing opened, it isn\'t installed — ' + pasteHint() + ' the copied prompt.';
+        else if (copyfirst || !useFill) msg = 'Opening ' + name + ' — prompt copied, ' + pasteHint() + ' to run it.';
         else if (autorun) msg = 'Opening ' + name + ' — it runs automatically. (Prompt also copied.)';
         else msg = 'Opening ' + name + ' — prompt filled; press Enter. (Also copied as backup.)';
         flash(status, msg);
