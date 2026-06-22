@@ -10,15 +10,28 @@
   }
 
   // "Send to your AI" launchers
+  // A self-contained, browse-forcing prompt (the format is embedded inline rather than
+  // relying on the AI to fetch our llms.txt, which it usually won't).
   function dossierPrompt(company) {
     var who = company && company.trim() ? company.trim() : 'the company I will name next';
-    return 'Build a "Company Dossier" — a complete, source-attributed intelligence profile on ' + who +
-      ' using PUBLIC sources only. Produce a Markdown report with these nine sections: ' +
-      '1) Overview & identity 2) People & org chart 3) Hiring radar 4) Money trail 5) Locations ' +
-      '6) Tech fingerprint 7) News & timeline 8) Relationship web 9) Risk flags. ' +
-      'Attribute every claim to its source and mark unknowns as gaps. Use web browsing if available. ' +
-      'Method & guidance: https://companydossier.lol/llms.txt and https://github.com/ever-just/company-dossier';
+    return 'Research ' + who + ' and build a "Company Dossier" — a complete, source-cited intelligence profile from PUBLIC sources only.\n\n'
+      + 'Do this now using web search/browsing — do not answer from memory alone: open the company\'s official website first, then pull 5–8 public sources (recent news, regulatory/SEC filings, LinkedIn, job boards, company databases, review sites).\n\n'
+      + 'Write a Markdown report with these nine sections, in order:\n'
+      + '1) Overview & identity  2) People & org chart  3) Hiring radar  4) Money trail (funding/revenue signals)  5) Locations  6) Tech fingerprint  7) News & timeline  8) Relationship web (customers, partners, competitors)  9) Risk flags.\n\n'
+      + 'Rules: start with a 3-sentence executive summary; attribute EVERY claim inline to its source (URL, or publication + date); tag each claim High/Medium/Low confidence; where public data is missing write "Gap: <what is missing>" instead of guessing; finish with a de-duplicated Sources list.\n\n'
+      + 'Format reference (optional): https://companydossier.lol';
   }
+  // platform detection: userAgentData where present, else UA + maxTouchPoints (iPad-as-Mac)
+  function detectPlatform() {
+    var ua = navigator.userAgent || '';
+    var d = navigator.userAgentData;
+    var isIPad = /iPad/.test(ua) || (((d && d.platform === 'macOS') || navigator.platform === 'MacIntel') && navigator.maxTouchPoints > 1);
+    var isMobile = (d && typeof d.mobile === 'boolean') ? d.mobile : /Mobi|Android|iPhone|iPod/i.test(ua);
+    var isApple = /iPhone|iPod|iPad|Mac/.test(ua) || isIPad || /Mac/.test(navigator.platform);
+    return { isMobile: isMobile || isIPad, isApple: isApple };
+  }
+  var PLAT = detectPlatform();
+  function pasteHint() { return PLAT.isMobile ? 'long-press the box and tap Paste' : (PLAT.isApple ? 'press ⌘V' : 'press Ctrl+V'); }
   function flash(statusEl, msg) { if (statusEl) { statusEl.textContent = msg; setTimeout(function () { if (statusEl.textContent === msg) statusEl.textContent = ''; }, 4000); } }
   function copyText(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
@@ -29,23 +42,41 @@
   document.querySelectorAll('[data-ai-launcher]').forEach(function (root) {
     var input = root.querySelector('[data-ai-input]');
     var status = root.querySelector('[data-ai-status]');
+    var promptbox = root.querySelector('[data-ai-promptbox]');
+    var promptText = root.querySelector('[data-ai-prompt]');
+    function showPrompt(p) { if (promptText) promptText.value = p; if (promptbox) promptbox.hidden = false; }
     root.querySelectorAll('[data-ai-go]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var prompt = dossierPrompt(input ? input.value : '');
+        var company = input ? input.value.trim() : '';
+        if (!company) { flash(status, 'Type a company or domain first.'); if (input) input.focus(); return; }
+        var prompt = dossierPrompt(company);
+        var name = btn.getAttribute('data-ai-name');
         var tpl = btn.getAttribute('data-ai-url');
         var copyfirst = btn.getAttribute('data-ai-copyfirst') === '1';
-        var name = btn.getAttribute('data-ai-name');
-        var url = tpl.indexOf('{Q}') >= 0 ? tpl.replace('{Q}', encodeURIComponent(prompt)) : tpl;
-        if (copyfirst) {
-          copyText(prompt).then(function () { flash(status, 'Prompt copied — paste it into ' + name + '.'); }).catch(function () {});
-        }
+        var autorun = btn.getAttribute('data-ai-autorun') === '1';
+        // Copy first, synchronously within the gesture (Safari drops activation after an await),
+        // so the clipboard is a universal backup even if prefill fails.
+        copyText(prompt).catch(function () {});
+        showPrompt(prompt);
+        // Prefill only if the encoded prompt fits safely in a URL; else open the bare app.
+        var enc = encodeURIComponent(prompt);
+        var hasFill = tpl.indexOf('{Q}') >= 0;
+        var useFill = hasFill && enc.length <= 1800;
+        var url = useFill ? tpl.replace('{Q}', enc) : (hasFill ? tpl.replace(/\?.*$/, '') : tpl);
         window.open(url, '_blank', 'noopener');
-        if (!copyfirst) flash(status, 'Opening ' + name + '…');
+        var msg;
+        if (copyfirst || !useFill) msg = 'Opening ' + name + ' — prompt copied, ' + pasteHint() + ' to run it.';
+        else if (autorun) msg = 'Opening ' + name + ' — it runs automatically. (Prompt also copied.)';
+        else msg = 'Opening ' + name + ' — prompt filled; press Enter. (Also copied as backup.)';
+        flash(status, msg);
       });
     });
     var copyBtn = root.querySelector('[data-ai-copy]');
     if (copyBtn) copyBtn.addEventListener('click', function () {
-      copyText(dossierPrompt(input ? input.value : '')).then(function () { flash(status, 'Prompt copied to clipboard.'); }).catch(function () { flash(status, 'Copy failed — select and copy manually.'); });
+      var company = input ? input.value.trim() : '';
+      var p = dossierPrompt(company || 'the company I will name next');
+      showPrompt(p);
+      copyText(p).then(function () { flash(status, 'Prompt copied to clipboard.'); }).catch(function () { flash(status, 'Select the prompt below and copy it.'); });
     });
   });
 
