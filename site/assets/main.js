@@ -14,12 +14,12 @@
   // relying on the AI to fetch our llms.txt, which it usually won't).
   function dossierPrompt(company) {
     var who = company && company.trim() ? company.trim() : 'the company I will name next';
-    return 'Research ' + who + ' and build a "Company Dossier" — a complete, source-cited intelligence profile from PUBLIC sources only.\n\n'
-      + 'Do this now using web search/browsing — do not answer from memory alone: open the company\'s official website first, then pull 5–8 public sources (recent news, regulatory/SEC filings, LinkedIn, job boards, company databases, review sites).\n\n'
-      + 'Write a Markdown report with these nine sections, in order:\n'
-      + '1) Overview & identity  2) People & org chart  3) Hiring radar  4) Money trail (funding/revenue signals)  5) Locations  6) Tech fingerprint  7) News & timeline  8) Relationship web (customers, partners, competitors)  9) Risk flags.\n\n'
-      + 'Rules: start with a 3-sentence executive summary; attribute EVERY claim inline to its source (URL, or publication + date); tag each claim High/Medium/Low confidence; where public data is missing write "Gap: <what is missing>" instead of guessing; finish with a de-duplicated Sources list.\n\n'
-      + 'Format reference (optional): https://companydossier.lol';
+    return 'Research ' + who + ' and produce a source-cited "Company Dossier" from PUBLIC sources only. Work in this order:\n\n'
+      + 'PHASE 1 — GATHER (don\'t analyze yet): use web search/browsing. Open the company\'s official site, then 6–10 public sources (recent news, SEC/regulatory filings, LinkedIn, job boards, company databases, reviews). Note raw facts with each source URL. Don\'t rely on memory.\n\n'
+      + 'PHASE 2 — ANALYZE the nine sections in order, each one building on what earlier sections surfaced (connect funding↔hiring, leadership↔risk, tech↔competitors) so the picture compounds:\n'
+      + '1 Overview & identity, 2 People & org chart, 3 Hiring radar, 4 Money trail, 5 Locations, 6 Tech fingerprint, 7 News & timeline, 8 Relationship web, 9 Risk flags.\n\n'
+      + 'PHASE 3 — SYNTHESIZE: open the report with a 3-sentence executive summary drawn from all nine sections.\n\n'
+      + 'Rules: cite EVERY claim inline (source URL, or publication + date); tag each High/Medium/Low confidence; write "Gap: <missing>" instead of guessing; finish with a de-duplicated Sources list. Output GitHub-flavored Markdown.';
   }
   // platform detection: userAgentData where present, else UA + maxTouchPoints (iPad-as-Mac)
   function detectPlatform() {

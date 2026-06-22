@@ -23,7 +23,7 @@ const ways = `<div class="ways">
     <ul>
       <li>Sidebar view + <code>@dossier /research</code> chat</li>
       <li>Website analysis, Wayback history, DNS recon, tech stack</li>
-      <li>Free and open source on GitHub</li>
+      <li>One-click install from the VS Code Marketplace · free &amp; open source</li>
     </ul>
     <a class="btn" href="/vscode-extension/">Get the extension ${arrow}</a>
   </article>
