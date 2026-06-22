@@ -246,24 +246,26 @@ export function ctaFinal(heading, sub) {
 }
 
 // "Send to your AI" launcher — opens a top model with a ready-to-run dossier prompt.
-// URL templates use {Q} for the encoded prompt; copyfirst=true models get the prompt
-// copied to clipboard (no reliable prefill param) before opening the bare app.
-// Verified June 2026: ChatGPT/Perplexity/Grok pre-fill via URL; Claude's web ?q= was
-// removed (Oct 2025) and Gemini has no param, so those copy the prompt then open the app.
+// URL templates use {Q} for the encoded prompt. autorun = the tool runs the query
+// itself on open (Perplexity, Grok). copyfirst = no reliable prefill, so we copy the
+// prompt and open the bare app for the user to paste (Claude's web ?q= was removed
+// Oct 2025; Gemini has no param). ChatGPT prefills but no longer auto-submits external
+// clicks (anti-injection, Jul 2025) — the user presses Enter. Verified June 2026.
 export const AI_MODELS = [
-  { name: 'ChatGPT', url: 'https://chatgpt.com/?q={Q}', copyfirst: false },
-  { name: 'Claude', url: 'https://claude.ai/new', copyfirst: true },
-  { name: 'Perplexity', url: 'https://www.perplexity.ai/search/new?q={Q}', copyfirst: false },
-  { name: 'Gemini', url: 'https://gemini.google.com/app', copyfirst: true },
-  { name: 'Grok', url: 'https://x.com/i/grok?text={Q}', copyfirst: false },
+  { name: 'ChatGPT', url: 'https://chatgpt.com/?q={Q}&hints=search', copyfirst: false, autorun: false, hint: 'fills the prompt — press Enter' },
+  { name: 'Claude', url: 'https://claude.ai/new', copyfirst: true, autorun: false, hint: 'opens Claude — paste & send' },
+  { name: 'Perplexity', url: 'https://www.perplexity.ai/search?q={Q}', copyfirst: false, autorun: true, hint: 'runs automatically' },
+  { name: 'Gemini', url: 'https://gemini.google.com/app', copyfirst: true, autorun: false, hint: 'opens Gemini — paste & send' },
+  { name: 'Grok', url: 'https://grok.com/?q={Q}', copyfirst: false, autorun: true, hint: 'runs automatically' },
 ];
 
 export function aiLauncher({ heading = 'Use Company Dossier in your favorite AI', sub = 'Pick a model — it opens with a ready-to-run dossier prompt. No key, no install.', compact = false } = {}) {
   const btns = AI_MODELS.map(m =>
-    `<button class="ai-btn" type="button" data-ai-go data-ai-name="${m.name}" data-ai-url="${m.url}" data-ai-copyfirst="${m.copyfirst ? '1' : '0'}" title="Open in ${m.name}">
+    `<button class="ai-btn" type="button" data-ai-go data-ai-name="${m.name}" data-ai-url="${m.url}" data-ai-copyfirst="${m.copyfirst ? '1' : '0'}" data-ai-autorun="${m.autorun ? '1' : '0'}" title="${m.name} — ${m.hint}">
       <svg class="ai-btn-ic ai-btn-ic-color" viewBox="0 0 24 24" aria-hidden="true"><use href="#${AI_ICON_COLOR[m.name]}"/></svg>
       <span class="ai-btn-name">${m.name}</span>
     </button>`).join('\n      ');
+  const devPrompt = encodeURIComponent('Read this repo and explain how the Company Dossier engine and the build_dossier MCP tool work, then help me run it.');
   return `<div class="ai-launch sk${compact ? ' compact' : ''}" data-ai-launcher>
     ${compact ? '' : `<div class="ai-launch-head"><span class="tab">zero setup</span><h3 class="draft">${heading}</h3><p>${sub}</p></div>`}
     <label class="ai-input-wrap">
@@ -277,7 +279,12 @@ export function aiLauncher({ heading = 'Use Company Dossier in your favorite AI'
       <button class="btn small" type="button" data-ai-copy>Copy the prompt</button>
       <span class="ai-status" data-ai-status role="status" aria-live="polite"></span>
     </div>
-    <p class="ai-note">Opens your chosen AI in a new tab with a dossier prompt that cites the Company Dossier method (<code>companydossier.lol/llms.txt</code>). For some models the prompt is copied — just paste it in.</p>
+    <div class="ai-promptbox" data-ai-promptbox hidden>
+      <div class="ai-promptbox-head">The exact prompt <span>— if it didn't auto-fill, paste this</span></div>
+      <textarea class="ai-promptbox-text" data-ai-prompt rows="6" readonly aria-label="The dossier prompt"></textarea>
+    </div>
+    <p class="ai-note">Opens your chosen AI in a new tab. <b>Perplexity</b> &amp; <b>Grok</b> run it automatically; <b>ChatGPT</b> fills the prompt (press Enter); <b>Claude</b> &amp; <b>Gemini</b> open with the prompt copied — just paste. The full prompt is always copied to your clipboard as a backup, and shown above after you click.</p>
+    <p class="ai-note ai-note-dev">Developers: <a href="https://claude.ai/code?repositories=ever-just/company-dossier&amp;prompt=${devPrompt}" target="_blank" rel="noopener">open the repo in Claude Code →</a></p>
   </div>`;
 }
 
