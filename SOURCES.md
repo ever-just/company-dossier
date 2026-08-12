@@ -16,6 +16,8 @@ Repositories, tools, and methodologies that directly informed or were used in bu
 | [projectdiscovery/wappalyzergo](https://github.com/projectdiscovery/wappalyzergo) | 1K+ | Technology fingerprinting (backup validation of httpx results) |
 | [tomnomnom/waybackurls](https://github.com/tomnomnom/waybackurls) | 4.5K+ | Bulk Wayback URL extraction for brogav.com domain history |
 | [internetarchive/wayback](https://github.com/internetarchive/wayback) | 842 | Reference for Wayback Machine CDX API usage patterns |
+| [subzeroid/instagrapi](https://github.com/subzeroid/instagrapi) | 5K+ | Instagram profile data + post extraction (photos, videos, captions, likes, hashtags). Works without login for public profiles. |
+| [mikf/gallery-dl](https://github.com/mikf/gallery-dl) | 12K+ | Universal media downloader for TikTok, Facebook, Pinterest, Tumblr, Flickr, Twitter (w/ cookies). 100+ sites supported. |
 
 ## Methodology Sources (adapted into our agent skills)
 

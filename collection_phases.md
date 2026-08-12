@@ -769,3 +769,62 @@ Content is on YouTube?
 | Event booth footage | Which events they attend, who visits their booth, partnerships |
 | Shorts (product clips) | Current inventory, branded products, seasonal offerings |
 | Customer testimonial videos | Named clients, use cases, satisfaction signals |
+
+---
+
+## Phase 7: Social Media Content Extraction
+
+> **Full documentation:** [social_media_intelligence.md](social_media_intelligence.md)
+
+### What It Does
+
+Automatically pulls public posts, photos, videos, and engagement metrics from all discovered social media profiles. This phase runs after profile discovery (Phase 1 finds the URLs, Phase 7 pulls the content).
+
+### Tools Used
+
+| Tool | Role | Auth Needed? |
+|------|------|:---:|
+| [instagrapi](https://github.com/subzeroid/instagrapi) | Instagram profiles + posts + reels | No (public) |
+| [gallery-dl](https://github.com/mikf/gallery-dl) | TikTok, Facebook, Pinterest, Tumblr, Flickr, Twitter (w/ cookies) | No (except Twitter) |
+| [yt-dlp](https://github.com/yt-dlp/yt-dlp) | YouTube channels + video metadata + thumbnails | No |
+
+### What You Get
+
+| Platform | Data Extracted |
+|----------|---------------|
+| Instagram | Profile (followers, bio, business status), posts (photos, videos, captions, likes, hashtags, tagged users, locations) |
+| TikTok | Videos, view/like counts, descriptions, hashtags, sounds |
+| YouTube | Video list (title, views, likes, duration, upload date), thumbnails |
+| Facebook | Photos from public pages (full resolution) |
+| Pinterest | Original-quality images from boards |
+| Twitter/X | Tweets + media (requires browser cookie auth) |
+
+### Process
+
+1. Gather all social URLs discovered in earlier phases
+2. Parse each URL → platform + handle
+3. For auth-required platforms → silently check browser cookie stores (Chrome/Firefox)
+4. Pull content via platform-specific adapter
+5. Write media + JSON sidecar files to `8_marketing/social_content/`
+6. Generate `manifest.json` master index
+
+### Intelligence Value
+
+Social media often reveals what the website hides:
+- **Product launches** before they're on the website
+- **Client relationships** from tagged accounts and case study posts
+- **Team culture** from behind-the-scenes content
+- **Competitive positioning** from how they talk about themselves casually vs formally
+- **Geographic reach** from location tags and event coverage
+- **Hiring intent** from "we're growing" posts
+
+### Tested Results (June 2026)
+
+| Platform | Test Target | Result |
+|----------|-------------|--------|
+| Instagram | @shopify | Profile (2.5M followers), 3 posts with captions/likes/media URLs |
+| YouTube | @shopify | 3 videos with titles, durations, URLs |
+| Facebook | /shopify | 3 full-res photos from CDN |
+| TikTok | @shopify | 42+ video items enumerated |
+| Pinterest | /nasa | Original-quality image URLs |
+| Tumblr | /nasa | 7.3MB + 1.6MB images downloaded |

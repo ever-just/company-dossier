@@ -724,6 +724,78 @@ meta_ids = re.findall(r"fbq\('init',\s*'(\d+)'\)", gtm_js)  # Meta Pixel
 
 ---
 
+### gallery-dl
+
+**What it does:** Command-line program to download image galleries and media from 100+ websites including Instagram, TikTok, Facebook, Pinterest, Tumblr, Flickr, Reddit, and Twitter/X.
+
+**How it's used:** Pulls public photos and videos from social media profiles discovered during company research. For platforms that require auth (Twitter/X), supports `--cookies-from-browser chrome` to use existing browser sessions.
+
+**Example:**
+
+```bash
+# Get photo URLs from a Facebook page (no auth)
+gallery-dl -G "https://www.facebook.com/COMPANY/photos"
+
+# Download TikTok videos with metadata
+gallery-dl --range 1-20 --write-metadata "https://www.tiktok.com/@handle"
+
+# Pinterest images (original quality)
+gallery-dl --range 1-20 "https://www.pinterest.com/handle"
+
+# Tumblr blog media
+gallery-dl --range 1-20 "https://www.tumblr.com/blogname"
+
+# Twitter/X with browser cookies (auth required)
+gallery-dl --cookies-from-browser chrome "https://twitter.com/handle"
+```
+
+**Rate limiting / gotchas:**
+- Instagram requires auth cookies as of 2026 (profile pages return 403 without login)
+- Twitter/X requires `auth_token` cookie — use `--cookies-from-browser chrome` if logged in
+- Reddit is fully blocked (403 on all endpoints since mid-2025, needs residential proxy)
+- Tumblr, Facebook photos, Pinterest, Flickr all work without any auth
+- TikTok works without auth but is rate-limited — gallery-dl handles paging automatically
+- Use `--range 1-N` to limit downloads and avoid hammering servers
+
+**Tested June 2026:** Confirmed working on Facebook (NASA page photos), TikTok (@washingtonpost 119+ videos), Pinterest (/nasa original-quality images), Tumblr (/nasa 7.3MB+1.6MB images), Flickr (NASA HQ original photos).
+
+---
+
+### instagrapi
+
+**What it does:** Python library for Instagram's Private API. Reads profile data, posts, stories, reels, followers, following, and more. Works without login for public profile lookups and recent posts.
+
+**How it's used:** Primary Instagram data source. Called via Python subprocess from the VS Code extension. Returns structured JSON with full metadata per post.
+
+**Example:**
+
+```python
+from instagrapi import Client
+
+cl = Client()
+info = cl.user_info_by_username("target_handle")
+# → username, full_name, biography, follower_count, following_count,
+#   media_count, external_url, is_business, category, profile_pic_url_hd
+
+medias = cl.user_medias(info.pk, amount=20)
+for m in medias:
+    # → media_type (photo/video/album), caption_text, like_count,
+    #   comment_count, timestamp, thumbnail_url, video_url,
+    #   location, usertags (tagged accounts)
+    print(f"{m.taken_at}: {m.caption_text[:50]}")
+```
+
+**Rate limiting / gotchas:**
+- Public profile lookup (`user_info_by_username`) works without login as of June 2026
+- Media listing (`user_medias`) sometimes throws errors on video posts with null video_versions — handle gracefully
+- For stories, highlights, DMs, saved posts: login required
+- Rate limited to ~200 requests/hour without login
+- Session cookies can be injected via `cl.login_by_sessionid(sessionid)` for authenticated access
+
+**Tested June 2026:** Confirmed working on @shopify (2.5M followers, business account, 3 posts with captions/likes/video URLs) and @nasa (104M followers, 4,817 posts, profile pic HD URL, bio, external URL).
+
+---
+
 ## Tools Found But NOT Used
 
 ---

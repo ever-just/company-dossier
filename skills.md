@@ -246,6 +246,20 @@ Skills repo: `/Users/cloudaistudio/Projects/agentskills/skills/`
 
 ---
 
+### 21. social-media-intelligence
+
+**When to invoke:** After social profiles are discovered during website crawl or public search. Runs automatically in the VS Code extension pipeline.
+
+**What it produces:** Social content archive: profile data (followers, bio, business status), posts (photos, videos, captions, likes, comments, hashtags, tagged accounts, locations), video metadata (titles, views, durations), and a manifest.json master index. Output goes to `8_marketing/social_content/` with per-platform subfolders.
+
+**Key methodology insight:** Social media reveals what the website hides. Instagram product photos show trade show attendance and client logos. TikTok behind-the-scenes videos reveal operational scale. YouTube keynotes contain strategic direction. Tagged accounts expose client and partner relationships not listed on the website.
+
+**Tools:** instagrapi (Instagram), gallery-dl (TikTok, Facebook, Pinterest, Tumblr, Flickr, Twitter), yt-dlp (YouTube). All optional — pipeline skips gracefully if not installed. Tested June 2026: confirmed working without auth on Instagram, TikTok, YouTube, Facebook, Pinterest, Tumblr, Flickr.
+
+**Full documentation:** [social_media_intelligence.md](social_media_intelligence.md)
+
+---
+
 ## Skill Execution Order (Recommended)
 
 ```
